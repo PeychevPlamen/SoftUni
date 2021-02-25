@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01. Ranking", "01. Ranking\01. Ranking.csproj", "{D864CCB9-B5A6-44FE-BBAF-4463C03A5E15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02. Judge", "02. Judge\02. Judge.csproj", "{3D6DF615-CCF6-445B-A7D1-FA3B2F9D758B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D864CCB9-B5A6-44FE-BBAF-4463C03A5E15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D864CCB9-B5A6-44FE-BBAF-4463C03A5E15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D864CCB9-B5A6-44FE-BBAF-4463C03A5E15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D864CCB9-B5A6-44FE-BBAF-4463C03A5E15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D6DF615-CCF6-445B-A7D1-FA3B2F9D758B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D6DF615-CCF6-445B-A7D1-FA3B2F9D758B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D6DF615-CCF6-445B-A7D1-FA3B2F9D758B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D6DF615-CCF6-445B-A7D1-FA3B2F9D758B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {25F55F21-AC90-4515-BAA0-D3E57D829B67}
+	EndGlobalSection
+EndGlobal
