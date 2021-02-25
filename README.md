@@ -1,3 +1,3 @@
 # SoftUni
-# 
-Software University projects, homework and exercises.
+
+// Software University projects, homework and exercises. \\
