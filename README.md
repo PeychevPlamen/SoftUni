@@ -1,2 +1,2 @@
 # SoftUni
-Software University projects, homeworks and exercises.
+Software University projects, homework and exercises.
