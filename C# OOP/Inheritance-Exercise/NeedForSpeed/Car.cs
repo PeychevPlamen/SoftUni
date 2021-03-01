@@ -12,5 +12,7 @@ namespace NeedForSpeed
             : base(horsePower, fuel)
         {
         }
+
+        public override double FuelConsumption => DefaultFuelConsupmtion;
     }
 }
