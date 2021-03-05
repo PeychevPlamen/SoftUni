@@ -53,6 +53,71 @@ namespace _03.ShoppingSpree
             {
                 Console.WriteLine(person);
             }
+
+            //
+            // Another solution with List<> of this task
+            //
+
+            //List<Person> people = new List<Person>();
+
+            //List<Product> products = new List<Product>();
+
+            //try
+            //{
+            //    people = Console.ReadLine()
+            //                .Split(';', StringSplitOptions.RemoveEmptyEntries)
+            //                .Select(t => t.Split('='))
+            //                .Select(t => new Person(t[0], decimal.Parse(t[1])))
+            //                .ToList();
+
+
+            //    products = Console.ReadLine()
+            //              .Split(';', StringSplitOptions.RemoveEmptyEntries)
+            //              .Select(t => t.Split('='))
+            //              .Select(t => new Product(t[0], decimal.Parse(t[1])))
+            //              .ToList();
+            //}
+            //catch (ArgumentException ex)
+            //{
+
+            //    Console.WriteLine(ex.Message);
+            //    return;
+            //}
+
+
+            //string input = Console.ReadLine();
+
+            //while (input != "END")
+            //{
+
+            //    string[] tokens = input.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToArray();
+
+            //    Person customer = people.First(p => p.Name == tokens[0]);
+            //    Product purchase = products.First(products => products.Name == tokens[1]);
+
+            //    try
+            //    {
+            //        customer.AddProduct(purchase);
+
+            //        Console.WriteLine($"{customer.Name} bought {purchase.Name}");
+
+            //    }
+            //    catch (ArgumentException ex)
+            //    {
+
+            //        Console.WriteLine(ex.Message);
+
+            //    }
+
+            //    input = Console.ReadLine();
+            //}
+
+            //foreach (var person in people)
+            //{
+            //    Console.WriteLine(person);
+            //}
+
+
         }
 
         private static Dictionary<string, Product> ReadProduct()
@@ -92,5 +157,6 @@ namespace _03.ShoppingSpree
 
             return result;
         }
+
     }
 }
