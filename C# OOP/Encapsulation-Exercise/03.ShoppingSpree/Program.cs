@@ -55,15 +55,15 @@ namespace _03.ShoppingSpree
             }
 
             //
-            // Another solution with List<> of this task
+            //  Another solution with List<> of this task
             //
 
-            //List<Person> people = new List<Person>();
+            //  List<Person> people = new List<Person>();
 
-            //List<Product> products = new List<Product>();
+            //  List<Product> products = new List<Product>();
 
-            //try
-            //{
+            //  try
+            //  {
             //    people = Console.ReadLine()
             //                .Split(';', StringSplitOptions.RemoveEmptyEntries)
             //                .Select(t => t.Split('='))
@@ -76,19 +76,19 @@ namespace _03.ShoppingSpree
             //              .Select(t => t.Split('='))
             //              .Select(t => new Product(t[0], decimal.Parse(t[1])))
             //              .ToList();
-            //}
-            //catch (ArgumentException ex)
-            //{
+            //  }
+            //  catch (ArgumentException ex)
+            //  {
 
             //    Console.WriteLine(ex.Message);
             //    return;
-            //}
+            //  }
 
 
-            //string input = Console.ReadLine();
+            //  string input = Console.ReadLine();
 
-            //while (input != "END")
-            //{
+            //  while (input != "END")
+            //  {
 
             //    string[] tokens = input.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToArray();
 
@@ -110,12 +110,12 @@ namespace _03.ShoppingSpree
             //    }
 
             //    input = Console.ReadLine();
-            //}
+            //  }
 
-            //foreach (var person in people)
-            //{
+            //  foreach (var person in people)
+            //  {
             //    Console.WriteLine(person);
-            //}
+            //  }
 
 
         }
