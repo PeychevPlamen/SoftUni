@@ -47,7 +47,7 @@ namespace _05.FootballTeamGenerator
             {
                 if (value < minStats || value > maxStats)
                 {
-                    throw new ArgumentException($"{value} should be between {minStats} and {maxStats}.");
+                    throw new ArgumentException($"{nameof(Endurance)} should be between {minStats} and {maxStats}.");
                 }
 
                 endurance = value;
@@ -61,7 +61,7 @@ namespace _05.FootballTeamGenerator
             {
                 if (value < minStats || value > maxStats)
                 {
-                    throw new ArgumentException($"{value} should be between {minStats} and {maxStats}.");
+                    throw new ArgumentException($"{nameof(Sprint)} should be between {minStats} and {maxStats}.");
                 }
 
                 sprint = value;
@@ -75,7 +75,7 @@ namespace _05.FootballTeamGenerator
             {
                 if (value < minStats || value > maxStats)
                 {
-                    throw new ArgumentException($"{value} should be between {minStats} and {maxStats}.");
+                    throw new ArgumentException($"{nameof(Dribble)} should be between {minStats} and {maxStats}.");
                 }
 
                 dribble = value;
@@ -89,7 +89,7 @@ namespace _05.FootballTeamGenerator
             {
                 if (value < minStats || value > maxStats)
                 {
-                    throw new ArgumentException($"{value} should be between {minStats} and {maxStats}.");
+                    throw new ArgumentException($"{nameof(Passing)} should be between {minStats} and {maxStats}.");
                 }
 
                 passing = value;
@@ -103,11 +103,13 @@ namespace _05.FootballTeamGenerator
             {
                 if (value < minStats || value > maxStats)
                 {
-                    throw new ArgumentException($"{value} should be between {minStats} and {maxStats}.");
+                    throw new ArgumentException($"{nameof(Shooting)} should be between {minStats} and {maxStats}.");
                 }
 
                 shooting = value;
             }
         }
+
+        public double Stats => Math.Round((Endurance + Sprint + Dribble + Passing + Shooting)/5.0);
     }
 }
