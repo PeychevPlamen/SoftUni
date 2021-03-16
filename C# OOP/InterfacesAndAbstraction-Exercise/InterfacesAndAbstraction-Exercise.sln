@@ -9,11 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "02.MultipleImplementation",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "03.Telephony", "03.Telephony\03.Telephony.csproj", "{6433740D-80F6-4AC1-AF41-12B42077E425}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "04.BorderControl", "04.BorderControl\04.BorderControl.csproj", "{F7CF2055-9506-49C6-A13C-58D3F0E198BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "04.BorderControl", "04.BorderControl\04.BorderControl.csproj", "{F7CF2055-9506-49C6-A13C-58D3F0E198BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "05.BirthdayCelebrations", "05.BirthdayCelebrations\05.BirthdayCelebrations.csproj", "{8D08E771-6F53-4AEB-8E57-FAFA0DB46817}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "05.BirthdayCelebrations", "05.BirthdayCelebrations\05.BirthdayCelebrations.csproj", "{8D08E771-6F53-4AEB-8E57-FAFA0DB46817}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "06.FoodShortage", "06.FoodShortage\06.FoodShortage.csproj", "{8ADF28A7-A095-413A-B5EE-EEB7249EDCD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "06.FoodShortage", "06.FoodShortage\06.FoodShortage.csproj", "{8ADF28A7-A095-413A-B5EE-EEB7249EDCD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "07.MilitaryElite", "07.MilitaryElite\07.MilitaryElite.csproj", "{C0667ED7-FAEE-4995-8144-1BA5EF41078D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{8ADF28A7-A095-413A-B5EE-EEB7249EDCD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8ADF28A7-A095-413A-B5EE-EEB7249EDCD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8ADF28A7-A095-413A-B5EE-EEB7249EDCD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0667ED7-FAEE-4995-8144-1BA5EF41078D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0667ED7-FAEE-4995-8144-1BA5EF41078D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0667ED7-FAEE-4995-8144-1BA5EF41078D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0667ED7-FAEE-4995-8144-1BA5EF41078D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
