@@ -28,6 +28,16 @@ namespace Tests
         }
 
         [Test]
+        public void Database_Count_Should_Be_Correct()
+        {
+            int expectedResult = 1;
+
+            extendedDatabase.Add(person);
+
+            Assert.AreEqual(expectedResult, extendedDatabase.Count);
+        }
+
+        [Test]
         public void TestIfCountIsOutOfRange_AndThrowException_IfTryToAdd()
         {
             for (int i = 0; i < 16; i++)
