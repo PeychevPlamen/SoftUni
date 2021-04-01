@@ -32,7 +32,6 @@ namespace Bakery.Models.Tables
         private IReadOnlyCollection<IDrink> DrinkOrders
             => drinkOrders.AsReadOnly();
 
-        public int TableNumber { get; private set; }
 
         public int Capacity
         {
@@ -44,9 +43,12 @@ namespace Bakery.Models.Tables
                     throw new ArgumentException("Capacity has to be greater than 0");
                 }
 
-                capacity = value;
+               capacity = value;
             }
         }
+        public int TableNumber { get; private set; }
+        public decimal PricePerPerson { get; private set; }
+        public bool IsReserved { get; private set; }
 
         public int NumberOfPeople
         {
@@ -62,10 +64,6 @@ namespace Bakery.Models.Tables
             }
         }
 
-        public decimal PricePerPerson { get; private set; }
-
-        public bool IsReserved { get; private set; }
-
         public decimal Price => foodOrders.Select(x => x.Price).Sum()
                                 + drinkOrders.Select(x => x.Price).Sum()
                                 + NumberOfPeople * PricePerPerson;
@@ -77,7 +75,7 @@ namespace Bakery.Models.Tables
             foodOrders.Clear();
             //IsReserved = false;
             //Capacity = 0;
-            
+
         }
 
         public decimal GetBill()
