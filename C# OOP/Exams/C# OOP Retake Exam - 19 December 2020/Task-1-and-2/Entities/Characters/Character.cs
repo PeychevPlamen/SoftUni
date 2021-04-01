@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Text;
 using WarCroft.Constants;
 using WarCroft.Entities.Inventory;
 using WarCroft.Entities.Items;
@@ -114,5 +114,14 @@ namespace WarCroft.Entities.Characters.Contracts
 
             item.AffectCharacter(this);
         }
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            string isAlive = IsAlive == true ? "Alive" : "Dead";
+            sb.AppendLine($"{Name} - HP: {Health}/{BaseHealth}, AP: {Armor}/{BaseArmor}, Status: {isAlive}");
+            return sb.ToString().TrimEnd();
+        }
+
     }
 }
