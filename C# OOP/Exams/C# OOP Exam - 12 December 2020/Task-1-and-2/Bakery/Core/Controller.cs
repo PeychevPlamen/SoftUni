@@ -2,7 +2,9 @@
 using Bakery.Models.BakedFoods;
 using Bakery.Models.BakedFoods.Contracts;
 using Bakery.Models.Drinks;
+using Bakery.Models.Drinks.Contracts;
 using Bakery.Models.Tables;
+using Bakery.Models.Tables.Contracts;
 using Bakery.Utilities.Enums;
 using System;
 using System.Collections.Generic;
@@ -13,16 +15,16 @@ namespace Bakery.Core
 {
     public class Controller : IController
     {
-        private List<BakedFood> bakedFoods;
-        private List<Drink> drinks;
-        private List<Table> tables;
+        private List<IBakedFood> bakedFoods;
+        private List<IDrink> drinks;
+        private List<ITable> tables;
         private decimal totalIncome;
 
         public Controller()
         {
-            bakedFoods = new List<BakedFood>();
-            drinks = new List<Drink>();
-            tables = new List<Table>();
+            bakedFoods = new List<IBakedFood>();
+            drinks = new List<IDrink>();
+            tables = new List<ITable>();
             totalIncome = 0m;
         }
 
@@ -51,7 +53,7 @@ namespace Bakery.Core
 
         public string AddFood(string type, string name, decimal price)
         {
-            BakedFood foods = null;
+            IBakedFood foods = null;
 
             // Enum.TryParse(type, out BakedFoodType bakedFoodType); ??????????
 
@@ -76,26 +78,26 @@ namespace Bakery.Core
 
         public string AddTable(string type, int tableNumber, int capacity)
         {
-            Table currTable = null;
+            //ITable currTable = null;
 
             if (type == "InsideTable")
             {
-                currTable = new InsideTable(tableNumber, capacity);
+                tables.Add(new InsideTable(tableNumber, capacity));
             }
             else if (type == "OutsideTable")
             {
-                currTable = new OutsideTable(tableNumber, capacity);
+                tables.Add(new OutsideTable(tableNumber, capacity));
             }
 
-            string output = string.Empty;
+            //string output = string.Empty;
 
-            if (currTable != null)
-            {
-                tables.Add(currTable);
-                output = $"Added table number {tableNumber} in the bakery";
-            }
+            //if (currTable != null)
+            //{
+            //    tables.Add(currTable);
+            //    output = $"Added table number {tableNumber} in the bakery";
+            //}
 
-            return output;
+            return $"Added table number {tableNumber} in the bakery";
         }
 
         public string GetFreeTablesInfo()
@@ -117,7 +119,7 @@ namespace Bakery.Core
 
         public string LeaveTable(int tableNumber)              // ???????????????????
         {
-            Table currTable = tables.FirstOrDefault(x => x.TableNumber == tableNumber);
+            ITable currTable = tables.FirstOrDefault(x => x.TableNumber == tableNumber);
 
             StringBuilder sb = new StringBuilder();
 
@@ -138,8 +140,8 @@ namespace Bakery.Core
 
         public string OrderDrink(int tableNumber, string drinkName, string drinkBrand)
         {
-            Table currTable = tables.FirstOrDefault(x => x.TableNumber == tableNumber);
-            Drink currDrink = drinks.FirstOrDefault(x => x.Name == drinkName && x.Brand == drinkBrand);
+            ITable currTable = tables.FirstOrDefault(x => x.TableNumber == tableNumber);
+            IDrink currDrink = drinks.FirstOrDefault(x => x.Name == drinkName && x.Brand == drinkBrand);
 
             if (currTable == null)
             {
@@ -147,7 +149,7 @@ namespace Bakery.Core
             }
             if (currDrink == null)
             {
-                return $"No {drinkName} in the menu";
+                return $"There is no {drinkName} {drinkBrand} available";
             }
 
             currTable.OrderDrink(currDrink);
@@ -158,8 +160,8 @@ namespace Bakery.Core
 
         public string OrderFood(int tableNumber, string foodName)
         {
-            Table currTable = tables.FirstOrDefault(x => x.TableNumber == tableNumber);
-            BakedFood currFood = bakedFoods.FirstOrDefault(x => x.Name == foodName);
+            ITable currTable = tables.FirstOrDefault(x => x.TableNumber == tableNumber);
+            IBakedFood currFood = bakedFoods.FirstOrDefault(x => x.Name == foodName);
 
             if (currTable == null)
             {
@@ -178,7 +180,7 @@ namespace Bakery.Core
 
         public string ReserveTable(int numberOfPeople)
         {
-            Table currTable = tables.FirstOrDefault(x => x.Capacity >= numberOfPeople && x.IsReserved == false);
+            ITable currTable = tables.FirstOrDefault(x => x.Capacity >= numberOfPeople && x.IsReserved == false);
 
             if (currTable == null)
             {
@@ -186,6 +188,7 @@ namespace Bakery.Core
             }
             else
             {
+                currTable.Reserve(numberOfPeople);
                 return $"Table {currTable.TableNumber} has been reserved for {numberOfPeople} people";
             }
         }

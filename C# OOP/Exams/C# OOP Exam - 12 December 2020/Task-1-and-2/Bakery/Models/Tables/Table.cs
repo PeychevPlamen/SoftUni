@@ -70,10 +70,10 @@ namespace Bakery.Models.Tables
 
         public void Clear()
         {
-            NumberOfPeople = 0;
+            numberOfPeople = 0;
             drinkOrders.Clear();
             foodOrders.Clear();
-            //IsReserved = false;
+            IsReserved = false;
             //Capacity = 0;
 
         }
