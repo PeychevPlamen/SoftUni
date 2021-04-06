@@ -20,7 +20,7 @@ namespace EasterRaces.Models.Drivers.Entities
             get => name;
             private set
             {
-                if (String.IsNullOrWhiteSpace(value) && value.Length < 5)  // ??? value.Lenght <= 5
+                if (String.IsNullOrWhiteSpace(value) || value.Length < 5)  // ??? value.Lenght <= 5
                 {
                     throw new ArgumentException($"Name {value} cannot be less than 5 symbols.");
                 }

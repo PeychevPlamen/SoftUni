@@ -9,26 +9,31 @@ namespace EasterRaces.Repositories.Entities
 {
     public class RaceRepository : IRepository<IRace>
     {
-        private readonly List<IRace> races;
+        private readonly List<IRace> raceRepository;
+
+        public RaceRepository()
+        {
+            raceRepository = new List<IRace>();
+        }
 
         public void Add(IRace model)
         {
-            races.Add(model);
+            raceRepository.Add(model);
         }
 
         public IReadOnlyCollection<IRace> GetAll()
         {
-            return races;
+            return raceRepository;
         }
 
         public IRace GetByName(string name)
         {
-            return races.FirstOrDefault(x => x.Name == name);
+            return raceRepository.FirstOrDefault(x => x.Name == name);
         }
 
         public bool Remove(IRace model)
         {
-            return races.Remove(model);
+            return raceRepository.Remove(model);
         }
     }
 }

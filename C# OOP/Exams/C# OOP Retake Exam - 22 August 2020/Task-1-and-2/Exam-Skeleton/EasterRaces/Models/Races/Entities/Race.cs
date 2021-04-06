@@ -12,12 +12,14 @@ namespace EasterRaces.Models.Races.Entities
         private string name;
         private int laps;
 
-        private readonly List<IDriver> drivers = new List<IDriver>();
+        private readonly List<IDriver> drivers;
 
         public Race(string name, int laps)
         {
             Name = name;
             Laps = laps;
+
+            drivers = new List<IDriver>();
         }
 
         public string Name
@@ -25,7 +27,7 @@ namespace EasterRaces.Models.Races.Entities
             get => name;
             private set
             {
-                if (String.IsNullOrWhiteSpace(value) && value.Length < 5)   // ????  <= ?
+                if (String.IsNullOrWhiteSpace(value) || value.Length < 5)   // ????  <= ?
                 {
                     throw new ArgumentException($"Name {value} cannot be less than 5 symbols.");
                 }
@@ -48,7 +50,7 @@ namespace EasterRaces.Models.Races.Entities
             }
         }
 
-        public IReadOnlyCollection<IDriver> Drivers { get; private set; }
+        public IReadOnlyCollection<IDriver> Drivers => drivers;
 
         public void AddDriver(IDriver driver)
         {

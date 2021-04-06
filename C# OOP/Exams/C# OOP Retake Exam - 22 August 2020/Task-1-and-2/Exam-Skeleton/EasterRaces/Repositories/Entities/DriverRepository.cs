@@ -9,26 +9,31 @@ namespace EasterRaces.Repositories.Entities
 {
     public class DriverRepository : IRepository<IDriver>
     {
-        private readonly List<IDriver> drivers;
+        private readonly List<IDriver> driverRepository;
+
+        public DriverRepository()
+        {
+            driverRepository = new List<IDriver>();
+        }
 
         public void Add(IDriver model)
         {
-            drivers.Add(model);
+            driverRepository.Add(model);
         }
 
         public IReadOnlyCollection<IDriver> GetAll()
         {
-            return drivers;
+            return driverRepository;
         }
 
         public IDriver GetByName(string name)
         {
-            return drivers.FirstOrDefault(x => x.Name == name);
+            return driverRepository.FirstOrDefault(x => x.Name == name);
         }
 
         public bool Remove(IDriver model)
         {
-            return drivers.Remove(model);
+            return driverRepository.Remove(model);
         }
     }
 }
