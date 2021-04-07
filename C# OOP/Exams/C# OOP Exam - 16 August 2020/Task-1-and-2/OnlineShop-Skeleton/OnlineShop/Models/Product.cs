@@ -65,7 +65,7 @@ namespace OnlineShop.Models
             }
         }
 
-        public decimal Price
+        public virtual decimal Price
         {
             get => price;
             private set
@@ -79,7 +79,7 @@ namespace OnlineShop.Models
             }
         }
 
-        public double OverallPerformance
+        public virtual double OverallPerformance
         {
             get => overallPerformance;
             private set
@@ -94,7 +94,7 @@ namespace OnlineShop.Models
         }
         public override string ToString()  // ??????????????????????????
         {
-            return string.Format(SuccessMessages.ProductToString, overallPerformance, price, GetType().Name, manufacturer, model, id);   
+            return $"Overall Performance: {OverallPerformance:f2}. Price: {Price:f2} - {GetType().Name}: {manufacturer} {model} (Id: {id})";   
                                                             
         }
     }
