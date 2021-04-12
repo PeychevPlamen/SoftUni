@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace _02Re_voltVer2
+namespace _02._Re_Volt
 {
     class Program
     {
@@ -17,9 +17,6 @@ namespace _02Re_voltVer2
             int playerRow = 0;
             int playerCol = 0;
 
-            bool isWin = false;
-
-            // find where 'f' is
             for (int row = 0; row < matrix.GetLength(0); row++)
             {
                 for (int col = 0; col < matrix.GetLength(1); col++)
@@ -32,150 +29,121 @@ namespace _02Re_voltVer2
                 }
             }
 
+            bool isFinished = false;
+
             for (int i = 0; i < numOfCommands; i++)
             {
+                string commands = Console.ReadLine();
+
                 matrix[playerRow, playerCol] = '-';
 
-                string commands = Console.ReadLine();
+                int tempRow = playerRow;
+                int tempCol = playerCol;
 
                 playerRow = MoveRow(playerRow, commands);
                 playerCol = MoveCol(playerCol, commands);
 
-                if (!IsPositionValid(playerRow, playerCol, size, size))
+                if (IsPositionValid(playerRow, playerCol, size, size) == false)
                 {
                     if (commands == "left")
                     {
-                        //playerCol = MoveRow(size - 1, commands);
                         playerCol = size - 1;
                     }
                     else if (commands == "right")
                     {
-                        //playerCol = MoveRow(0, commands);
                         playerCol = 0;
                     }
                     else if (commands == "up")
                     {
-                        // playerRow = MoveCol(size - 1, commands);
                         playerRow = size - 1;
                     }
                     else if (commands == "down")
                     {
-                        //playerRow = MoveCol(0, commands);
                         playerRow = 0;
                     }
                     if (matrix[playerRow, playerCol] == 'F')
                     {
+                        isFinished = true;
                         matrix[playerRow, playerCol] = 'f';
-                        isWin = true;
+                        Console.WriteLine("Player won!");
                         break;
                     }
 
                 }
-                if (matrix[playerRow, playerCol] == 'B')
-                {
-                    playerRow = MoveRow(playerRow, commands);
-                    playerCol = MoveCol(playerCol, commands);
 
-                    if (!IsPositionValid(playerRow, playerCol, size, size))
+                else
+                {
+                    if (matrix[playerRow, playerCol] == 'B')
+                    {
+                        playerRow = MoveRow(playerRow, commands);
+                        playerCol = MoveCol(playerCol, commands);
+
+                        if (IsPositionValid(playerRow, playerCol, size, size) == false)
+                        {
+                            if (commands == "left")
+                            {
+                                playerCol = size - 1;
+                            }
+                            else if (commands == "right")
+                            {
+                                playerCol = 0;
+                            }
+                            else if (commands == "up")
+                            {
+                                playerRow = size - 1;
+                            }
+                            else if (commands == "down")
+                            {
+                                playerRow = 0;
+                            }
+
+                        }
+
+                    }
+
+                    if (matrix[playerRow, playerCol] == 'T')
                     {
                         if (commands == "left")
                         {
-                            //playerCol = MoveRow(size - 1, commands);
-                            playerCol = size - 1;
+                            playerCol++;
                         }
                         else if (commands == "right")
                         {
-                            //playerCol = MoveRow(0, commands);
-                            playerCol = 0;
+                            playerCol--;
                         }
                         else if (commands == "up")
                         {
-                            // playerRow = MoveCol(size - 1, commands);
-                            playerRow = size - 1;
+                            playerRow++;
                         }
                         else if (commands == "down")
                         {
-                            //playerRow = MoveCol(0, commands);
-                            playerRow = 0;
-                        }
-                    }
-                    else if (matrix[playerRow, playerCol] == 'F')
-                    {
-                        matrix[playerRow, playerCol] = 'f';
-                        isWin = true;
-                        break;
-                    }
-                    //matrix[playerRow, playerCol] = 'f';
-
-                }
-
-                if (matrix[playerRow, playerCol] == 'T')
-                {
-                    if (commands == "left" || commands == "right")
-                    {
-                        //playerCol = MoveCol(playerCol - 2, commands);
-                        playerCol -= 1;
-                    }
-                    else
-                    {
-                        //playerRow = MoveRow(playerRow - 2, commands);
-                        playerRow -= 1;
-                    }
-                    if (!IsPositionValid(playerRow, playerCol, size, size))
-                    {
-                        if (commands == "left")
-                        {
-                            //playerCol = MoveRow(size - 1, commands);
-                            playerCol = size - 1;
-                        }
-                        else if (commands == "right")
-                        {
-                            //playerCol = MoveRow(0, commands);
-                            playerCol = 0;
-                        }
-                        else if (commands == "up")
-                        {
-                            // playerRow = MoveCol(size - 1, commands);
-                            playerRow = size - 1;
-                        }
-                        else if (commands == "down")
-                        {
-                            //playerRow = MoveCol(0, commands);
-                            playerRow = 0;
+                            playerRow--;
                         }
                     }
                     if (matrix[playerRow, playerCol] == 'F')
                     {
+                        isFinished = true;
                         matrix[playerRow, playerCol] = 'f';
-                        isWin = true;
+                        Console.WriteLine("Player won!");
                         break;
                     }
 
-                    matrix[playerRow, playerCol] = 'f';
-
-                }
-                if (matrix[playerRow, playerCol] == 'F')
-                {
-                    matrix[playerRow, playerCol] = 'f';
-                    isWin = true;
-                    break;
                 }
 
                 matrix[playerRow, playerCol] = 'f';
 
             }
-            if (isWin)
-            {
-                Console.WriteLine("Player won!");
-            }
-            else
+
+            if (isFinished == false)
             {
                 Console.WriteLine("Player lost!");
             }
 
             printMatrix(matrix);
         }
-        // fillMatrix char
+
+        //fillMatrix char
+
         private static void fillMatrix(char[,] matrix)
         {
             for (int row = 0; row < matrix.GetLength(0); row++)
@@ -190,6 +158,7 @@ namespace _02Re_voltVer2
         }
 
         // printMatrix
+
         private static void printMatrix(char[,] matrix)
         {
             for (int row = 0; row < matrix.GetLength(0); row++)
@@ -201,6 +170,22 @@ namespace _02Re_voltVer2
                 Console.WriteLine();
             }
         }
+
+        // positionValid
+        public static bool IsPositionValid(int row, int col, int rows, int cols)
+        {
+            if (row < 0 || row >= rows)
+            {
+                return false;
+            }
+            if (col < 0 || col >= cols)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public static int MoveRow(int row, string movement)
         {
             if (movement == "up")
@@ -214,6 +199,7 @@ namespace _02Re_voltVer2
 
             return row;
         }
+
         public static int MoveCol(int col, string movement)
         {
             if (movement == "left")
@@ -226,19 +212,6 @@ namespace _02Re_voltVer2
             }
 
             return col;
-        }
-        public static bool IsPositionValid(int row, int col, int rows, int cols)
-        {
-            if (row < 0 || row >= rows)
-            {
-                return false;
-            }
-            if (col < 0 || col >= cols)
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }
