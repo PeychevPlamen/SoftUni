@@ -1,21 +1,21 @@
 ﻿using System;
-using System.Linq;
 
-namespace _02.Re_Volt
+namespace _02._Re_Volt
 {
     class Program
     {
         static void Main(string[] args)
         {
-            int sizeMatrix = int.Parse(Console.ReadLine());
-            int commandsNum = int.Parse(Console.ReadLine());
+            int size = int.Parse(Console.ReadLine());
 
-            char[,] matrix = new char[sizeMatrix, sizeMatrix];
+            int numOfCommands = int.Parse(Console.ReadLine());
+
+            char[,] matrix = new char[size, size];
 
             fillMatrix(matrix);
 
-            int rowPlayer = 0;
-            int colPlayer = 0;
+            int playerRow = 0;
+            int playerCol = 0;
 
             for (int row = 0; row < matrix.GetLength(0); row++)
             {
@@ -23,289 +23,126 @@ namespace _02.Re_Volt
                 {
                     if (matrix[row, col] == 'f')
                     {
-                        rowPlayer = row;
-                        colPlayer = col;
+                        playerRow = row;
+                        playerCol = col;
                     }
                 }
             }
 
-            bool isWinner = false;
+            bool isFinished = false;
 
-            for (int i = 0; i < commandsNum; i++)
+            for (int i = 0; i < numOfCommands; i++)
             {
                 string commands = Console.ReadLine();
-                matrix[rowPlayer, colPlayer] = '-';
 
-                if (commands == "down")
+                matrix[playerRow, playerCol] = '-';
+
+                int tempRow = playerRow;
+                int tempCol = playerCol;
+
+                playerRow = MoveRow(playerRow, commands);
+                playerCol = MoveCol(playerCol, commands);
+
+                if (IsPositionValid(playerRow, playerCol, size, size) == false)
                 {
-                    rowPlayer += 1;
-
-                    if (rowPlayer > matrix.GetLength(0))
+                    if (commands == "left")
                     {
-                        if (matrix[0, colPlayer] == 'B')
-                        {
-                            matrix[1, colPlayer] = 'f';
-
-                        }
-                        else if (matrix[0, colPlayer] == 'T')
-                        {
-                            matrix[rowPlayer, colPlayer] = 'f';
-                        }
-                        else
-                        {
-                            matrix[0, colPlayer] = 'f';
-                        }
+                        playerCol = size - 1;
                     }
-                    else
+                    else if (commands == "right")
                     {
-                        if (matrix[rowPlayer, colPlayer] == 'B')
-                        {
-                            rowPlayer += 1;
-
-                            if (matrix[rowPlayer, colPlayer] == 'F')
-                            {
-                                isWinner = true;
-                                matrix[rowPlayer, colPlayer] = 'f';
-                                break;
-                            }
-                            else
-                            {
-                                matrix[rowPlayer, colPlayer] = 'f';
-                            }
-                        }
-                        else if (matrix[rowPlayer, colPlayer] == 'T')
-                        {
-                            matrix[rowPlayer - 1, colPlayer] = 'f';
-                        }
-                        else if (matrix[rowPlayer, colPlayer] == 'F')
-                        {
-                            isWinner = true;
-                            matrix[rowPlayer, colPlayer] = 'f';
-                            break;
-                        }
-                        else
-                        {
-                            matrix[rowPlayer, colPlayer] = 'f';
-
-                        }
-
+                        playerCol = 0;
+                    }
+                    else if (commands == "up")
+                    {
+                        playerRow = size - 1;
+                    }
+                    else if (commands == "down")
+                    {
+                        playerRow = 0;
+                    }
+                    if (matrix[playerRow, playerCol] == 'F')
+                    {
+                        isFinished = true;
+                        matrix[playerRow, playerCol] = 'f';
+                        Console.WriteLine("Player won!");
+                        break;
                     }
 
                 }
-                else if (commands == "up")
+
+                else
                 {
-                    rowPlayer -= 1;
-
-                    if (rowPlayer < 0)
+                    if (matrix[playerRow, playerCol] == 'B')
                     {
-                        rowPlayer = sizeMatrix - 1;
+                        playerRow = MoveRow(playerRow, commands);
+                        playerCol = MoveCol(playerCol, commands);
 
-                        if (matrix[rowPlayer, colPlayer] == 'B')
+                        if (IsPositionValid(playerRow, playerCol, size, size) == false)
                         {
-
-                            matrix[0, colPlayer] = 'f';
+                            if (commands == "left")
+                            {
+                                playerCol = size - 1;
+                            }
+                            else if (commands == "right")
+                            {
+                                playerCol = 0;
+                            }
+                            else if (commands == "up")
+                            {
+                                playerRow = size - 1;
+                            }
+                            else if (commands == "down")
+                            {
+                                playerRow = 0;
+                            }
 
                         }
-                        else if (matrix[rowPlayer, colPlayer] == 'T')
+
+                    }
+
+                    if (matrix[playerRow, playerCol] == 'T')
+                    {
+                        if (commands == "left")
                         {
-                            matrix[0, colPlayer] = 'f';
+                            playerCol++;
                         }
-                        else if (matrix[rowPlayer, colPlayer] == 'F')
+                        else if (commands == "right")
                         {
-                            isWinner = true;
-                            matrix[rowPlayer, colPlayer] = 'f';
-                            break;
+                            playerCol--;
                         }
-                        else
+                        else if (commands == "up")
                         {
-                            matrix[rowPlayer, colPlayer] = 'f';
+                            playerRow++;
+                        }
+                        else if (commands == "down")
+                        {
+                            playerRow--;
                         }
                     }
-                    else
+                    if (matrix[playerRow, playerCol] == 'F')
                     {
-
-                        if (matrix[rowPlayer, colPlayer] == 'B')
-                        {
-                            rowPlayer += 1;
-
-                            if (matrix[rowPlayer, colPlayer] == 'F')
-                            {
-                                isWinner = true;
-                                matrix[rowPlayer, colPlayer] = 'f';
-                                break;
-                            }
-                            else
-                            {
-                                matrix[rowPlayer, colPlayer] = 'f';
-                            }
-                        }
-                        else if (matrix[rowPlayer, colPlayer] == 'T')
-                        {
-                            matrix[rowPlayer + 1, colPlayer] = 'f';
-                        }
-                        else if (matrix[rowPlayer, colPlayer] == 'F')
-                        {
-                            isWinner = true;
-                            matrix[rowPlayer, colPlayer] = 'f';
-                            break;
-                        }
-                        else
-                        {
-
-                            matrix[rowPlayer, colPlayer] = 'f';
-
-                        }
-
+                        isFinished = true;
+                        matrix[playerRow, playerCol] = 'f';
+                        Console.WriteLine("Player won!");
+                        break;
                     }
 
                 }
-                else if (commands == "left")
-                {
-                    colPlayer -= 1;
 
-                    if (colPlayer < 0)
-                    {
-                        colPlayer = sizeMatrix - 1;
-
-                        if (matrix[rowPlayer, colPlayer] == 'B')
-                        {
-                            matrix[rowPlayer, colPlayer - 1] = 'f';
-                        }
-                        else if (matrix[rowPlayer, colPlayer] == 'T')
-                        {
-                            matrix[rowPlayer, 0] = 'f';
-                            colPlayer += 1;
-                        }
-                        else if (matrix[rowPlayer, colPlayer] == 'F')
-                        {
-                            isWinner = true;
-                            matrix[rowPlayer, colPlayer] = 'f';
-                            break;
-                        }
-
-                    }
-                    else
-                    {
-                        if (matrix[rowPlayer, colPlayer] == 'B')
-                        {
-                            if (colPlayer == 0)
-                            {
-                                colPlayer = sizeMatrix - 1;
-                                matrix[rowPlayer, colPlayer] = 'f';
-                            }
-                            else
-                            {
-                                matrix[rowPlayer, colPlayer - 1] = 'f';
-                            }
-
-                        }
-                        else if (matrix[rowPlayer, colPlayer] == 'T')
-                        {
-                            colPlayer += 1;
-                            matrix[rowPlayer, colPlayer] = 'f';
-
-                        }
-                        else if (matrix[rowPlayer, colPlayer] == 'F')
-                        {
-                            isWinner = true;
-                            matrix[rowPlayer, colPlayer] = 'f';
-                            break;
-                        }
-                        else
-                        {
-                            matrix[rowPlayer, colPlayer] = 'f';
-                        }
-
-                    }
-
-                }
-                else if (commands == "right")
-                {
-                    colPlayer += 1;
-
-                    if (colPlayer > sizeMatrix - 1)
-                    {
-                        colPlayer = 0;
-
-                        if (matrix[rowPlayer, colPlayer] == 'B')
-                        {
-                            matrix[rowPlayer, colPlayer + 1] = 'f';
-                        }
-                        else if (matrix[rowPlayer, colPlayer] == 'T')
-                        {
-                            matrix[rowPlayer, sizeMatrix - 1] = 'f';
-                            colPlayer -= 1;
-                        }
-                        else if (matrix[rowPlayer, colPlayer] == 'F')
-                        {
-                            isWinner = true;
-                            matrix[rowPlayer, colPlayer] = 'f';
-                            break;
-                        }
-                        else
-                        {
-                            matrix[rowPlayer, colPlayer] = 'f';
-                        }
-                    }
-                    else
-                    {
-                        if (matrix[rowPlayer, colPlayer] == 'B')
-                        {
-                            colPlayer += 1;
-
-                            if (matrix[rowPlayer, colPlayer] == 'F')
-                            {
-                                isWinner = true;
-                                matrix[rowPlayer, colPlayer] = 'f';
-                                break;
-                            }
-                            else
-                            {
-                                matrix[rowPlayer, colPlayer] = 'f';
-                            }
-
-                        }
-                        else if (matrix[rowPlayer, colPlayer] == 'T')
-                        {
-                            matrix[rowPlayer, colPlayer - 1] = 'f';
-                            colPlayer -= 1;
-                        }
-                        else if (matrix[rowPlayer, colPlayer] == 'F')
-                        {
-                            isWinner = true;
-                            matrix[rowPlayer, colPlayer] = 'f';
-                            break;
-                        }
-                        else
-                        {
-                            matrix[rowPlayer, colPlayer] = 'f';
-                        }
-                    }
-
-                }
+                matrix[playerRow, playerCol] = 'f';
 
             }
-            if (isWinner)
-            {
-                Console.WriteLine("Player won!");
-            }
-            else
+
+            if (isFinished == false)
             {
                 Console.WriteLine("Player lost!");
             }
+
             printMatrix(matrix);
         }
-        private static void printMatrix(char[,] matrix)
-        {
-            for (int row = 0; row < matrix.GetLength(0); row++)
-            {
-                for (int col = 0; col < matrix.GetLength(1); col++)
-                {
-                    Console.Write(matrix[row, col]);
-                }
-                Console.WriteLine();
-            }
-        }
+
+        //fillMatrix char
 
         private static void fillMatrix(char[,] matrix)
         {
@@ -318,6 +155,63 @@ namespace _02.Re_Volt
                     matrix[row, col] = input[col];
                 }
             }
+        }
+
+        // printMatrix
+
+        private static void printMatrix(char[,] matrix)
+        {
+            for (int row = 0; row < matrix.GetLength(0); row++)
+            {
+                for (int col = 0; col < matrix.GetLength(1); col++)
+                {
+                    Console.Write(matrix[row, col]);
+                }
+                Console.WriteLine();
+            }
+        }
+
+        // positionValid
+        public static bool IsPositionValid(int row, int col, int rows, int cols)
+        {
+            if (row < 0 || row >= rows)
+            {
+                return false;
+            }
+            if (col < 0 || col >= cols)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static int MoveRow(int row, string movement)
+        {
+            if (movement == "up")
+            {
+                return row - 1;
+            }
+            if (movement == "down")
+            {
+                return row + 1;
+            }
+
+            return row;
+        }
+
+        public static int MoveCol(int col, string movement)
+        {
+            if (movement == "left")
+            {
+                return col - 1;
+            }
+            if (movement == "right")
+            {
+                return col + 1;
+            }
+
+            return col;
         }
     }
 }
