@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>_02Re_voltVer2</RootNamespace>
+    <RootNamespace>_02.Super_Mario</RootNamespace>
   </PropertyGroup>
 
 </Project>
