@@ -13,7 +13,6 @@ namespace _02.Super_Mario
 
             char[][] matrix = new char[size][];
 
-
             for (int row = 0; row < matrix.Length; row++)
             {
                 char[] input = Console.ReadLine().ToCharArray();

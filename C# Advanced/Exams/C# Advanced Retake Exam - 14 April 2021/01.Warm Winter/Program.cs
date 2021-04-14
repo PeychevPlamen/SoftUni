@@ -48,10 +48,9 @@ namespace _01.Warm_Winter
                 }
 
             }
-                    
 
             Console.WriteLine($"The most expensive set is: {mostExpensive.Max()}");
-            Console.WriteLine(string.Join(" " , mostExpensive));
+            Console.WriteLine(string.Join(" ", mostExpensive));
         }
     }
 }
