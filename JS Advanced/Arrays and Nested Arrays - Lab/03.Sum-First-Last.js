@@ -1,5 +1,10 @@
-let arr = [1, 2];
+function solve(input) {
 
-let sliced = arr.slice(-3);
+    let sum = Number(input[0]) + Number(input[input.length - 1]);
 
-console.log(sliced);
+    return sum;
+
+}
+
+// console.log(solve(['20', '30', '40']));
+// console.log(solve(['5', '10']));
