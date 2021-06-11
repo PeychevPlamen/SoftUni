@@ -1,30 +1,24 @@
 function addItem() {
-    
-    let newItemText = document.getElementById('newItemText').value;
-    let items = document.getElementById('items');
-    
-    let newElement = el('li', newItemText);
-    let deleteButon = el('a', '[Delete]');
 
-    deleteButon.setAttribute('href', '#');
-    newElement.appendChild(deleteButon);
-    items.appendChild(newElement);
-    newItemText.value = '';
+    let input = document.getElementById('newItemText').value;
+    let liElement = createEl('li', input);
 
-    items.addEventListener('click', (e) => {
-        if (e.target.nodeName == 'A') {
-            e.target.parentElement.remove()
-        }
-    });
+    const deleteBtn = createEl('a', '[Delete]');
+    deleteBtn.href = '#';
+    deleteBtn.addEventListener('click', (ev) => {
+        ev.target.parentNode.remove();
+    })
+    liElement.appendChild(deleteBtn);
 
-    function el(type, content) {
-        let element = document.createElement(type);
+    document.getElementById('items').appendChild(liElement);
+    document.getElementById('newItemText').value = '';
 
-        if (typeof content === 'string') {
-            element.textContent = content;
-        } else {
-            element.appendChild(content);
-        }
+
+    function createEl(type, content) {
+
+        const element = document.createElement(type);
+        element.textContent = content;
         return element;
     }
+
 }
