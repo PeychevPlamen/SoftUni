@@ -1,91 +1,101 @@
 function solve() {
 
-   const author = document.getElementById('creator');
-   const title = document.getElementById('title');
-   const category = document.getElementById('category');
-   const content = document.getElementById('content');
+   let author = document.getElementById('creator');
+   let title = document.getElementById('title');
+   let category = document.getElementById('category');
+   let content = document.getElementById('content');
 
-   const btnCreate = document.querySelector('button');
+   let btn = document.querySelector('.btn.create');
+  
+   btn.addEventListener('click', createPost);
 
-   btnCreate.addEventListener('click', (e) => {
+   function createPost(e) {
 
       e.preventDefault();
 
+      const siteContent = document.querySelector('.site-content main section');
+
       const article = document.createElement('article');
+
       const h1 = document.createElement('h1');
       h1.textContent = title.value;
 
-      const pCategory = document.createElement('p');
-      pCategory.textContent = 'Category: ';
-
-      const strongCategory = document.createElement('strong');
-      strongCategory.textContent = category.value;
+      const pCat = document.createElement('p');
+      pCat.textContent = 'Category: ';
+      const strongCat = document.createElement('strong');
+      strongCat.textContent = category.value;
 
       const pCreator = document.createElement('p');
       pCreator.textContent = 'Creator: ';
-
       const strongCreator = document.createElement('strong');
       strongCreator.textContent = author.value;
 
-      const pContent = document.createElement('p');
-      pContent.textContent = content.value;
-
-      const posts = document.querySelector('main section');
+      const p = document.createElement('p');
+      p.textContent = content.value;
 
       const div = document.createElement('div');
-      div.className = 'buttons';
+      div.classList.add('buttons');
 
       const btnDelete = document.createElement('button');
-      btnDelete.className = 'btn delete';
+      btnDelete.classList.add('btn');
+      btnDelete.classList.add('delete');
       btnDelete.textContent = 'Delete';
-      btnDelete.addEventListener('click', deleteArticle);
+      btnDelete.addEventListener('click', deletePost);
 
       const btnArchive = document.createElement('button');
-      btnArchive.className = 'btn archive';
+      btnArchive.classList.add('btn');
+      btnArchive.classList.add('archive');
       btnArchive.textContent = 'Archive';
-      btnArchive.addEventListener('click', archive);
+      btnArchive.addEventListener('click', archivePost);
 
-      pCategory.appendChild(strongCategory);
-      pCreator.appendChild(strongCreator);
       div.appendChild(btnDelete);
       div.appendChild(btnArchive);
+      pCat.appendChild(strongCat);
+      pCreator.appendChild(strongCreator);
+
       article.appendChild(h1);
-      article.appendChild(pCategory);
+      article.appendChild(pCat);
       article.appendChild(pCreator);
-      article.appendChild(pContent);
+      article.appendChild(p);
       article.appendChild(div);
-      posts.appendChild(article);
+
+      siteContent.appendChild(article);
 
       author.value = '';
       title.value = '';
-      content.value = '';
       category.value = '';
+      content.value = '';
 
-   });
-
-   function deleteArticle() {
-      const article = document.querySelector('article');
-      article.remove();
    }
 
-   function archive(e) {
+   function deletePost(e) {
 
-      let title = e.target.parentNode.parentNode.querySelector('h1').textContent;
-      deleteArticle(e);
+      let articleToDelete = e.target.parentNode.parentNode;
 
-      let newLi = document.createElement('li');
-      newLi.textContent = title;
+      articleToDelete.remove();
 
-      let olParent = document.querySelector('section.archive-section>ol');
-      let allLis = [...document.querySelectorAll('section.archive-section>ol>li')];
+   }
 
-      allLis.push(newLi);
+   function archivePost(e) {
 
-      allLis = allLis.sort((a, b) => a.textContent.localeCompare(b.textContent));
+      let articleToArchive = e.target.parentNode.parentNode;
 
-      for (let i = 0; i < allLis.length; i++) {
-         olParent.appendChild(allLis[i]);
+      const titleToArchive = articleToArchive.firstChild;
+      
+      const ol = document.querySelector('.archive-section ol');
+      const li = document.createElement('li');
+
+      const sortedLis = Array.from(ol.querySelectorAll('li'));
+      li.textContent = titleToArchive.textContent;
+          
+      sortedLis.push(li);
+      sortedLis.sort((a, b) => a.textContent.localeCompare(b.textContent));
+      
+      articleToArchive.remove();
+
+      for (const li of sortedLis) {
+         ol.appendChild(li);
       }
-
+      
    }
 }
