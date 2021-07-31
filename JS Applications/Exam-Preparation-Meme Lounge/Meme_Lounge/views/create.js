@@ -31,10 +31,10 @@ export async function memeCreate(ctx) {
 
         let title = formData.get('title');
         let description = formData.get('description');
-        let memeImg = formData.get('imageUrl');
+        let imageUrl = formData.get('imageUrl');
 
 
-        if (!title || !description || !memeImg) {
+        if (!title || !description || !imageUrl) {
             return alert('All fields are required!');
         }
 
