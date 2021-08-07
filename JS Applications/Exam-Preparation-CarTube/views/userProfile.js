@@ -1,7 +1,7 @@
 import { html } from "../node_modules/lit-html/lit-html.js";
 import { getMyCar } from "../src/api/data.js";
 
-const myCarTemplate = (cars, { brand, model, year, price, imageUrl }) => html`
+const myCarTemplate = (cars) => html`
 <section id="my-listings">
     <h1>My car listings</h1>
     <div class="listings">
@@ -32,11 +32,6 @@ const carTemplate = (car) => html`
 export async function myCarsPage(ctx) {
 
     const cars = await getMyCar();
-    const brand = sessionStorage.getItem('brand');
-    const model = sessionStorage.getItem('model');
-    const year = sessionStorage.getItem('year');
-    const price = sessionStorage.getItem('price');
-    const imageUrl = sessionStorage.getItem('imageUrl');
-
-    ctx.render(myCarTemplate(cars, { brand, model, year, price, imageUrl }));
+    
+    ctx.render(myCarTemplate(cars));
 };
