@@ -309,3 +309,245 @@ VALUES
 (1, 1, 12, 55, 10, 111, 1222, '2021-10-25', '2021-11-12', 15, 9, 6, 'DONE', 'some notes')
 
 --Problem 15.	Hotel Database
+
+CREATE DATABASE Hotel
+USE Hotel
+
+CREATE TABLE Employees
+(
+Id INT PRIMARY KEY IDENTITY,
+FirstName VARCHAR(30),
+LastName VARCHAR(30),
+Title VARCHAR(30),
+Notes VARCHAR(MAX)
+)
+
+INSERT INTO Employees(FirstName, LastName, Title, Notes)
+VALUES
+('JONI', 'KASH', 'SOME TITLE', 'SOME NOTES'),
+('JONI2', 'KASH2', 'SOME TITLE1', 'SOME NOTES'),
+('JONI3', 'KASH3', 'SOME TITLE2', 'SOME NOTES')
+
+CREATE TABLE Customers
+(
+AccountNumber INT NOT NULL UNIQUE,
+FirstName VARCHAR(30),
+LastName VARCHAR(50),
+PhoneNumber VARCHAR(90),
+EmergencyName VARCHAR(30) NOT NULL,
+EmergencyNumber VARCHAR(90) NOT NULL,
+Notes VARCHAR(MAX)
+)
+
+ALTER TABLE Customers
+ADD PRIMARY KEY (AccountNumber);
+
+INSERT INTO Customers(AccountNumber, FirstName, LastName, PhoneNumber, EmergencyName, EmergencyNumber, Notes)
+VALUES
+(13, 'pesho', 'ivanov', '+359666666', 'ivan', '+35955555555', 'some notes'),
+(15, 'pesho2', 'ivanov2', '+359666666', 'pesh', '+35957755555', 'some notes'),
+(14, 'pesho3', 'ivanov3', '+3596655666', 'ivanov', '+35955555555', 'some notes')
+
+CREATE TABLE RoomStatus
+(
+RoomStatus VARCHAR(30) NOT NULL,
+Notes VARCHAR(MAX)
+)
+
+ALTER TABLE RoomStatus
+ADD PRIMARY KEY (RoomStatus);
+
+INSERT INTO RoomStatus(RoomStatus, Notes)
+VALUES
+('FREE', 'SOME NOTES'),
+('OCCUPAIND', 'SOME NOTES'),
+('RESERVED', 'SOME NOTES')
+
+CREATE TABLE RoomTypes 
+(
+RoomTypes VARCHAR(30) NOT NULL,
+Notes VARCHAR(MAX)
+)
+
+ALTER TABLE RoomTypes
+ADD PRIMARY KEY (RoomTypes);
+
+INSERT INTO RoomTypes(RoomTypes, Notes)
+VALUES
+('single', 'some notes'),
+('double', 'some notes'),
+('apartment', 'some notes')
+
+
+CREATE TABLE BedTypes 
+(
+BedTypes VARCHAR(30) NOT NULL,
+Notes VARCHAR(MAX)
+)
+
+ALTER TABLE BedTypes
+ADD PRIMARY KEY (BedTypes);
+
+INSERT INTO BedTypes(BedTypes, Notes)
+VALUES
+('king size', 'some notes'),
+('single bed', 'some notes'),
+('double', 'some notes')
+
+CREATE TABLE Rooms
+(
+RoomNumber INT PRIMARY KEY NOT NULL,
+RoomType VARCHAR(30),
+BedType VARCHAR(30),
+Rate INT,
+RoomStatus VARCHAR(30),
+Notes VARCHAR(MAX)
+)
+
+INSERT INTO Rooms (RoomNumber, RoomType, BedType, Rate, RoomStatus, Notes)
+VALUES
+(131, 'apartment', 'king size', 10, 'free', 'some notes'),
+(132, 'apartment', 'king size', 10, 'free', 'some notes'),
+(133, 'apartment', 'king size', 10, 'free', 'some notes')
+
+CREATE TABLE Payments
+(
+Id INT PRIMARY KEY IDENTITY,
+EmployeeId INT NOT NULL UNIQUE,
+PaymentDate DATE,
+AccountNumber INT NOT NULL,
+FirstDateOccupied DATE,
+LastDateOccupied DATE,
+TotalDays INT,
+AmountCharged INT,
+TaxRate INT,
+TaxAmount INT,
+PaymentTotal INT,
+Notes VARCHAR(MAX)
+)
+
+INSERT INTO Payments(EmployeeId, PaymentDate, AccountNumber, FirstDateOccupied, LastDateOccupied, TotalDays, AmountCharged, TaxRate, TaxAmount, PaymentTotal, Notes)
+VALUES
+(5, '2021-7-6', 13, '2021-7-4', '2021-7-9', 5, 55, 3, 15, 66, 'Some notes'),
+(7, '2021-7-13', 15, '2021-5-4', '2021-7-9', 5, 57, 3, 15, 86, 'Some notes'),
+(9, '2021-7-5', 13, '2021-7-4', '2021-11-9', 6, 55, 6, 25, 76, 'Some notes')
+
+CREATE TABLE Occupancies
+(
+Id INT PRIMARY KEY IDENTITY,
+EmployeeId INT NOT NULL UNIQUE,
+DateOccupied DATE,
+AccountNumber INT NOT NULL,
+RoomNumber INT,
+RateApplied INT,
+PhoneCharge INT,
+Notes VARCHAR(MAX)
+)
+
+INSERT INTO Occupancies(EmployeeId, DateOccupied, AccountNumber, RoomNumber, RateApplied, PhoneCharge, Notes)
+VALUES
+(100, '2001-11-25', 77, 15, 6, 13, 'some notes'),
+(101, '2001-10-25', 57, 14, 6, 13, 'some notes'),
+(150, '2001-9-26', 76, 15, 7, 19, 'some notes')
+
+
+
+--		Problem 16.	  Create SoftUni Database
+
+
+CREATE DATABASE SoftUni
+USE SoftUni
+
+CREATE TABLE Towns 
+(
+Id INT PRIMARY KEY IDENTITY,
+[Name] VARCHAR(90)
+)
+
+CREATE TABLE Addresses
+(
+Id INT PRIMARY KEY IDENTITY,
+AddressText VARCHAR(100),
+TownId INT
+)
+
+ALTER TABLE Addresses
+ADD FOREIGN KEY (TownId) REFERENCES Towns(Id)
+
+CREATE TABLE Departments 
+(
+Id INT PRIMARY KEY IDENTITY,
+[Name] VARCHAR(90)
+)
+
+CREATE TABLE Employees
+(
+Id INT PRIMARY KEY IDENTITY,
+FirstName VARCHAR(50),
+MiddleName VARCHAR(50),
+LastName VARCHAR(50),
+JobTitle VARCHAR(50),
+DepartmentId INT FOREIGN KEY REFERENCES Departments(Id),
+HireDate DATE,
+Salary DECIMAL(10, 2),
+AddressId INT FOREIGN KEY REFERENCES Addresses(Id)
+)
+
+
+--		Problem 18.		Basic Insert
+
+INSERT INTO Towns
+VALUES
+('Sofia'),
+('Plovdiv'),
+('Varna'),
+('Burgas')
+
+INSERT INTO Departments
+VALUES
+('Engineering'),('Sales'),('Marketing'),('Software Development'),('Quality Assurance')
+
+
+INSERT INTO Employees (FirstName, MiddleName, LastName, JobTitle, DepartmentId, HireDate, Salary)
+VALUES
+('Ivan', 'Ivanov', 'Ivanov', '.NET Developer', 4, '02/01/2013', 3500.00),
+('Petar', 'Petrov', 'Petrov', 'Senior Engineer', 1, '03/02/2004', 4000.00),
+('Maria', 'Petrova', 'Ivanova', 'Intern', 5, '08/28/2016', 525.25),
+('Georgi', 'Teziev', 'Ivanov', 'CEO', 2, '12/09/2007', 3000.00),
+('Peter', 'Pan', 'Pan', 'Intern', 3, '08/28/2016', 599.88)
+
+
+--		Problem 19.		Basic Select All Fields
+
+SELECT * FROM Towns
+SELECT * FROM Departments
+SELECT * FROM Employees
+
+--		Problem 20.		Basic Select All Fields and Order Them
+
+SELECT * FROM Towns
+ORDER BY [Name] ASC
+
+SELECT * FROM Departments
+ORDER BY [Name] ASC
+
+SELECT * FROM Employees
+ORDER BY Salary DESC
+
+--		Problem 21.		Basic Select Some Fields
+
+SELECT [Name] FROM Towns
+ORDER BY [Name] ASC
+
+SELECT [Name] FROM Departments
+ORDER BY [Name] ASC
+
+SELECT FirstName, LastName, JobTitle, Salary FROM Employees
+ORDER BY Salary DESC
+
+--		Problem 22.		Increase Employees Salary
+
+UPDATE Employees
+SET Salary += Salary * 0.1
+
+SELECT Salary FROM Employees
