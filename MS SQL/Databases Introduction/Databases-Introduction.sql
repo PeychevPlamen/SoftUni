@@ -551,3 +551,16 @@ UPDATE Employees
 SET Salary += Salary * 0.1
 
 SELECT Salary FROM Employees
+
+--		Problem 23.		Decrease Tax Rate
+
+USE Hotel
+UPDATE Payments
+SET TaxRate = TaxRate * 0.97
+SELECT TaxRate FROM Payments
+
+--		Problem 24.		Delete All Records
+
+USE Hotel
+
+DELETE FROM Occupancies 
