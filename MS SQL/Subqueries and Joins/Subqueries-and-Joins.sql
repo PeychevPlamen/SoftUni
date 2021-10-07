@@ -168,3 +168,4 @@ ORDER BY e.DepartmentID
 		LEFT JOIN Rivers AS r ON cr.RiverId = r.Id
    GROUP BY c.CountryName
    ORDER BY HighestPeakElevation DESC, LongestRiverLength DESC, c.CountryName
+
