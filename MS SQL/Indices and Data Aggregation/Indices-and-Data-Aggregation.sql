@@ -112,3 +112,75 @@ USE Gringotts
 		 , DepositAmount - LEAD(DepositAmount) OVER (ORDER BY Id) AS [Difference]
 	  FROM WizzardDeposits
 	  ) AS DifferenceTable
+
+	  --	13. Departments Total Salaries
+
+	  USE SoftUni
+
+	  SELECT DepartmentID, SUM(Salary) AS TotalSalary
+	    FROM Employees
+	GROUP BY DepartmentID
+	ORDER BY DepartmentID
+
+	--	14. Employees Minimum Salaries
+
+	SELECT DepartmentID, MIN(Salary) AS MinimumSalary
+	  FROM Employees
+	 WHERE DepartmentID IN (2, 5, 7) AND HireDate > '01/01/2000'
+  GROUP BY DepartmentID
+  
+	--	15. Employees Average Salaries
+
+	SELECT *
+	  INTO EmployeeOver30000
+	  FROM Employees
+	 WHERE Salary > 30000
+
+	 DELETE FROM EmployeeOver30000
+	 WHERE ManagerID = 42
+
+	 UPDATE EmployeeOver30000
+	    SET Salary += 5000
+	  WHERE DepartmentID = 1
+
+	  SELECT DepartmentID, AVG(Salary) AS AverageSalary
+	    FROM EmployeeOver30000
+    GROUP BY DepartmentID
+
+	--	16. Employees Maximum Salaries
+
+	SELECT DepartmentID, MAX(Salary) AS MaxSalary
+	  FROM Employees
+  GROUP BY DepartmentID 
+	HAVING MAX(Salary) < 30000 OR MAX(Salary) > 70000
+
+	--	17. Employees Count Salaries
+
+	SELECT COUNT(*) AS [Count]
+	  FROM Employees 
+	  WHERE ManagerID IS NULL
+
+	  --	18. *3rd Highest Salary
+
+	  SELECT DISTINCT DepartmentID, Salary AS ThirdHighestSalary
+	  FROM
+			(
+			SELECT *,
+				DENSE_RANK() OVER(PARTITION BY DepartmentID ORDER BY Salary DESC) AS DenseRankRow
+			  FROM Employees
+			) AS ThirdMaxSalary
+	   WHERE DenseRankRow IN (3)
+	   
+	--	19. **Salary Challenge	
+
+	SELECT TOP (10) e.FirstName, e.LastName, e.DepartmentID
+	  FROM Employees AS e
+	  WHERE Salary > (
+					  SELECT AVG (Salary) AS AvgDeprtmentSalary
+					  FROM Employees
+					  WHERE DepartmentID = e.DepartmentID
+					  GROUP BY DepartmentID
+					  )
+	ORDER BY e.DepartmentID
+	
+	 
