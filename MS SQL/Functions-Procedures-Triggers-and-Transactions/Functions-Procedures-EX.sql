@@ -178,3 +178,96 @@ BEGIN
 END
 
 GO
+ 
+--9.	Find Full Name
+ 
+ USE Bank
+ GO
+
+ CREATE PROCEDURE usp_GetHoldersFullName
+ AS
+ BEGIN
+	SELECT CONCAT(FirstName, ' ', LastName) AS [Full Name]
+	  FROM AccountHolders
+ END
+
+ GO
+
+	--	 10.	People with Balance Higher Than
+	GO
+
+	CREATE PROCEDURE usp_GetHoldersWithBalanceHigherThan @number DECIMAL(18, 4)
+	AS
+	BEGIN
+		SELECT ah.FirstName AS [First Name], ah.LastName AS [Last Name]
+		  FROM AccountHolders AS ah
+		  JOIN Accounts AS a ON ah.Id = a.AccountHolderId
+	  GROUP BY ah.FirstName, ah.LastName
+		HAVING SUM(a.Balance) > @number
+	  ORDER BY ah.FirstName, ah.LastName
+	END
+
+	GO
+
+	EXECUTE dbo.usp_GetHoldersWithBalanceHigherThan 10000
+
+	--	11.	Future Value Function
+
+	GO
+		CREATE FUNCTION ufn_CalculateFutureValue (@sum DECIMAL(18,4), @yearly  FLOAT, @years INT)
+		RETURNS DECIMAL(18,4)
+		BEGIN
+			DECLARE @Result DECIMAL(18,4) = @sum * POWER((1+ @yearly),@years)
+		RETURN @Result
+		END
+
+	GO
+
+SELECT dbo.ufn_CalculateFutureValue (1000, 0.1,  5 )
+
+
+	--	12.	Calculating Interest
+
+	GO
+
+	CREATE PROCEDURE usp_CalculateFutureValueForAccount (@AcnID INT, @Yrate FLOAT)
+AS
+SELECT a.Id,
+       ah.FirstName,      
+       ah.LastName, 
+       a.Balance AS [Current Balance], 
+        dbo.ufn_CalculateFutureValue(Balance, @Yrate, 5) AS [Balance in 5 years]
+FROM AccountHolders AS ah
+JOIN Accounts AS a ON a.AccountHolderId = ah.Id
+WHERE a.Id = @AcnID
+
+GO 
+
+EXECUTE dbo.usp_CalculateFutureValueForAccount 1, 0.1
+
+USE Diablo
+
+	--	13.	*Scalar Function: Cash in User Games Odd Rows
+
+	Go
+
+CREATE FUNCTION ufn_CashInUsersGames (@gameName NVARCHAR(50))
+RETURNS TABLE
+AS 
+RETURN SELECT(
+            SELECT SUM(Cash) AS SumCash
+            FROM (
+                    SELECT g.[Name],
+                           ug.Cash,
+                           ROW_NUMBER() OVER(PARTITION BY g.[Name] ORDER BY ug.Cash DESC) AS RowNumber
+                      FROM UsersGames AS ug
+                    JOIN [Games] AS g
+                    ON ug.GameId = g.Id
+                    WHERE g.[Name] = @gameName
+                 ) AS RowNumberSubQuery
+            WHERE RowNumber % 2 = 1
+         ) AS SumCash
+ 
+GO
+ 
+SELECT * FROM ufn_CashInUsersGames('Love in a mist')
