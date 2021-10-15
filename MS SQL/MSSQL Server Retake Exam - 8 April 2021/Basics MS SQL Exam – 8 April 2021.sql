@@ -92,3 +92,119 @@ SELECT [Description], FORMAT(OpenDate, 'dd-MM-yyyy') AS OpenDate
 FROM Reports AS r
 WHERE EmployeeId IS NULL
 ORDER BY r.OpenDate, [Description]
+
+--	6.	Reports & Categories
+
+SELECT r.[Description], c.[Name] AS CategoryName
+FROM Reports AS r
+JOIN Categories AS c ON r.CategoryId = c.Id
+ORDER BY r.[Description], c.[Name]
+
+--	7.	Most Reported Category
+
+SELECT TOP (5) c.[Name] AS CategoryName, COUNT(r.[CategoryId]) AS ReportsNumber
+FROM Reports AS r
+JOIN Categories AS c ON r.CategoryId = c.Id
+GROUP BY r.[CategoryId], c.[Name]
+ORDER BY ReportsNumber DESC, CategoryName
+
+--	8.	Birthday Report
+
+SELECT u.Username, c.[Name] AS CategoryName
+FROM Reports AS r
+JOIN Users AS u ON r.UserId = u.Id
+JOIN Categories AS c ON r.CategoryId = c.Id
+WHERE 
+DATEPART(MONTH, r.OpenDate) = DATEPART(MONTH, u.Birthdate) 
+AND DATEPART(DAY, r.OpenDate) = DATEPART(DAY, u.Birthdate) 
+ORDER BY u.Username, CategoryName
+
+--	9.	Users per Employee 
+
+SELECT CONCAT(e.FirstName, ' ', e.LastName) AS FullName, 
+COUNT(u.Username) AS UsersCount
+FROM Employees AS e
+LEFT JOIN Reports AS r ON e.Id = r.EmployeeId
+LEFT JOIN Users AS u ON u.Id = r.UserId
+GROUP BY e.FirstName, e.LastName
+ORDER BY UsersCount DESC, FullName
+
+--	10.	Full Info
+
+SELECT
+ISNULL(e.FirstName + ' ' + e.LastName, 'None') AS Employee,
+ISNULL(d.[Name], 'None') AS Department,
+ISNULL(c.[Name], 'None') AS Category,
+ISNULL(r.[Description], 'None') AS [Description],
+ISNULL(FORMAT(r.OpenDate, 'dd.MM.yyyy'), 'None') AS OpenDate,
+ISNULL(s.[Label], 'None') AS [Status],
+ISNULL(u.[Name], 'None') AS [User]
+FROM Reports AS r
+LEFT JOIN Employees AS e ON e.Id = r.EmployeeId
+LEFT JOIN Departments AS d ON d.Id = e.DepartmentId
+LEFT JOIN [Status] AS s ON s.Id = r.StatusId
+LEFT JOIN Users AS u ON u.Id = r.UserId
+LEFT JOIN Categories AS c ON c.Id = r.CategoryId
+ORDER BY e.FirstName DESC, e.LastName DESC, Department, Category, [Description], OpenDate, [Status], [User]
+
+--	Section 4. Programmability (20 pts)
+
+--	11.	Hours to Complete
+
+GO
+
+CREATE FUNCTION udf_HoursToComplete(@StartDate DATETIME, @EndDate DATETIME)
+RETURNS INT
+AS
+BEGIN
+	DECLARE @totalHours INT = DATEDIFF(HOUR, @StartDate, @EndDate)
+
+	IF (@StartDate IS NULL OR @EndDate IS NULL)
+	BEGIN
+	RETURN 0
+	END
+
+	RETURN @totalHours 
+END
+
+GO
+
+--SELECT dbo.udf_HoursToComplete(OpenDate, CloseDate) AS TotalHours
+--   FROM Reports
+
+
+ --	12.	Assign Employee
+
+ GO
+
+ CREATE PROCEDURE usp_AssignEmployeeToReport(@EmployeeId INT, @ReportId INT) 
+ AS
+ BEGIN
+	DECLARE @employeeDepartment INT = 
+	(SELECT DepartmentId
+	   FROM Employees
+	  WHERE Id = @EmployeeId
+	)
+
+	DECLARE @reportDepartment INT = 
+	(
+	SELECT c.DepartmentId
+	FROM Reports AS r
+	JOIN Categories AS c ON c.Id = r.CategoryId
+	WHERE r.Id = @ReportId
+	)
+
+	IF (@employeeDepartment <> @reportDepartment)
+	THROW 51000, 'Employee doesn''t belong to the appropriate department!', 1
+
+	UPDATE Reports
+	SET EmployeeId = @EmployeeId
+	WHERE Id = @ReportId
+
+ END
+
+ GO
+
+ --EXEC usp_AssignEmployeeToReport 30, 1
+ --EXEC usp_AssignEmployeeToReport 17, 2
+
