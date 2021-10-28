@@ -1,8 +1,5 @@
 ﻿using SoftUni.Data;
-<<<<<<< HEAD
 using SoftUni.Models;
-=======
->>>>>>> 42b35005fc5dc31d426b2948ba6d45954ae6c4c9
 using System;
 using System.Linq;
 using System.Text;
@@ -20,13 +17,9 @@ namespace SoftUni
 
             // string result = GetEmployeesWithSalaryOver50000(db); // Problem 04
 
-<<<<<<< HEAD
             // string result = GetEmployeesFromResearchAndDevelopment(db);  // Problem 05
 
             string result = AddNewAddressToEmployee(db);  // Problem 06
-=======
-            //string result = GetEmployeesFromResearchAndDevelopment(db);  // Problem 05
->>>>>>> 42b35005fc5dc31d426b2948ba6d45954ae6c4c9
 
             Console.WriteLine(result);
 
@@ -107,7 +100,6 @@ namespace SoftUni
             return sb.ToString().TrimEnd();
 
         }
-<<<<<<< HEAD
 
         // Problem 06
         public static string AddNewAddressToEmployee(SoftUniContext context)
@@ -135,7 +127,7 @@ namespace SoftUni
 
             return String.Join(Environment.NewLine, allEmployeesByAddresses);
         }
-=======
->>>>>>> 42b35005fc5dc31d426b2948ba6d45954ae6c4c9
+
+
     }
 }
