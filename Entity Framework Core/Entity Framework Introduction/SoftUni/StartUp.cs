@@ -34,7 +34,11 @@ namespace SoftUni
 
             // string result = IncreaseSalaries(db); // Problem 12
 
-            string result = GetEmployeesByFirstNameStartingWithSa(db); // Problem 13
+            // string result = GetEmployeesByFirstNameStartingWithSa(db); // Problem 13
+
+            // string result = DeleteProjectById(db); // Problem 14
+
+             string result = RemoveTown(db); // Problem 15
 
             Console.WriteLine(result);
 
@@ -267,26 +271,25 @@ namespace SoftUni
         public static string GetDepartmentsWithMoreThan5Employees(SoftUniContext context)
         {
             var departments = context.Departments
+                .Where(d => d.Employees.Count > 5)
+                .OrderBy(d => d.Employees.Count)
+                .ThenBy(d => d.Name)
                 .Select(d => new
                 {
-                    EmployeesCount = d.Employees.Count,
                     DepartmentName = d.Name,
                     ManagerFirstName = d.Manager.FirstName,
                     ManagerLastName = d.Manager.LastName,
                     SelectedEmployee = d.Employees
                         .Select(se => new
                         {
-                            se.FirstName,
-                            se.LastName,
-                            se.JobTitle
+                            FirstName = se.FirstName,
+                            LastName = se.LastName,
+                            JobTitle = se.JobTitle
                         })
                         .OrderBy(se => se.FirstName)
                         .ThenBy(se => se.LastName)
                         .ToArray()
                 })
-                .Where(d => d.EmployeesCount > 5)
-                .OrderBy(d => d.EmployeesCount)
-                .ThenBy(d => d.DepartmentName)
                 .ToArray();
 
             StringBuilder sb = new StringBuilder();
@@ -383,6 +386,68 @@ namespace SoftUni
             }
 
             return sb.ToString().TrimEnd();
+        }
+
+        // Problem 14
+        public static string DeleteProjectById(SoftUniContext context)
+        {
+            var projectToDelete = context.Projects.Find(2);
+
+            var employeesProject = context.EmployeesProjects
+               .Where(e => e.ProjectId == 2)
+               .ToArray();
+
+            foreach (var item in employeesProject)
+            {
+                context.EmployeesProjects.Remove(item);
+            }
+
+            context.Projects.Remove(projectToDelete);
+
+            context.SaveChanges();
+
+            StringBuilder sb = new StringBuilder();
+
+            var projects = context.Projects
+                .Select(p => p.Name)
+                .Take(10)
+                .ToArray();
+
+            foreach (var p in projects)
+            {
+                sb.AppendLine(p);
+            }
+
+            return sb.ToString().TrimEnd();
+
+        }
+
+        // Problem 15
+        public static string RemoveTown(SoftUniContext context)
+        {
+            var townToDel = context.Towns
+                .Where(t => t.Name == "Seattle")
+                .ToArray();
+
+            var addressesToDel = context.Addresses
+                .Where(a => a.Town.Name == "Seattle");
+
+
+            var employeesToDel = context.Employees
+                .Where(e => e.Address.Town.Name == "Seattle");
+
+            foreach (var e in employeesToDel)
+            {
+                e.AddressId = null;
+            }
+
+            int count = addressesToDel.Count();
+
+            context.Addresses.RemoveRange(addressesToDel);
+            context.Towns.Remove(townToDel.First());
+            context.SaveChanges();
+
+            return $"{count} addresses in Seattle were deleted";
         }
     }
 }
