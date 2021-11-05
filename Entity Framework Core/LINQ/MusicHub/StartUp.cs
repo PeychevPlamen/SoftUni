@@ -17,7 +17,9 @@
             DbInitializer.ResetDatabase(context);
 
             //Test your solutions here
-            string result = ExportAlbumsInfo(context, 9);
+
+            //string result = ExportAlbumsInfo(context, 9);   // Problem 2
+            string result = ExportSongsAboveDuration(context, 4); //Problem 3
 
             Console.WriteLine(result);
         }
@@ -74,7 +76,39 @@
 
         public static string ExportSongsAboveDuration(MusicHubDbContext context, int duration)
         {
-            throw new NotImplementedException();
+            var sb = new StringBuilder();
+
+            var songs = context.Songs
+                .ToArray()
+                .Where(s => s.Duration.TotalSeconds > duration)
+                .Select(s => new
+                {
+                    SongName = s.Name,
+                    PerformerFullName = s.SongPerformers
+                             .Select(p => $"{p.Performer.FirstName} {p.Performer.LastName}")
+                             .FirstOrDefault(),
+                    Writer = s.Writer.Name,
+                    AlbumProducer = s.Album.Producer.Name,
+                    Duration = s.Duration.ToString("c", CultureInfo.InvariantCulture)
+                })
+                .OrderBy(s => s.SongName)
+                .ThenBy(s => s.Writer)
+                .ThenBy(s => s.PerformerFullName)
+                .ToArray();
+
+            int songNum = 1;
+
+            foreach (var song in songs)
+            {
+                sb.AppendLine($"-Song #{songNum++}");
+                sb.AppendLine($"---SongName: {song.SongName}");
+                sb.AppendLine($"---Writer: {song.Writer}");
+                sb.AppendLine($"---Performer: {song.PerformerFullName}");
+                sb.AppendLine($"---AlbumProducer: {song.AlbumProducer}");
+                sb.AppendLine($"---Duration: {song.Duration}");
+            }
+
+            return sb.ToString().TrimEnd();
         }
     }
 }
