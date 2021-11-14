@@ -28,7 +28,8 @@ namespace ProductShop
             // Console.WriteLine(ImportCategories(context, inputCategoriesJSON)); // 4. Import Categories
             // Console.WriteLine(ImportCategoryProducts(context, inputCategoriesProductsJSON)); // 5. Import Categories and Products
             // Console.WriteLine(GetProductsInRange(context)); // 05. Export Products In Range
-            Console.WriteLine(GetSoldProducts(context));
+            // Console.WriteLine(GetSoldProducts(context)); // 06. Export Successfully Sold Products
+            Console.WriteLine(GetCategoriesByProductsCount(context));
         }
 
         // Query 2. Import Users
@@ -105,7 +106,7 @@ namespace ProductShop
         public static string GetSoldProducts(ProductShopContext context)
         {
             var users = context.Users
-                .Where(x => x.ProductsSold.Any(ps=>ps.Buyer != null))
+                .Where(x => x.ProductsSold.Any(ps => ps.Buyer != null))
                 .OrderBy(x => x.LastName)
                 .ThenBy(x => x.FirstName)
                 .Select(x => new
@@ -127,6 +128,26 @@ namespace ProductShop
             var usersToJson = JsonConvert.SerializeObject(users, Formatting.Indented);
 
             return usersToJson;
+        }
+
+        // 07. Export Categories By Products Count
+
+        public static string GetCategoriesByProductsCount(ProductShopContext context)
+        {
+            var categories = context.Categories
+                .OrderByDescending(c => c.CategoryProducts.Count)
+                .Select(c => new
+                {
+                    category = c.Name,
+                    productsCount = c.CategoryProducts.Count,
+                    averagePrice = $"{c.CategoryProducts.Average(x => x.Product.Price):f2}",
+                    totalRevenue = $"{c.CategoryProducts.Sum(x => x.Product.Price)}"
+                })
+                .ToArray();
+
+            var catToJson = JsonConvert.SerializeObject(categories, Formatting.Indented);
+
+            return catToJson;
         }
     }
 }
