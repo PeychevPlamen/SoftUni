@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ProductShop.Data;
 using ProductShop.Models;
@@ -14,8 +15,8 @@ namespace ProductShop
         {
             var context = new ProductShopContext();
 
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+            //context.Database.EnsureDeleted();
+            //context.Database.EnsureCreated();
 
             string inputUsersJSON = File.ReadAllText("../../../Datasets/users.json");
             string inputProductsJSON = File.ReadAllText("../../../Datasets/products.json");
@@ -23,13 +24,14 @@ namespace ProductShop
             string inputCategoriesJSON = File.ReadAllText("../../../Datasets/categories.json");
 
 
-            // Console.WriteLine(ImportUsers(context, inputUsersJSON)); // 2. Import Users
-            // Console.WriteLine(ImportProducts(context, inputProductsJSON)); // 3. Import Products
-            // Console.WriteLine(ImportCategories(context, inputCategoriesJSON)); // 4. Import Categories
-            // Console.WriteLine(ImportCategoryProducts(context, inputCategoriesProductsJSON)); // 5. Import Categories and Products
-            // Console.WriteLine(GetProductsInRange(context)); // 05. Export Products In Range
-            // Console.WriteLine(GetSoldProducts(context)); // 06. Export Successfully Sold Products
-            Console.WriteLine(GetCategoriesByProductsCount(context));
+            //Console.WriteLine(ImportUsers(context, inputUsersJSON)); // 2. Import Users
+            //Console.WriteLine(ImportProducts(context, inputProductsJSON)); // 3. Import Products
+            //Console.WriteLine(ImportCategories(context, inputCategoriesJSON)); // 4. Import Categories
+            //Console.WriteLine(ImportCategoryProducts(context, inputCategoriesProductsJSON)); // 5. Import Categories and Products
+            //Console.WriteLine(GetProductsInRange(context)); // 05. Export Products In Range
+            //Console.WriteLine(GetSoldProducts(context)); // 06. Export Successfully Sold Products
+            // Console.WriteLine(GetCategoriesByProductsCount(context));
+            Console.WriteLine(GetUsersWithProducts(context));
         }
 
         // Query 2. Import Users
@@ -148,6 +150,48 @@ namespace ProductShop
             var catToJson = JsonConvert.SerializeObject(categories, Formatting.Indented);
 
             return catToJson;
+        }
+
+        // 08. Export Users and Products
+
+        public static string GetUsersWithProducts(ProductShopContext context)
+        {
+            var users = context.Users
+                 .Include(x => x.ProductsSold)
+                 .ToList()
+                 .Where(u => u.ProductsSold.Any(b => b.BuyerId != null))
+                 .Select(u => new
+                 {
+                     firstName = u.FirstName,
+                     lastName = u.LastName,
+                     age = u.Age,
+                     soldProducts = new
+                     {
+                         count = u.ProductsSold.Where(b => b.BuyerId != null).Count(),
+                         products = u.ProductsSold.Where(b => b.BuyerId != null)
+                         .Select(p => new
+                         {
+                             name = p.Name,
+                             price = p.Price,
+                         })
+                     }
+                 })
+                 .OrderByDescending(x => x.soldProducts.products.Count());
+
+            var usersCount = new
+            {
+                usersCount = users.Count(),
+                users = users
+            };
+
+            var jsOptions = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
+            var resultJson = JsonConvert.SerializeObject(usersCount, Formatting.Indented, jsOptions);
+
+            return resultJson;
         }
     }
 }
