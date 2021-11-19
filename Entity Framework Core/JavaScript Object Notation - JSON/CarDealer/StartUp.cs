@@ -7,7 +7,9 @@ using AutoMapper;
 using CarDealer.Data;
 using CarDealer.DTO;
 using CarDealer.Models;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace CarDealer
 {
@@ -35,8 +37,10 @@ namespace CarDealer
             //Console.WriteLine(ImportSales(dbContext, inputSalesJson)); // 13. Import Sales
             //Console.WriteLine(GetOrderedCustomers(dbContext)); // 14. Export Ordered Customers
             //Console.WriteLine(GetCarsFromMakeToyota(dbContext)); // 15. Export Cars From Make Toyota
-            //Console.WriteLine(GetLocalSuppliers(dbContext)); 16. Export Local Supplier
-            Console.WriteLine(GetCarsWithTheirListOfParts(dbContext));
+            //Console.WriteLine(GetLocalSuppliers(dbContext)); // 16. Export Local Supplier
+            //Console.WriteLine(GetCarsWithTheirListOfParts(dbContext)); // 17. Export Cars With Their List Of Parts
+            //Console.WriteLine(GetTotalSalesByCustomer(dbContext)); // 18. Export Total Sales By Customer
+            Console.WriteLine(GetSalesWithAppliedDiscount(dbContext));
         }
 
         // 09. Import Suppliers
@@ -194,6 +198,64 @@ namespace CarDealer
                 .ToArray();
 
             return JsonConvert.SerializeObject(cars, Formatting.Indented);
+        }
+
+        // 18. Export Total Sales By Customer
+
+        public static string GetTotalSalesByCustomer(CarDealerContext context)
+        {
+            var customers = context.Customers
+                .Where(c => c.Sales.Count >= 1)
+                .Select(c => new
+                {
+                    FullName = c.Name,
+                    BoughtCars = c.Sales.Count,
+                    SpentMoney = c.Sales.Sum(y => y.Car.PartCars.Sum(z => z.Part.Price))
+
+                })
+                .OrderByDescending(c => c.SpentMoney)
+                .ThenByDescending(c => c.BoughtCars)
+                .ToList();
+
+
+            return JsonConvert.SerializeObject(customers, new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                Formatting = Formatting.Indented,
+                ContractResolver = new DefaultContractResolver()
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy()
+                }
+            });
+        }
+
+        //19. Export Sales With Applied Discount
+
+        public static string GetSalesWithAppliedDiscount(CarDealerContext context)
+        {
+            var sales = context.Sales
+                .Take(10)
+                .Select(x => new
+                {
+                    car = new
+                    {
+                        Make = x.Car.Make,
+                        Model = x.Car.Model,
+                        TravelledDistance = x.Car.TravelledDistance
+                    },
+                    customerName = x.Customer.Name,
+                    Discount = $"{x.Discount:F2}",
+                    price = $"{x.Car.PartCars.Sum(y => y.Part.Price):F2}",
+                    priceWithDiscount = $"{x.Car.PartCars.Sum(y => y.Part.Price) - (x.Car.PartCars.Sum(y => y.Part.Price) * (x.Discount / 100)):F2}"
+                })
+                .ToList();
+
+            return JsonConvert.SerializeObject(sales, new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                Formatting = Formatting.Indented,
+               
+            });
         }
     }
 }
