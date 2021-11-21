@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace ProductShop
@@ -25,7 +26,8 @@ namespace ProductShop
 
             // Console.WriteLine(ImportUsers(dbContext, inputUsersXml)); // 01. Import Users
             // Console.WriteLine(ImportProducts(dbContext, inputProductsXml)); // 02. Import Products
-            Console.WriteLine(ImportCategories(dbContext, inputCatXml)); // 03. Import Categories
+            // Console.WriteLine(ImportCategories(dbContext, inputCatXml)); // 03. Import Categories
+            Console.WriteLine(ImportCategoryProducts(dbContext, inputCatProdXml));
         }
 
         // 01. Import Users
@@ -120,6 +122,43 @@ namespace ProductShop
             context.SaveChanges();
 
             return $"Successfully imported {categories.Count}";
+        }
+
+        // 04. Import Categories and Products
+        public static string ImportCategoryProducts(ProductShopContext context, string inputXml)
+        {
+            XmlRootAttribute xmlRoot = new XmlRootAttribute("CategoryProducts");
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(CategoryProductDto[]), xmlRoot);
+
+            using StringReader stringReader = new StringReader(inputXml);
+
+            CategoryProductDto[] dtos = (CategoryProductDto[])xmlSerializer.Deserialize(stringReader);
+
+            ICollection<CategoryProduct> categoryProd = new List<CategoryProduct>();
+
+            var categoryIds = context.Categories.Select(x => x.Id).ToList();
+            var productIds = context.Products.Select(x => x.Id).ToList();
+
+            foreach (var catProd in dtos)
+            {
+                if (!categoryIds.Contains(catProd.CategoryId) || !productIds.Contains(catProd.ProductId))
+                {
+                    continue;
+                }
+
+                CategoryProduct cp = new CategoryProduct()
+                {
+                    ProductId = catProd.ProductId,
+                    CategoryId = catProd.CategoryId
+                };
+
+                categoryProd.Add(cp);
+            }
+
+            context.CategoryProducts.AddRange(categoryProd);
+            context.SaveChanges();
+
+            return $"Successfully imported {categoryProd.Count}";
         }
     }
 }
