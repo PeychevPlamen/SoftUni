@@ -31,9 +31,9 @@ namespace ProductShop
             // Console.WriteLine(ImportCategories(dbContext, inputCatXml)); // 03. Import Categories
             // Console.WriteLine(ImportCategoryProducts(dbContext, inputCatProdXml)); // 04. Import Categories and Products
 
-            // Console.WriteLine(GetProductsInRange(dbContext)); // 05. Export Products In Range
-            // Console.WriteLine(GetSoldProducts(dbContext)); // 06. Export Sold Product
-            // Console.WriteLine(GetCategoriesByProductsCount(dbContext)); // 07. Export Categories By Products Count
+            //Console.WriteLine(GetProductsInRange(dbContext)); // 05. Export Products In Range
+            //Console.WriteLine(GetSoldProducts(dbContext)); // 06. Export Sold Product
+            //Console.WriteLine(GetCategoriesByProductsCount(dbContext)); // 07. Export Categories By Products Count
             Console.WriteLine(GetUsersWithProducts(dbContext)); // 08. Export Users and Products
         }
 
@@ -270,44 +270,44 @@ namespace ProductShop
         public static string GetUsersWithProducts(ProductShopContext context)
         {
             XmlRootAttribute xmlRoot = new XmlRootAttribute("Users");
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(UsersAndProductsDto[]), xmlRoot);
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(UserSoldProductsDto[]), xmlRoot);
 
             StringBuilder sb = new StringBuilder();
 
             using StringWriter stringWriter = new StringWriter(sb);
 
-            UsersDto[] dtos = context.Users
+            UserSoldProductsDto[] dtos = context.Users
                 .Where(x => x.ProductsSold.Any())
                 .OrderByDescending(x => x.ProductsSold.Count())
-                .Select(x => new UsersDto()
+                .Select(x => new UserSoldProductsDto()
                 {
                     FirstName = x.FirstName,
                     LastName = x.LastName,
                     Age = x.Age.ToString(),
-                    SoldProducts = new SoldProductsWithCount
-                    {
+                    //SoldProducts =  new SoldProductsCountDto
+                    //{
+                    //    Count = x.ProductsSold.Count(),
+                    //    Products = x.ProductsSold
+                    //    .Select(z => new SoldProductsDto
+                    //    {
+                    //        Name = z.Name,
+                    //        Price = z.Price.ToString()
+                    //    }).ToArray()
+                    //}
+                    
+                })
+                .ToArray();
 
-                        Count = x.ProductsSold.Count.ToString(),
-                        Products = x.ProductsSold
-                        .Select(z => new ProductNamePriceDto()
-                        {
-                            Name = z.Name,
-                            Price = z.Price.ToString()
-                        }).ToArray()
-
-                    }
-                }).ToArray();
-
-            UsersAndProductsDto outputDto = new UsersAndProductsDto()
+            MainDto outputDto = new MainDto()
             {
-                Count = dtos.Count().ToString(),
+                Count = dtos.Count(),
                 Users = dtos.Take(10).ToArray()
             };
 
             XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
             namespaces.Add(String.Empty, String.Empty);
 
-            xmlSerializer.Serialize(stringWriter, outputDto, namespaces);
+            xmlSerializer.Serialize(stringWriter, dtos, namespaces);
 
             return sb.ToString().TrimEnd();
         }
