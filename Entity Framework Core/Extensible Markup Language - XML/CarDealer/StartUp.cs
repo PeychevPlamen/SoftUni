@@ -15,8 +15,8 @@ namespace CarDealer
         {
             var dbContext = new CarDealerContext();
 
-            dbContext.Database.EnsureDeleted();
-            dbContext.Database.EnsureCreated();
+            //dbContext.Database.EnsureDeleted();
+            //dbContext.Database.EnsureCreated();
 
             var inputCarsXml = File.ReadAllText("../../../Datasets/cars.xml");
             var inputCustomersXml = File.ReadAllText("../../../Datasets/customers.xml");
@@ -26,7 +26,9 @@ namespace CarDealer
 
             //Console.WriteLine(ImportSuppliers(dbContext, inputSuppliersXml)); // 09.Import Suppliers
             //Console.WriteLine(ImportParts(dbContext, inputPartsXml));  // 10. Import Parts
-            Console.WriteLine(ImportCars(dbContext, inputCarsXml));  //  11. Import Cars
+            //Console.WriteLine(ImportCars(dbContext, inputCarsXml));  //  11. Import Cars
+            //Console.WriteLine(ImportCustomers(dbContext, inputCustomersXml));  // 12. Import Customers
+            Console.WriteLine(ImportSales(dbContext, inputSalesXml));  // 13. Import Sales
         }
 
 
@@ -144,6 +146,73 @@ namespace CarDealer
             context.Cars.AddRange(cars);
             context.SaveChanges();
             return $"Successfully imported {cars.Count()}";
+        }
+
+        // 12. Import Customers
+        public static string ImportCustomers(CarDealerContext context, string inputXml)
+        {
+            XmlRootAttribute xmlRoot = new XmlRootAttribute("Customers");
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(CustomersDto[]), xmlRoot);
+
+            using StringReader stringReader = new StringReader(inputXml);
+
+            CustomersDto[] dtos = (CustomersDto[])xmlSerializer.Deserialize(stringReader);
+
+            ICollection<Customer> customers = new List<Customer>();
+
+            foreach (var customer in dtos)
+            {
+                var c = new Customer()
+                {
+                    Name = customer.Name,
+                    BirthDate = customer.BirthDate,
+                    IsYoungDriver = customer.IsYoungDriver
+                };
+
+                customers.Add(c);
+            }
+
+            context.Customers.AddRange(customers);
+            context.SaveChanges();
+
+            return $"Successfully imported {customers.Count}";
+        }
+
+        // 13. Import Sales
+        public static string ImportSales(CarDealerContext context, string inputXml)
+        {
+            XmlRootAttribute xmlRoot = new XmlRootAttribute("Sales");
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(SalesDto[]), xmlRoot);
+
+            using StringReader stringReader = new StringReader(inputXml);
+
+            SalesDto[] dtos = (SalesDto[])xmlSerializer.Deserialize(stringReader);
+
+            ICollection<Sale> sales = new List<Sale>();
+
+            var carId = context.Cars.Select(x => x.Id).ToList();
+
+            foreach (var sale in dtos)
+            {
+                if (!carId.Contains(sale.CarId))
+                {
+                    continue;
+                }
+
+                var s = new Sale()
+                {
+                    CarId = sale.CarId,
+                    CustomerId = sale.CustomerId,
+                    Discount = sale.Discount
+                };
+
+                sales.Add(s);
+            }
+
+            context.Sales.AddRange(sales);
+            context.SaveChanges();
+
+            return $"Successfully imported {sales.Count()}";
         }
     }
 }
