@@ -1,10 +1,12 @@
 ﻿using CarDealer.Data;
+using CarDealer.Dto.Export;
 using CarDealer.Dto.Import;
 using CarDealer.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace CarDealer
@@ -28,7 +30,8 @@ namespace CarDealer
             //Console.WriteLine(ImportParts(dbContext, inputPartsXml));  // 10. Import Parts
             //Console.WriteLine(ImportCars(dbContext, inputCarsXml));  //  11. Import Cars
             //Console.WriteLine(ImportCustomers(dbContext, inputCustomersXml));  // 12. Import Customers
-            Console.WriteLine(ImportSales(dbContext, inputSalesXml));  // 13. Import Sales
+            //Console.WriteLine(ImportSales(dbContext, inputSalesXml));  // 13. Import Sales
+            Console.WriteLine(GetCarsWithDistance(dbContext));  // 14. Export Cars With Distance
         }
 
 
@@ -213,6 +216,39 @@ namespace CarDealer
             context.SaveChanges();
 
             return $"Successfully imported {sales.Count()}";
+        }
+
+        // 14. Export Cars With Distance
+
+        public static string GetCarsWithDistance(CarDealerContext context)
+        {
+            XmlRootAttribute xmlRoot = new XmlRootAttribute("cars");
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(CarsWithDistanceExportDto[]), xmlRoot);
+
+            StringBuilder sb = new StringBuilder();
+
+            using StringWriter stringWriter = new StringWriter(sb);
+
+            var cars = context.Cars
+                .Where(x => x.TravelledDistance > 2000000)
+                .OrderBy(x => x.Make)
+                .ThenBy(x => x.Model)
+                .Take(10)
+                .Select(x => new CarsWithDistanceExportDto()
+                {
+                    Make = x.Make,
+                    Model = x.Model,
+                    TravelledDistance = x.TravelledDistance
+                })
+                .ToArray();
+
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(String.Empty, String.Empty);
+
+            xmlSerializer.Serialize(stringWriter, cars, namespaces);
+
+            return sb.ToString().TrimEnd();
+
         }
     }
 }
