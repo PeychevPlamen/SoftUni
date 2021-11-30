@@ -22,6 +22,7 @@ namespace TeisterMask.Data.Models
         [Required]
         public DateTime OpenDate { get; set; }
 
+        [Required]   // its easyer to catch error
         public DateTime? DueDate { get; set; }
 
         public ICollection<Task> Tasks { get; set; }
