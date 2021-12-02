@@ -21,6 +21,7 @@ namespace SoftJail.Data.Models
         public bool HasWindow { get; set; }
 
         [ForeignKey(nameof(Department))]
+        [Required]
         public int DepartmentId { get; set; }
 
         public Department Department { get; set; }

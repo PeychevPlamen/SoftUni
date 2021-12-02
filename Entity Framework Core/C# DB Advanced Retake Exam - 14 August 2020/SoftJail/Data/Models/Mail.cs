@@ -18,6 +18,7 @@ namespace SoftJail.Data.Models
         public string Address { get; set; }
 
         [ForeignKey(nameof(Prisoner))]
+        [Required]
         public int PrisonerId { get; set; }
 
         public Prisoner Prisoner { get; set; }
