@@ -57,7 +57,7 @@
                 .Select(b => new ExportOldestBooks()
                 {
                     Name = b.Name,
-                    Date = b.PublishedOn.Date.ToString("d", CultureInfo.InvariantCulture),
+                    Date = b.PublishedOn.ToString("d", CultureInfo.InvariantCulture),
                     Pages = b.Pages
                 })
                 .Take(10)
