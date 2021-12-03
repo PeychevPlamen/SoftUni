@@ -35,7 +35,8 @@ namespace SoftJail.DataProcessor.ImportDto
         public int DepartmentId { get; set; }
 
         [XmlArray("Prisoners")]
-        public PrisonersDto Prisoners { get; set; }
+        [Required]
+        public PrisonersDto[] Prisoners { get; set; }
     }
 
     [XmlType("Prisoner")]

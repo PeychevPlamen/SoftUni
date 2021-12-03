@@ -4,6 +4,7 @@
     using Data;
     using Newtonsoft.Json;
     using SoftJail.Data.Models;
+    using SoftJail.Data.Models.Enums;
     using SoftJail.DataProcessor.ImportDto;
     using System;
     using System.Collections.Generic;
@@ -146,11 +147,46 @@
                     continue;
                 }
 
+                //Position position;
+
+                //var isPositionValid = Enum.TryParse(officer.Position, out position);
+
+                //Weapon weapon;
+
+                //var isWeaponValid = Enum.TryParse(officer.Weapon, out weapon);
+
+                //if (!isPositionValid || !isWeaponValid)
+                //{
+                //    sb.AppendLine("Invalid Data");
+
+                //    continue;
+                //}
+
+
                 var currOfficer = new Officer()
                 {
-                    FullName = officer.Name
+                    FullName = officer.Name,
+                    Salary = officer.Money,
+                    Position = Enum.Parse<Position>(officer.Position),
+                    Weapon = Enum.Parse<Weapon>(officer.Weapon),
+                    DepartmentId = officer.DepartmentId,
+                    OfficerPrisoners = officer.Prisoners
+                        .Select(x => new OfficerPrisoner
+                        {
+                            PrisonerId = x.Id
+
+                        }).ToArray()
                 };
+
+                officers.Add(currOfficer);
+
+                sb.AppendLine($"Imported {officer.Name} ({officer.Prisoners.Count()} prisoners)");
             }
+
+            context.Officers.AddRange(officers);
+            context.SaveChanges();
+
+            return sb.ToString().TrimEnd();
         }
 
         private static bool IsValid(object obj)

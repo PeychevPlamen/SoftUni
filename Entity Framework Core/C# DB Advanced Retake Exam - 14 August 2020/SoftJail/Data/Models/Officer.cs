@@ -29,6 +29,7 @@ namespace SoftJail.Data.Models
         public Weapon Weapon { get; set; }
 
         [ForeignKey(nameof(Department))]
+        [Required]
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
 
