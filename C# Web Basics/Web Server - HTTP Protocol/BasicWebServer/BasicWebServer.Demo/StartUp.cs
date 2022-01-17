@@ -1,11 +1,11 @@
 ﻿using BasicWebServer.Server;
 using System;
 
-namespace BasicWebServer.Demo 
+namespace BasicWebServer.Demo
 {
-    internal class StartUp
+    public class StartUp
     {
-        static void Main(string[] args)
+        public static void Main()
         {
             var server = new HttpServer("127.0.0.1", 8080);
             server.Start();
