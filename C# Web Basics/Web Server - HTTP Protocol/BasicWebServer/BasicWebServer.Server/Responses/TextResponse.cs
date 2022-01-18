@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace BasicWebServer.Server.Responses
 {
-    public class UnauthorizedResponse : Response
+    public class TextResponse : ContentResponse
     {
-        public UnauthorizedResponse() 
-            : base(StatusCode.Unauthorized)
+        public TextResponse(string text) 
+            : base(text, ContentType.PlainText)
         {
-
         }
     }
 }

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace BasicWebServer.Server.Responses
 {
-    public class UnauthorizedResponse : Response
+    public class RedirectResponse : Response
     {
-        public UnauthorizedResponse() 
-            : base(StatusCode.Unauthorized)
+        public RedirectResponse(string location) 
+            : base(StatusCode.Found)
         {
-
+            Headers.Add(Header.Location, location);
         }
     }
 }

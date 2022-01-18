@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace BasicWebServer.Server.Responses
 {
-    public class UnauthorizedResponse : Response
+    public class HtmlResponse : ContentResponse
     {
-        public UnauthorizedResponse() 
-            : base(StatusCode.Unauthorized)
+        public HtmlResponse(string text)
+            :base(text, ContentType.Html)
         {
 
         }

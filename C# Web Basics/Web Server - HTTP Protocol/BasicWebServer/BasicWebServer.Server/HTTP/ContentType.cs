@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace BasicWebServer.Server.HTTP
 {
-    public enum Method
+    public class ContentType
     {
-        Get = 1, // GET
-        Post = 2, //POST
-        Put = 3,  //PUT
-        Delete = 4  //DELETE
+        public const string PlainText = "text/plain; charset=UTF-8";
+        public const string Html = "text/html; charset=UTF-8";
     }
 }
