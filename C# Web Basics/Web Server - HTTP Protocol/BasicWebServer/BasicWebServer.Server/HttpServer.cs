@@ -59,6 +59,10 @@ namespace BasicWebServer.Server
 
                 var response = this.rountingTable.MatchRequest(request);
 
+                // Execute pre-render action for the response
+                if (response.PreRenderAction != null)
+                    response.PreRenderAction(request, response);
+
                 WriteResponse(networkStream, response);
 
                 connection.Close();
@@ -67,7 +71,7 @@ namespace BasicWebServer.Server
 
         private void WriteResponse(NetworkStream networkStream, Response response)
         {
-            
+
             var responseBytes = Encoding.UTF8.GetBytes(response.ToString());
 
             networkStream.Write(responseBytes);
@@ -94,7 +98,7 @@ namespace BasicWebServer.Server
                 }
 
                 requestBuilder.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
-            } 
+            }
             while (networkStream.DataAvailable);
 
             return requestBuilder.ToString();
