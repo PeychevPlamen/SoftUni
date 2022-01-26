@@ -2,6 +2,8 @@
 using BasicWebServer.Server.HTTP;
 using BasicWebServer.Server.Responses;
 using System;
+using System.Text;
+using System.Web;
 
 namespace BasicWebServer.Demo
 {
@@ -32,7 +34,8 @@ namespace BasicWebServer.Demo
             .MapGet("/HTML", new HtmlResponse(StartUp.HtmlForm))
             .MapPost("/HTML", new TextResponse("", StartUp.AddFormDataAction))
             .MapGet("/Content", new HtmlResponse(DownloadForm))
-            .MapPost("/Content", new TextFileResponse(FileName)));
+            .MapPost("/Content", new TextFileResponse(FileName))
+            .MapGet("/Cookies", new HtmlResponse("", AddCookiesAction)));
 
             await server.Start();
         }
@@ -73,6 +76,41 @@ namespace BasicWebServer.Demo
             {
                 response.Body += $"{key} - {value}";
                 response.Body += Environment.NewLine;
+            }
+        }
+
+        private static void AddCookiesAction(Request request, Response response)
+        {
+            var requestHasCookies = request.Cookies.Any();
+            var bodyText = "";
+
+            if (requestHasCookies)
+            {
+                var cookieText = new StringBuilder();
+                cookieText.AppendLine("<h1>Cookies</h1>");
+
+                cookieText.Append("<table border='1'><tr><th>Name</th><th>Value</th></tr>");
+
+                foreach(var cookie in request.Cookies)
+                {
+                    cookieText.Append("<tr>");
+                    cookieText.Append($"<td>{HttpUtility.HtmlEncode(cookie.Name)}</td>");
+                    cookieText.Append($"<td>{HttpUtility.HtmlEncode(cookie.Value)}</td>");
+                    cookieText.Append("</tr>");
+                }
+                cookieText.Append("</table>");
+
+                bodyText = cookieText.ToString();
+            }
+            else
+            {
+                bodyText = "<h1>Cookies set!</h1>";
+            }
+
+            if (!requestHasCookies)
+            {
+                response.Cookies.Add("My-Cookie", "My-Value");
+                response.Cookies.Add("My-Second-Cookie", "My-Second-Value");
             }
         }
     }
