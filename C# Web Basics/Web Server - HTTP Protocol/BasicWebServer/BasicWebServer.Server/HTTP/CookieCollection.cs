@@ -17,7 +17,6 @@ namespace BasicWebServer.Server.HTTP
             => cookies[name] = new Cookie(name, value);
 
         public bool Contains(string name)
-
             => cookies.ContainsKey(name);
 
         public IEnumerator<Cookie> GetEnumerator()
