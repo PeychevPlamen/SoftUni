@@ -1,4 +1,5 @@
-﻿using BasicWebServer.Server;
+﻿using BasicWebServer.Demo.Controllers;
+using BasicWebServer.Server;
 using BasicWebServer.Server.HTTP;
 using BasicWebServer.Server.Responses;
 using System;
@@ -23,7 +24,7 @@ namespace BasicWebServer.Demo
 
         private const string FileName = "content.txt";
 
-        private const string LoginForm = 
+        private const string LoginForm =
             @"<form action='/Login' method='POST'>
             Username: <input type='text' name='Username'/>
             Password: <input type='password' name='Password'/>
@@ -34,27 +35,20 @@ namespace BasicWebServer.Demo
         private const string Password = "user123";
 
         public static async Task Main()
-        {
-            await DownloadSitesAsTextFile(FileName, new string[] {
-            "https://judge.softuni.org/", "https://softuni.org"
-            });
-
-            var server = new HttpServer(routes => routes
-            .MapGet("/", new TextResponse("Hello from the server!"))
-            .MapGet("/Redirect", new RedirectResponse("http://softuni.org/"))
-            .MapGet("/HTML", new HtmlResponse(StartUp.HtmlForm))
-            .MapPost("/HTML", new TextResponse("", StartUp.AddFormDataAction))
-            .MapGet("/Content", new HtmlResponse(DownloadForm))
-            .MapPost("/Content", new TextFileResponse(FileName))
-            .MapGet("/Cookies", new HtmlResponse("", AddCookiesAction))
-            .MapGet("/Session", new TextResponse("", DisplaySessionInfoAction))
-            .MapGet("/Login", new HtmlResponse(LoginForm))
-            .MapPost("/Login", new HtmlResponse("", LoginAction))
-            .MapGet("/Logout", new HtmlResponse("", LogoutAction))
-            .MapGet("/UserProfile", new HtmlResponse("", GetUserDataAction)));
-
-            await server.Start();
-        }
+            => await new HttpServer(routes => routes
+            .MapGet<HomeController>("/", c => c.Index())
+            .MapGet<HomeController>("/Redirect", c => c.Redirect())
+            .MapGet<HomeController>("/HTML", c => c.Html())
+            .MapPost<HomeController>("/HTML", c => HtmlFormPost())
+            .MapGet<HomeController>("/Content", c => c.Content())
+            .MapPost<HomeController>("/Content", c => c.DownloadContent())
+            .MapGet<HomeController>("/Cookies", c => c.Cookies())
+            .MapGet("/Session", c => c.Session()))
+            //.MapGet("/Login", new HtmlResponse(LoginForm))
+            //.MapPost("/Login", new HtmlResponse("", LoginAction))
+            //.MapGet("/Logout", new HtmlResponse("", LogoutAction))
+            //.MapGet("/UserProfile", new HtmlResponse("", GetUserDataAction)))
+            .Start();
 
         private static void GetUserDataAction(Request request, Response response)
         {
