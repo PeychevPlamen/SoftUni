@@ -49,29 +49,82 @@ namespace SharedTrip.Controllers
 
         [HttpPost]
         [Authorize]
-        public HttpResponse Add(TripAddFormModel trip)
+        public HttpResponse Add(TripAddFormModel model)
         {
-            var modelErrors = validator.ValidateTrip(trip);
+            var modelErrors = validator.ValidateTrip(model);
 
             if (modelErrors.Any())
             {
                 return Error(modelErrors);
             }
 
-            var currTrip = new Trip()
+            var trip = new Trip()
             {
-                StartPoint = trip.StartPoint,
-                EndPoint = trip.EndPoint,
-                DepartureTime = trip.DepartureTime,
-                Description = trip.Description,
-                Seats = trip.Seats,
-                ImagePath = trip.ImagePath
+                StartPoint = model.StartPoint,
+                EndPoint = model.EndPoint,
+                DepartureTime = model.DepartureTime,
+                Description = model.Description,
+                Seats = model.Seats,
+                ImagePath = model.ImagePath
             };
 
-            data.Trips.Add(currTrip);
+            data.Trips.Add(trip);
             data.SaveChanges();
 
             return Redirect("/Trips/All");
+        }
+
+        [Authorize]
+        public HttpResponse Details(string tripId)
+        {
+            if (!data.Trips.Where(t => t.Id == tripId).Any())
+            {
+                return Error("Trip doesn't exist.");
+            }
+
+            var trip = data.Trips
+                .Where(t => t.Id == tripId)
+                .Select(t => new TripDetailsViewModel
+                {
+                    Id = t.Id,
+                    StartPoint = t.StartPoint,
+                    EndPoint = t.EndPoint,
+                    DepartureTime = t.DepartureTime.ToString("dd.MM.yyyy HH: mm", CultureInfo.InvariantCulture),
+                    Seats = t.Seats,
+                    Description = t.Description,
+                    ImagePath = t.ImagePath
+                })
+                .FirstOrDefault();
+
+            return View(trip);
+        }
+
+        [Authorize]
+        public HttpResponse AddUserToTrip(string tripId)
+        {
+            if (!data.Trips.Where(t => t.Id == tripId).Any())
+            {
+                return Error("Trip doesn't exist.");
+            }
+
+            var trip = data.Trips.Where(t => t.Id == tripId).FirstOrDefault();
+
+            var userTrip = new UserTrip
+            {
+                TripId = tripId,
+                UserId = User.Id,
+            };
+
+            if (data.UserTrips.Where(x=>x.TripId == tripId && x.UserId == User.Id).Any())
+            {
+                return Error("This user is already added to this trip");
+            }
+
+            data.UserTrips.Add(userTrip);
+            data.SaveChanges();
+
+            return Redirect("/");
+
         }
     }
 }
