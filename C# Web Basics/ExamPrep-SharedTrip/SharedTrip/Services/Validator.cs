@@ -12,9 +12,16 @@ namespace SharedTrip.Services
 {
     public class Validator : IValidator
     {
+        private readonly List<string> errors;
+
+        public Validator()
+        {
+            this.errors = new List<string>();
+        }
+
         public ICollection<string> ValidateUser(RegisterPageFormModel user)
         {
-            var errors = new List<string>();
+            //var errors = new List<string>();
 
             if (user.Username == null || user.Username.Length < UsernameMinLength || user.Username.Length > UsernameMaxLength)
             {
@@ -39,53 +46,36 @@ namespace SharedTrip.Services
             if (user.Password != user.ConfirmPassword)
             {
                 errors.Add("Password and its confirmation are different.");
+            } 
+
+            return errors;
+        }
+
+        public ICollection<string> ValidateTrip(TripAddFormModel trip)
+        {
+            Required(trip.StartPoint, "StartPoint");
+            Required(trip.EndPoint, "EndPoint");
+            Required(trip.Description, "Description");
+            Required(trip.DepartureTime.ToString(), "DepartureTime");
+
+            if (trip.Seats < 2 || trip.Seats > 6 )
+            {
+                errors.Add($"Seats must be between {SeatsMinCount} and {SeatsMaxCount}");
+            }
+            if (trip.Description.Length > DescriptionMaxLength)
+            {
+                errors.Add($"Description length should be greater then {DescriptionMaxLength}");
             }
 
             return errors;
         }
 
-        //public ICollection<string> ValidateCar(AddCarFormModel car)
-        //{
-        //    var errors = new List<string>();
-
-        //    if (car.Model == null || car.Model.Length < CarModelMinLength || car.Model.Length > DefaultMaxLength)
-        //    {
-        //        errors.Add($"Model '{car.Model}' is not valid. It must be between {CarModelMinLength} and {DefaultMaxLength} characters long.");
-        //    }
-
-        //    if (car.Year < CarYearMinValue || car.Year > CarYearMaxValue)
-        //    {
-        //        errors.Add($"Year '{car.Year}' is not valid. It must be between {CarYearMinValue} and {CarYearMaxValue}.");
-        //    }
-
-        //    if (car.Image == null || !Uri.IsWellFormedUriString(car.Image, UriKind.Absolute))
-        //    {
-        //        errors.Add($"Image '{car.Image}' is not valid. It must be a valid URL.");
-        //    }
-
-        //    if (car.PlateNumber == null || !Regex.IsMatch(car.PlateNumber, CarPlateNumberRegularExpression))
-        //    {
-        //        errors.Add($"Plate number '{car.PlateNumber}' is not valid. It should be in 'XX0000XX' format.");
-        //    }
-
-        //    return errors;
-        //}
-
-        //public ICollection<string> ValidateIssue(AddIssueFormModel issue)
-        //{
-        //    var errors = new List<string>();
-
-        //    if (issue.CarId == null)
-        //    {
-        //        errors.Add($"Car ID cannot be empty.");
-        //    }
-
-        //    if (issue.Description.Length < IssueMinDescription)
-        //    {
-        //        errors.Add($"Description '{issue.Description}' is not valid. It must have more than {IssueMinDescription} characters.");
-        //    }
-
-        //    return errors;
-        //}
+        private void Required(string text, string field)
+        {
+            if (text == null)
+            {
+                errors.Add($"The {field} is required.");
+            }
+        }
     }
 }

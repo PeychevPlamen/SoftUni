@@ -10,5 +10,6 @@ namespace SharedTrip.Services
     public interface IValidator
     {
         ICollection<string> ValidateUser(RegisterPageFormModel model);
+        ICollection<string> ValidateTrip(TripAddFormModel model);
     }
 }
