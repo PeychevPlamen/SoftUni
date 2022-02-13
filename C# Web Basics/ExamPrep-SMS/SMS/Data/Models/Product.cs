@@ -18,13 +18,15 @@ namespace SMS.Data.Models
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
         [Required]
-        [MaxLength(UsernameMaxLength)]
+        [MaxLength(ProductNameMaxLength)]
         public string Name { get; set; }
 
         [Range(0.05, 1000)]
+        [Column(TypeName = "money")]
         public decimal Price { get; set; }
 
         [ForeignKey(nameof(Cart))]
+        
         public string CartId { get; set; }
         public Cart Cart { get; set; }
 

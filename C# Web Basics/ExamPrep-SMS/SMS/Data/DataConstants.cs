@@ -18,5 +18,8 @@ namespace SMS.Data
 
         public const decimal PriceMinValue = 0.05m;
         public const decimal PriceMaxValue = 1000m;
+
+        public const int ProductNameMinLength = 4;
+        public const int ProductNameMaxLength = 20;
     }
 }

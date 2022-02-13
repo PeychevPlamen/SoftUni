@@ -1,9 +1,10 @@
 ﻿using MyWebServer.Controllers;
 using MyWebServer.Http;
-using SharedTrip.Services;
+
 using SMS.Contracts;
 using SMS.Data;
 using SMS.Data.Models;
+using SMS.Services;
 using SMS.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace SharedTrip.Controllers
 
             if (modelErrors.Any())
             {
-                return Error(modelErrors);
+                return View("/Error", modelErrors);
             }
 
             var user = new User
@@ -58,42 +59,50 @@ namespace SharedTrip.Controllers
                 Email = model.Email,
             };
 
+            var cart = new Cart
+            {
+               Id = user.Id
+            };
+
+            user.Cart = cart;
+
             data.Users.Add(user);
+            data.Carts.Add(cart);
 
             data.SaveChanges();
 
             return Redirect("/Users/Login");
         }
 
-        //public HttpResponse Login() => View();
+        public HttpResponse Login() => View();
 
-        //[HttpPost]
-        //public HttpResponse Login(LoginUserFormModel model)
-        //{
-        //    var hashedPassword = this.passwordHasher.HashPassword(model.Password);
+        [HttpPost]
+        public HttpResponse Login(LoginViewModel model)
+        {
+            var hashedPassword = this.passwordHasher.HashPassword(model.Password);
 
-        //    var userId = this.data
-        //        .Users
-        //        .Where(u => u.Username == model.Username && u.Password == hashedPassword)
-        //        .Select(u => u.Id)
-        //        .FirstOrDefault();
+            var userId = this.data
+                .Users
+                .Where(u => u.Username == model.Username && u.Password == hashedPassword)
+                .Select(u => u.Id)
+                .FirstOrDefault();
 
-        //    if (userId == null)
-        //    {
-        //        return Error("Username and password combination is not valid.");
-        //    }
+            if (userId == null)
+            {
+                return Error("Username and password combination is not valid.");
+            }
 
-        //    this.SignIn(userId);
+            this.SignIn(userId);
 
-        //    return Redirect("/Trips/All");
-        //}
+            return Redirect("/");
+        }
 
-        //[Authorize]
-        //public HttpResponse Logout()
-        //{
-        //    this.SignOut();
+        [Authorize]
+        public HttpResponse Logout()
+        {
+            this.SignOut();
 
-        //    return Redirect("/");
-        //}
+            return Redirect("/");
+        }
     }
 }

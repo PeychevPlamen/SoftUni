@@ -1,12 +1,13 @@
 ﻿
 using SMS.ViewModels;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 using static SMS.Data.DataConstants;
 
-namespace SharedTrip.Services
+namespace SMS.Services
 {
     public class Validator : IValidator
     {
@@ -49,24 +50,27 @@ namespace SharedTrip.Services
             return errors;
         }
 
-        //public ICollection<string> ValidateTrip(TripAddFormModel trip)
-        //{
-        //    Required(trip.StartPoint, "StartPoint");
-        //    Required(trip.EndPoint, "EndPoint");
-        //    Required(trip.Description, "Description");
-        //    Required(trip.DepartureTime.ToString(), "DepartureTime");
+        public ICollection<string> ValidateProduct(ProductCreateView model)
+        {
+            //decimal price = 0;
 
-        //    if (trip.Seats < 2 || trip.Seats > 6 )
-        //    {
-        //        errors.Add($"Seats must be between {SeatsMinCount} and {SeatsMaxCount}");
-        //    }
-        //    if (trip.Description.Length > DescriptionMaxLength)
-        //    {
-        //        errors.Add($"Description length should be greater then {DescriptionMaxLength}");
-        //    }
+            //if (!decimal.TryParse(model.Price.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out price)
+            //    || price < PriceMinValue || price > PriceMaxValue)
+            //{
+            //    errors.Add($"Price should be between {PriceMinValue} and {PriceMaxValue}");
+            //}
 
-        //    return errors;
-        //}
+            if (model.Name.Length < UsernameMinLength || model.Name.Length > UsernameMaxLength)
+            {
+                errors.Add($"Product name must be between {UsernameMinLength} and {UsernameMaxLength}");
+            }
+            if (model.Price < PriceMinValue || model.Price > PriceMaxValue)
+            {
+                errors.Add($"Price should be between {PriceMinValue} and {PriceMaxValue}");
+            }
+
+            return errors;
+        }
 
         private void Required(string text, string field)
         {

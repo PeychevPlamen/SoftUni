@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharedTrip.Services
+namespace SMS.Services
 {
     public interface IValidator
     {
         ICollection<string> ValidateUser(RegisterViewModel model);
-       // ICollection<string> ValidateTrip(TripAddFormModel model);
+       ICollection<string> ValidateProduct(ProductCreateView model);
     }
 }

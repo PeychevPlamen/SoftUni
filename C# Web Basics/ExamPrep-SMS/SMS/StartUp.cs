@@ -5,7 +5,7 @@
     using MyWebServer;
     using MyWebServer.Controllers;
     using MyWebServer.Results.Views;
-    using SharedTrip.Services;
+    using SMS.Services;
     using SMS.Contracts;
     using SMS.Data;
     using SMS.Services;
@@ -13,7 +13,7 @@
     public class StartUp
     {
         public static async Task Main()
-            => await HttpServer
+            =>  await HttpServer
                 .WithRoutes(routes => routes
                     .MapStaticFiles()
                     .MapControllers())
