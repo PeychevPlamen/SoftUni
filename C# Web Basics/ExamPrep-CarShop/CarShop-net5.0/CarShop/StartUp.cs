@@ -7,7 +7,7 @@
     using MyWebServer.Results.Views;
     using Microsoft.EntityFrameworkCore;
     using CarShop.Services;
-    using CarShop.Contracts;
+    
 
     public class Startup
     {

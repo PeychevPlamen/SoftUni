@@ -1,5 +1,4 @@
-﻿using CarShop.Contracts;
-using CarShop.Data;
+﻿using CarShop.Data;
 using CarShop.Data.Models;
 using CarShop.Services;
 using CarShop.ViewModels;
