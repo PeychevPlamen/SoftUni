@@ -75,7 +75,7 @@ namespace CarShop.Controllers
         {
             var modelErrors = validator.ValidateCar(model);
 
-            if (modelErrors != null)
+            if (modelErrors.Any())
             {
                 return Error(modelErrors);
             }

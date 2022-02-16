@@ -1,4 +1,5 @@
 ﻿using CarShop.ViewModels;
+using CarShop.ViewModels.Issues;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,9 @@ namespace CarShop.Services
     public interface IValidator
     {
         ICollection<string> ValidateUser(RegisterViewModel model);
+
         ICollection<string> ValidateCar(AddNewCarViewModel model);
+
+        ICollection<string> ValidateIssue(AddIssueFormModel model);
     }
 }

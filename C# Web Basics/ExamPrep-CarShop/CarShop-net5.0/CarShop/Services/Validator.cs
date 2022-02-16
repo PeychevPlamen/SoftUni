@@ -1,5 +1,6 @@
 ﻿
 using CarShop.ViewModels;
+using CarShop.ViewModels.Issues;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -69,6 +70,22 @@ namespace CarShop.Services
             return errors;
         }
 
+        public ICollection<string> ValidateIssue(AddIssueFormModel issue)
+        {
+            var errors = new List<string>();
+
+            if (issue.CarId == null)
+            {
+                errors.Add($"Car ID can't be empty.");
+            }
+
+            if (issue.Description.Length < DescriptionMinLength)
+            {
+                errors.Add($"Description '{issue.Description}' is not valid. It should been more than {DescriptionMinLength} length.");
+            }
+
+            return errors;
+        }
         //private void Required(string text, string field)
         //{
         //    if (text == null)
