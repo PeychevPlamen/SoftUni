@@ -1,4 +1,5 @@
 ﻿using Git.ViewModels;
+using Git.ViewModels.Commits;
 using Git.ViewModels.Repositories;
 using System.Collections.Generic;
 using System.Globalization;
@@ -59,6 +60,16 @@ namespace Git.Services
             if (model.RepositoryType != RepositoryPrivateType && model.RepositoryType != RepositoryPublicType)
             {
                 errors.Add($"Repository type must be {RepositoryPrivateType} or {RepositoryPublicType}.");
+            }
+
+            return errors;
+        }
+
+        public ICollection<string> ValidateCommit(CreateCommitViewModel model)
+        {
+            if (model.Description.Length < DescriptionMinLength)
+            {
+                errors.Add($"Commit description must be at least {DescriptionMinLength} length");
             }
 
             return errors;

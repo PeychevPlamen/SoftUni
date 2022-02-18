@@ -61,7 +61,7 @@ namespace Git.Controllers
         [HttpPost]
         public HttpResponse Create(CreateRepoViewModel model)
         {
-            var modelErrors = this.validator.ValidateRepository(model);
+            var modelErrors = validator.ValidateRepository(model);
 
             if (modelErrors.Any())
             {

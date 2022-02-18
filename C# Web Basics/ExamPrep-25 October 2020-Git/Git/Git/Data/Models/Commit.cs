@@ -16,12 +16,12 @@ namespace Git.Data.Models
         [MaxLength(IdMaxLength)]
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
-        [MaxLength(DescriptionMinLength)]
+        [MinLength(DescriptionMinLength)]
         [Required]
         public string Description { get; set; }
 
         [Required]
-        public DateTime CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
         public string CreatorId { get; set; }
 

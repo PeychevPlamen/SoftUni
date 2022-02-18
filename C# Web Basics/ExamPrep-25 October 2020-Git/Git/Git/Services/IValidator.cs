@@ -1,4 +1,5 @@
 ﻿using Git.ViewModels;
+using Git.ViewModels.Commits;
 using Git.ViewModels.Repositories;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,6 @@ namespace Git.Services
 
         ICollection<string> ValidateRepository(CreateRepoViewModel model);
 
-        //ICollection<string> ValidateIssue(AddIssueFormModel model);
+        ICollection<string> ValidateCommit(CreateCommitViewModel model);
     }
 }
