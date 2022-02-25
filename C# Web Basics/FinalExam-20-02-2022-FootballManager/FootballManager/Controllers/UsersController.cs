@@ -29,7 +29,15 @@ namespace FootballManager.Controllers
             this.passwordHasher = passwordHasher;
         }
 
-        public HttpResponse Register() => View();
+        public HttpResponse Register()
+        {
+            if (User.IsAuthenticated)
+            {
+                return Redirect("/Players/All");
+            }
+
+            return View();
+        }
 
         [HttpPost]
         public HttpResponse Register(RegisterPageFormModel model)
@@ -65,7 +73,14 @@ namespace FootballManager.Controllers
             return Redirect("/Users/Login");
         }
 
-        public HttpResponse Login() => View();
+        public HttpResponse Login()
+        {
+            if (User.IsAuthenticated)
+            {
+                return Redirect("/Players/All");
+            }
+            return View();
+        }
 
         [HttpPost]
         public HttpResponse Login(LoginUserFormModel model)

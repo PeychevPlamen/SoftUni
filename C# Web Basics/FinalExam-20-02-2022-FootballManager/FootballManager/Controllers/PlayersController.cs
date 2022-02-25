@@ -50,7 +50,7 @@ namespace FootballManager.Controllers
                 Speed = x.Speed,
                 Endurance = x.Endurance,
                 Description = x.Description,
-                
+
             }).ToList();
 
             return View(myPlayers);
@@ -121,7 +121,7 @@ namespace FootballManager.Controllers
         [Authorize]
         public HttpResponse RemoveFromCollection(int playerId)
         {
-            var player = data.UserPlayers.Find(playerId);
+            var player = data.UserPlayers.Where(p => p.PlayerId == playerId).FirstOrDefault();
 
             if (player == null)
             {
