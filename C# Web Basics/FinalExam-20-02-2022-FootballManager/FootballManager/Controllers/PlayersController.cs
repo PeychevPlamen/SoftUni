@@ -121,14 +121,14 @@ namespace FootballManager.Controllers
         [Authorize]
         public HttpResponse RemoveFromCollection(int playerId)
         {
-            var player = data.UserPlayers.Where(p => p.PlayerId == playerId).FirstOrDefault();
+            var player = data.Players.Where(p => p.Id == playerId).FirstOrDefault();
 
-            if (player == null)
+            if (player == null || !this.data.UserPlayers.Any(x => x.PlayerId == playerId && x.UserId == User.Id))
             {
                 return BadRequest();
             }
 
-            data.UserPlayers.Remove(player);
+            data.Players.Remove(player);
 
             data.SaveChanges();
 
