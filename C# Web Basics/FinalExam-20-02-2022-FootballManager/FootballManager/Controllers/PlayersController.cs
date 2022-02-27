@@ -28,12 +28,14 @@ namespace FootballManager.Controllers
         {
             var all = data.Players.Select(x => new AllPlayersViewModel
             {
+                Id = x.Id,
                 FullName = x.FullName,
                 ImageUrl = x.ImageUrl,
                 Position = x.Position,
                 Speed = x.Speed,
                 Endurance = x.Endurance,
-                //PlayerId = x.Id
+                Description = x.Description
+
             }).ToList();
 
             return View(all);
@@ -101,9 +103,11 @@ namespace FootballManager.Controllers
         }
 
         [Authorize]
-        public HttpResponse AddToCollection(int playerId, string userId)
+        public HttpResponse AddToCollection(int playerId)
         {
-            if (!data.Players.Where(t => t.Id == playerId).Any())
+            var player = data.Players.Where(p => p.Id == playerId).FirstOrDefault();
+
+            if (!data.Players.Where(p => p.Id == playerId).Any())
             {
                 return Error("Player doesn't exist.");
             }
@@ -113,18 +117,12 @@ namespace FootballManager.Controllers
                 return Redirect("/Players/All");
             }
 
-            var player = data.Players.Where(t => t.Id == playerId).FirstOrDefault();
 
             var userPlayer = new UserPlayer
             {
                 PlayerId = playerId,
                 UserId = User.Id,
             };
-
-            //if (data.UserPlayers.Any(x => x.PlayerId == playerId && x.UserId == User.Id))
-            //{
-            //    return Error("This player is already added to this user");
-            //}
 
             data.UserPlayers.Add(userPlayer);
             data.SaveChanges();

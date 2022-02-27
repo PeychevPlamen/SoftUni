@@ -22,6 +22,5 @@ namespace FootballManager.ViewModels.Players
 
         public string Description { get; set; }
 
-        //public string PlayerId { get; set; }
     }
 }
