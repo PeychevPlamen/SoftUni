@@ -27,9 +27,9 @@ namespace MusicSpot.Data.Models
 
         public string Notes { get; set; }
 
-        public bool IsPublic { get; set; }
+        //public bool IsPublic { get; set; }
 
-        public ICollection<Track> Tracklist { get; set; } = new List<Track>();
+        public ICollection<Track> Tracks { get; set; } = new List<Track>();
 
         [Required]
         [ForeignKey(nameof(Artist))]

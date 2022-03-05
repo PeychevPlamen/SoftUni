@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 using static MusicSpot.Data.DataConstants;
 
 namespace MusicSpot.Data.Models
@@ -18,5 +18,7 @@ namespace MusicSpot.Data.Models
         public string Genre { get; set; }
 
         public ICollection<Album> Albums { get; set; } = new List<Album>();
+
+        
     }
 }
