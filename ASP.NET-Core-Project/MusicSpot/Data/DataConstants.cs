@@ -12,6 +12,8 @@
         public const int TrackMaxNameLength = 100;
         public const string TrackDurationRegEx = @"^([0-9]+:[0-9]{2})";
 
+        public const int MinYearValue = 1900;
+        public const int MaxYearValue = 2023;
 
     }
 }
