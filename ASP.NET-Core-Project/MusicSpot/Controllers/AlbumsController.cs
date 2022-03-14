@@ -112,29 +112,43 @@ namespace MusicSpot.Controllers
             }
 
             var album = await _context.Albums.FindAsync(id);
+
             if (album == null)
             {
                 return NotFound();
             }
-            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Genre", album.ArtistId);
+            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Name", album.ArtistId);
             return View(album);
         }
 
         // POST: Albums/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ImageUrl,Year,Format,MediaCondition,SleeveCondition,Notes,ArtistId")] Album album)
+        public async Task<IActionResult> Edit(int id, EditAlbumViewModel album)
         {
             if (id != album.Id)
             {
                 return NotFound();
             }
 
+            var currAlbum = new Album
+            {
+                Id = album.Id,
+                Name = album.Name,
+                ImageUrl = album.ImageUrl,
+                Year = album.Year,
+                Format = album.Format,
+                MediaCondition = album.MediaCondition,
+                SleeveCondition = album.SleeveCondition,
+                Notes = album.Notes,
+                ArtistId = album.ArtistId,
+            };
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(album);
+                    _context.Update(currAlbum);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -150,7 +164,7 @@ namespace MusicSpot.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Genre", album.ArtistId);
+            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Name", album.ArtistId);
             return View(album);
         }
 

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MusicSpot.Data;
 using MusicSpot.Data.Models;
+using MusicSpot.Models.Tracks;
 
 namespace MusicSpot.Controllers
 {
@@ -49,7 +50,7 @@ namespace MusicSpot.Controllers
         // GET: Tracks/Create
         public IActionResult Create()
         {
-            ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Format");
+            ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Name");
             return View();
         }
 
@@ -58,15 +59,26 @@ namespace MusicSpot.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Duration,AlbumId")] Track track)
+        public async Task<IActionResult> Create(CreateTrackFormModel track)
         {
+            var currAlbum = _context.Albums.FirstOrDefault(x => x.Id == track.AlbumId);
+
+            var currTrack = new Track
+            {
+                Name = track.Name,
+                Duration = track.Duration,
+                AlbumId = currAlbum.Id
+            };
+
+            _context.Tracks.Add(currTrack);
+
             if (ModelState.IsValid)
             {
-                _context.Add(track);
+                _context.Add(currTrack);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Format", track.AlbumId);
+            ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Name", track.AlbumId);
             return View(track);
         }
 
@@ -83,7 +95,7 @@ namespace MusicSpot.Controllers
             {
                 return NotFound();
             }
-            ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Format", track.AlbumId);
+            ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Name", track.AlbumId);
             return View(track);
         }
 
@@ -119,7 +131,7 @@ namespace MusicSpot.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Format", track.AlbumId);
+            ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Name", track.AlbumId);
             return View(track);
         }
 

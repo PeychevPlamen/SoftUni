@@ -11,6 +11,7 @@ namespace MusicSpot.Models.Tracks
         public string Name { get; set; }
 
         [Required]
+        [RegularExpression(TrackDurationRegEx, ErrorMessage = "Duration should be in format mm:ss")]
         public string Duration { get; set; }
 
         [Required]
