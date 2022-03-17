@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Albums</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -36,43 +36,51 @@
             <th>
                 @Html.DisplayNameFor(model => model.Artist)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tracks)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <img src="@Html.Raw(item.ImageUrl)">
-                @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Year)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Format)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MediaCondition)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SleeveCondition)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Artist.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <img src="@Html.Raw(item.ImageUrl)" class="img-thumbnail">
+                    @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Format)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MediaCondition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SleeveCondition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Notes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Artist.Name)
+                </td>
+                <td>
+                    <a class="nav-link text-red" asp-area="" asp-controller="Tracks" asp-action="AllTracks" asp-route-id="@item.Id">All Tracks</a>
+                    @*@Html.DisplayFor(modelItem => item.Tracks.First))*@
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

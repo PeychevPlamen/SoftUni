@@ -1,4 +1,5 @@
-﻿using MusicSpot.Models.Tracks;
+﻿using MusicSpot.Data.Models;
+using MusicSpot.Models.Tracks;
 using System.ComponentModel.DataAnnotations;
 
 using static MusicSpot.Data.DataConstants;
@@ -36,7 +37,7 @@ namespace MusicSpot.Models.Albums
 
         //public bool IsPublic { get; set; }
 
-        //public IEnumerable<CreateTrackFormModel> Tracks { get; set; }
+        //public ICollection<CreateTrackFormModel> Tracks { get; set; }
                 
         public int ArtistId { get; set; }
     }

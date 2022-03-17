@@ -32,7 +32,12 @@ namespace MusicSpot.Data
                 .WithMany(a => a.Tracks)
                 .HasForeignKey(a => a.AlbumId)
                 .OnDelete(DeleteBehavior.Restrict);
-                
+
+            //builder
+            //    .Entity<Artist>()
+            //    .HasMany(a => a.Albums)
+            //    .WithOne(a => a.Artist)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);
         }

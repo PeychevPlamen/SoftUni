@@ -23,23 +23,23 @@ namespace MusicSpot.Controllers
         }
 
         // GET: Albums
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var musicSpotDbContext = _context.Albums.Include(a => a.Artist);
-            return View(await musicSpotDbContext.ToListAsync());
+            return View(musicSpotDbContext.ToList());
         }
 
         // GET: Albums/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var album = await _context.Albums
+            var album = _context.Albums
                 .Include(a => a.Artist)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefault(m => m.Id == id);
             if (album == null)
             {
                 return NotFound();
@@ -85,16 +85,17 @@ namespace MusicSpot.Controllers
                 MediaCondition = album.MediaCondition,
                 SleeveCondition = album.SleeveCondition,
                 Notes = album.Notes,
-                ArtistId = currArtist.Id,
+                                ArtistId = currArtist.Id,
 
             };
-            //_context.Artists.Add(currAlbum);
+            _context.Albums.Add(currAlbum);
 
-            currArtist.Albums.Add(currAlbum);
+            //currArtist.Albums.Add(currAlbum);
 
             if (ModelState.IsValid)
             {
                 _context.Add(currAlbum);
+                //Console.WriteLine(_context.Albums.Count());
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
@@ -104,14 +105,14 @@ namespace MusicSpot.Controllers
         }
 
         // GET: Albums/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var album = await _context.Albums.FindAsync(id);
+            var album = _context.Albums.Find(id);
 
             if (album == null)
             {
@@ -124,7 +125,7 @@ namespace MusicSpot.Controllers
         // POST: Albums/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, EditAlbumViewModel album)
+        public IActionResult Edit(int id, EditAlbumViewModel album)
         {
             if (id != album.Id)
             {
@@ -149,7 +150,7 @@ namespace MusicSpot.Controllers
                 try
                 {
                     _context.Update(currAlbum);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -169,16 +170,16 @@ namespace MusicSpot.Controllers
         }
 
         // GET: Albums/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var album = await _context.Albums
+            var album = _context.Albums
                 .Include(a => a.Artist)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefault(m => m.Id == id);
             if (album == null)
             {
                 return NotFound();
@@ -190,11 +191,11 @@ namespace MusicSpot.Controllers
         // POST: Albums/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var album = await _context.Albums.FindAsync(id);
+            var album = _context.Albums.Find(id);
             _context.Albums.Remove(album);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
@@ -202,5 +203,7 @@ namespace MusicSpot.Controllers
         {
             return _context.Albums.Any(e => e.Id == id);
         }
+
+               
     }
 }

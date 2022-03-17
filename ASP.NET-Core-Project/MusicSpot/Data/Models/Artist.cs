@@ -17,7 +17,7 @@ namespace MusicSpot.Data.Models
         [MaxLength(GenreMaxLength)]
         public string Genre { get; set; }
 
-        public ICollection<Album> Albums { get; set; } = new List<Album>();
+        public IEnumerable<Album> Albums { get; set; } = new List<Album>();
 
         
     }
