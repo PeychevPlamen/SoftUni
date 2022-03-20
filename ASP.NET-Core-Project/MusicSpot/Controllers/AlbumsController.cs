@@ -85,7 +85,8 @@ namespace MusicSpot.Controllers
                 MediaCondition = album.MediaCondition,
                 SleeveCondition = album.SleeveCondition,
                 Notes = album.Notes,
-                                ArtistId = currArtist.Id,
+                Artist = _context.Artists.FirstOrDefault(x=>x.Name == album.Artist),
+                ArtistId = currArtist.Id,
 
             };
             _context.Albums.Add(currAlbum);
@@ -204,6 +205,15 @@ namespace MusicSpot.Controllers
             return _context.Albums.Any(e => e.Id == id);
         }
 
-               
+
+        public IActionResult AllAlbums(int id)
+        {
+            var artistAlbums = _context.Albums
+                .Where(x => x.ArtistId == id)
+                .Include(a => a.Artist)
+                .AsQueryable();
+
+            return View(artistAlbums);
+        }
     }
 }

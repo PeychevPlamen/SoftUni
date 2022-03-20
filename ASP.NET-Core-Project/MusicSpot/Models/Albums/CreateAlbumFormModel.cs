@@ -38,7 +38,9 @@ namespace MusicSpot.Models.Albums
         //public bool IsPublic { get; set; }
 
         //public ICollection<CreateTrackFormModel> Tracks { get; set; }
-                
+
+        public string Artist { get; set; } // ??
+
         public int ArtistId { get; set; }
     }
 }

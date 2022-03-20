@@ -14,6 +14,7 @@ namespace MusicSpot.Data.Models
         public string Name { get; set; }
 
         [Required]
+        [Display(Name = "Image Url")]
         public string ImageUrl { get; set; }
 
         public int Year { get; set; }
@@ -21,8 +22,10 @@ namespace MusicSpot.Data.Models
         [Required]
         public string Format { get; set; }
 
+        [Display(Name = "Media Condition")]
         public string MediaCondition { get; set; }
 
+        [Display(Name = "Sleeve Condition")]
         public string SleeveCondition { get; set; }
 
         public string Notes { get; set; }
