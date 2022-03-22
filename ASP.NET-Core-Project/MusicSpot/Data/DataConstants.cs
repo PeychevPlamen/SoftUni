@@ -15,5 +15,12 @@
         public const int MinYearValue = 1900;
         public const int MaxYearValue = 2023;
 
+        public const int UsernameMinLength = 5;
+        public const int UsernameMaxLength = 20;
+
+        public const int PasswordMinLength = 5;
+        public const int PasswordMaxLength = 20;
+
+        public const string UserEmailRegularExpression = @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
     }
 }

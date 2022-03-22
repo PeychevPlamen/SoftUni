@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MusicSpot.Data.Identity;
 using MusicSpot.Data.Models;
 
 namespace MusicSpot.Data
 {
-    public class MusicSpotDbContext : IdentityDbContext
+    public class MusicSpotDbContext : IdentityDbContext<ApplicationUser>
     {
         public MusicSpotDbContext(DbContextOptions<MusicSpotDbContext> options)
             : base(options)

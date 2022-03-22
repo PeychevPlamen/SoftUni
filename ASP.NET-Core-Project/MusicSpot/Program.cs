@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MusicSpot.Data;
+using MusicSpot.Data.Identity;
 using MusicSpot.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,8 +15,18 @@ builder.Services
     .AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services
-    .AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddDefaultIdentity<ApplicationUser>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = true;
+        options.Password.RequireDigit = true;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+
+    })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<MusicSpotDbContext>();
+
 builder.Services
     .AddControllersWithViews();
 

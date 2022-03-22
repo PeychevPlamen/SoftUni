@@ -23,10 +23,28 @@ namespace MusicSpot.Controllers
         }
 
         // GET: Albums
-        public IActionResult Index()
+        public IActionResult Index(string searchTerm)
         {
-            var musicSpotDbContext = _context.Albums.Include(a => a.Artist);
-            return View(musicSpotDbContext.ToList());
+            var musicSpotDbContext = _context.Albums.Include(a => a.Artist).AsQueryable();
+            //return View(musicSpotDbContext.ToList());
+
+            //var artistAlbums = _context.Albums
+            //    .Where(x => x.ArtistId == id)
+            //    .Include(a => a.Artist)
+            //    .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                musicSpotDbContext = musicSpotDbContext.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                a.Year.ToString().ToLower().Contains(searchTerm.ToLower()) ||
+                a.Format.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return View(new AllAlbumsViewModel
+            {
+                Albums = musicSpotDbContext,
+                SearchTerm = searchTerm
+            });
         }
 
         // GET: Albums/Details/5
@@ -206,14 +224,25 @@ namespace MusicSpot.Controllers
         }
 
 
-        public IActionResult AllAlbums(int id)
+        public IActionResult AllAlbums(int id, string searchTerm)
         {
             var artistAlbums = _context.Albums
                 .Where(x => x.ArtistId == id)
                 .Include(a => a.Artist)
                 .AsQueryable();
 
-            return View(artistAlbums);
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                artistAlbums = artistAlbums.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                a.Year.ToString().ToLower().Contains(searchTerm.ToLower()) ||
+                a.Format.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return View(new AllAlbumsViewModel
+            {
+                Albums = artistAlbums,
+                SearchTerm = searchTerm
+            });
         }
     }
 }

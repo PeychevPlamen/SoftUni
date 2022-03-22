@@ -1,8 +1,14 @@
-﻿@model IEnumerable<MusicSpot.Data.Models.Album>
+﻿@model AllAlbumsViewModel
 
 @{
     ViewData["Title"] = "Albums";
 }
+<form method="get">
+    <div class="form-group col-md-4">
+        <label asp-for="SearchTerm"></label>
+        <input asp-for="SearchTerm" class="form-control" placeholder="Album name, Year or Format">
+    </div>
+</form>
 
 <h1>User Albums</h1>
 
@@ -10,37 +16,46 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Name
+                @*@Html.DisplayNameFor(model => model.Name)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
+                ImageUrl
+                @*@Html.DisplayNameFor(model => model.ImageUrl)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Year)
+                Year
+                @*@Html.DisplayNameFor(model => model.Year)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Format)
+                Format
+                @*@Html.DisplayNameFor(model => model.Format)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MediaCondition)
+                MediaCondition
+                @*@Html.DisplayNameFor(model => model.MediaCondition)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SleeveCondition)
+                SleeveCondition
+                @*@Html.DisplayNameFor(model => model.SleeveCondition)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Notes)
+                Notes
+                @*@Html.DisplayNameFor(model => model.Notes)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Artist)
+                Artist
+                @*@Html.DisplayNameFor(model => model.Artist)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tracks)
+                Tracks
+                @* @Html.DisplayNameFor(model => model.Tracks)*@
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Albums)
         {
             <tr>
                 <td>
