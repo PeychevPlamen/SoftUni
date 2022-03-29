@@ -12,8 +12,8 @@ using MusicSpot.Data;
 namespace MusicSpot.Data.Migrations
 {
     [DbContext(typeof(MusicSpotDbContext))]
-    [Migration("20220322181843_ApplicationUser")]
-    partial class ApplicationUser
+    [Migration("20220329112514_ArtistUserId")]
+    partial class ArtistUserId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -161,7 +161,7 @@ namespace MusicSpot.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MusicSpot.Data.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("MusicSpot.Data.Identity.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -288,9 +288,6 @@ namespace MusicSpot.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Genre")
                         .IsRequired()
                         .HasMaxLength(40)
@@ -301,9 +298,13 @@ namespace MusicSpot.Data.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Artists");
                 });
@@ -346,7 +347,7 @@ namespace MusicSpot.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MusicSpot.Data.Identity.ApplicationUser", null)
+                    b.HasOne("MusicSpot.Data.Identity.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -355,7 +356,7 @@ namespace MusicSpot.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MusicSpot.Data.Identity.ApplicationUser", null)
+                    b.HasOne("MusicSpot.Data.Identity.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -370,7 +371,7 @@ namespace MusicSpot.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MusicSpot.Data.Identity.ApplicationUser", null)
+                    b.HasOne("MusicSpot.Data.Identity.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -379,7 +380,7 @@ namespace MusicSpot.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MusicSpot.Data.Identity.ApplicationUser", null)
+                    b.HasOne("MusicSpot.Data.Identity.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -399,9 +400,13 @@ namespace MusicSpot.Data.Migrations
 
             modelBuilder.Entity("MusicSpot.Data.Models.Artist", b =>
                 {
-                    b.HasOne("MusicSpot.Data.Identity.ApplicationUser", null)
+                    b.HasOne("MusicSpot.Data.Identity.User", "User")
                         .WithMany("Artists")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MusicSpot.Data.Models.Track", b =>
@@ -415,7 +420,7 @@ namespace MusicSpot.Data.Migrations
                     b.Navigation("Album");
                 });
 
-            modelBuilder.Entity("MusicSpot.Data.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("MusicSpot.Data.Identity.User", b =>
                 {
                     b.Navigation("Artists");
                 });

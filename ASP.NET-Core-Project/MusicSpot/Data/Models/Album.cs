@@ -36,6 +36,7 @@ namespace MusicSpot.Data.Models
 
         [Required]
         [ForeignKey(nameof(Artist))]
+        [Display(Name = "Artist")]
         public int ArtistId { get; set; }
 
         public Artist Artist { get; set; }  

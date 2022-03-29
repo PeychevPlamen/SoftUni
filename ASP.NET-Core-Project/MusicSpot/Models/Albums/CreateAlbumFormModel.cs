@@ -39,8 +39,9 @@ namespace MusicSpot.Models.Albums
 
         //public ICollection<CreateTrackFormModel> Tracks { get; set; }
 
-        public string Artist { get; set; } // ??
+        // public string Artist { get; set; } // ??
 
+        [Display(Name = "Artist")]
         public int ArtistId { get; set; }
     }
 }

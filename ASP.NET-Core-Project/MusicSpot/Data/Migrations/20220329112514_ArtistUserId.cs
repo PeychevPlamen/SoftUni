@@ -4,7 +4,7 @@
 
 namespace MusicSpot.Data.Migrations
 {
-    public partial class ApplicationUser : Migration
+    public partial class ArtistUserId : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,32 +23,34 @@ namespace MusicSpot.Data.Migrations
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "ApplicationUserId",
+                name: "UserId",
                 table: "Artists",
                 type: "nvarchar(450)",
-                nullable: true);
+                nullable: false,
+                defaultValue: "");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Artists_ApplicationUserId",
+                name: "IX_Artists_UserId",
                 table: "Artists",
-                column: "ApplicationUserId");
+                column: "UserId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Artists_AspNetUsers_ApplicationUserId",
+                name: "FK_Artists_AspNetUsers_UserId",
                 table: "Artists",
-                column: "ApplicationUserId",
+                column: "UserId",
                 principalTable: "AspNetUsers",
-                principalColumn: "Id");
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Artists_AspNetUsers_ApplicationUserId",
+                name: "FK_Artists_AspNetUsers_UserId",
                 table: "Artists");
 
             migrationBuilder.DropIndex(
-                name: "IX_Artists_ApplicationUserId",
+                name: "IX_Artists_UserId",
                 table: "Artists");
 
             migrationBuilder.DropColumn(
@@ -60,7 +62,7 @@ namespace MusicSpot.Data.Migrations
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
-                name: "ApplicationUserId",
+                name: "UserId",
                 table: "Artists");
         }
     }

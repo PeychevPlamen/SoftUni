@@ -5,7 +5,7 @@ using MusicSpot.Data.Models;
 
 namespace MusicSpot.Data
 {
-    public class MusicSpotDbContext : IdentityDbContext<ApplicationUser>
+    public class MusicSpotDbContext : IdentityDbContext<User>
     {
         public MusicSpotDbContext(DbContextOptions<MusicSpotDbContext> options)
             : base(options)
@@ -27,6 +27,7 @@ namespace MusicSpot.Data
                 .HasForeignKey(a => a.ArtistId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+
             builder
                 .Entity<Track>()
                 .HasOne(a => a.Album)
@@ -35,9 +36,24 @@ namespace MusicSpot.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             //builder
+            //    .Entity<User>()
+            //    .HasMany(a => a.Artists)
+            //    .WithOne()
+            //    .HasForeignKey(a => a.UserId)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Artist>()
+                .HasOne(a => a.User)
+                .WithMany(a => a.Artists)
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //builder
             //    .Entity<Artist>()
             //    .HasMany(a => a.Albums)
             //    .WithOne(a => a.Artist)
+            //    .HasForeignKey()
             //    .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);

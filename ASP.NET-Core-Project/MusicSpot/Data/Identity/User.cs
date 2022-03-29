@@ -8,7 +8,7 @@ using static MusicSpot.Data.DataConstants;
 
 namespace MusicSpot.Data.Identity
 {
-    public class ApplicationUser : IdentityUser
+    public class User : IdentityUser
     {
         [MaxLength(UsernameMaxLength)]
         public string? FirstName { get; set; }

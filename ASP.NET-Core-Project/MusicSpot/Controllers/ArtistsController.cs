@@ -3,11 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MusicSpot.Data;
 using MusicSpot.Data.Models;
+using MusicSpot.Infrastructure.Extensions;
+using MusicSpot.Models.Albums;
 using MusicSpot.Models.Artists;
 
 namespace MusicSpot.Controllers
@@ -22,12 +25,24 @@ namespace MusicSpot.Controllers
         }
 
         // GET: Artists
+        [Authorize]
         public IActionResult Index()
         {
-            return View(_context.Artists.ToList());
+            var userId = User.Id();
+            //var userId = _context.Users.Select(u => u.Id).FirstOrDefault();
+
+            if (userId != null)
+            {
+                var currArtist = _context.Artists.Where(a => a.UserId == userId).ToList();
+
+                return View(currArtist);
+            }
+
+            return View(_context.Artists.AsQueryable());
         }
 
         // GET: Artists/Details
+        [Authorize]
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -47,24 +62,31 @@ namespace MusicSpot.Controllers
         }
 
         // GET: Artists/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
         // POST: Artists/Create
-        
+
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(CreateArtistFormModel artist)
         {
+            var userId = _context.Users.Select(u => u.Id).FirstOrDefault();
+
             var currArtist = new Artist
             {
                 Name = artist.Name,
                 Genre = artist.Genre,
-               
+                UserId = userId,
+                
+                //ApplicationUserId = artist.ApplicationUserId,
             };
             
+
             if (ModelState.IsValid)
             {
                 _context.Add(currArtist);
@@ -75,6 +97,7 @@ namespace MusicSpot.Controllers
         }
 
         // GET: Artists/Edit/5
+        [Authorize]
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -92,7 +115,7 @@ namespace MusicSpot.Controllers
         }
 
         // POST: Artists/Edit/5
-       
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, EditArtistFormModel artist)
@@ -133,6 +156,7 @@ namespace MusicSpot.Controllers
         }
 
         // GET: Artists/Delete
+        [Authorize]
         public IActionResult Delete(int? id)
         {
             if (id == null)
@@ -152,6 +176,7 @@ namespace MusicSpot.Controllers
         }
 
         // POST: Artists/Delete
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)

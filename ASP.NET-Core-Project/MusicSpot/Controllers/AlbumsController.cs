@@ -3,11 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MusicSpot.Data;
+using MusicSpot.Data.Identity;
 using MusicSpot.Data.Models;
+using MusicSpot.Infrastructure.Extensions;
 using MusicSpot.Models.Albums;
 using MusicSpot.Models.Tracks;
 
@@ -67,31 +70,31 @@ namespace MusicSpot.Controllers
         }
 
         // GET: Albums/Create
+        [Authorize]
         public IActionResult Create()
         {
-            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Name");
+            var userId = User.Id();
+
+            ViewData["ArtistId"] = new SelectList(_context.Artists.Where(x=>x.UserId == userId), "Id", "Name");
             return View();
         }
 
         // POST: Albums/Create
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public IActionResult Create(CreateAlbumFormModel album)
         {
             var currArtist = _context.Artists.FirstOrDefault(x => x.Id == album.ArtistId);
 
-            //var tracks = _context.Tracks
-            //    .Where(t => t.AlbumId == album.Id)
-            //    .OrderBy(t => t.Id)
-            //    .Select(t => new CreateTrackFormModel
-            //    {
-            //        Name = t.Name,
-            //        Duration = t.Duration,
-            //    }).ToList();
+            
+            //var userId = User.Id();
 
-
-            // album.Tracks = tracks;
+            //if (currArtist.UserId != userId)
+            //{
+            //    return RedirectToAction(nameof(Create));
+            //}
 
             var currAlbum = new Album
             {
@@ -103,7 +106,7 @@ namespace MusicSpot.Controllers
                 MediaCondition = album.MediaCondition,
                 SleeveCondition = album.SleeveCondition,
                 Notes = album.Notes,
-                Artist = _context.Artists.FirstOrDefault(x=>x.Name == album.Artist),
+                //Artist = _context.Artists.FirstOrDefault(x=>x.Name == album.Artist),
                 ArtistId = currArtist.Id,
 
             };
@@ -208,6 +211,7 @@ namespace MusicSpot.Controllers
         }
 
         // POST: Albums/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)

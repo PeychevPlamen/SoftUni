@@ -3,11 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MusicSpot.Data;
 using MusicSpot.Data.Models;
+using MusicSpot.Infrastructure.Extensions;
 using MusicSpot.Models.Tracks;
 
 namespace MusicSpot.Controllers
@@ -22,6 +24,7 @@ namespace MusicSpot.Controllers
         }
 
         // GET: Tracks
+        [Authorize]
         public IActionResult Index()
         {
             var musicSpotDbContext = _context.Tracks.Include(t => t.Album);
@@ -29,6 +32,7 @@ namespace MusicSpot.Controllers
         }
 
         // GET: Tracks/Details/5
+        [Authorize]
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -48,15 +52,20 @@ namespace MusicSpot.Controllers
         }
 
         // GET: Tracks/Create
+        [Authorize]
         public IActionResult Create()
         {
-            ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Name");
+            var userId = User.Id();
+            var artistId = _context.Artists.Where(x => x.UserId == userId).FirstOrDefault().Id;
+
+            ViewData["AlbumId"] = new SelectList(_context.Albums.Where(x => x.ArtistId == artistId), "Id", "Name");
             return View();
         }
 
         // POST: Tracks/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(CreateTrackFormModel track)
@@ -88,6 +97,7 @@ namespace MusicSpot.Controllers
         }
 
         // GET: Tracks/Edit/5
+        [Authorize]
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -105,7 +115,8 @@ namespace MusicSpot.Controllers
         }
 
         // POST: Tracks/Edit/5
-       
+
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("Id,Name,Duration,AlbumId")] Track track)
@@ -140,6 +151,7 @@ namespace MusicSpot.Controllers
         }
 
         // GET: Tracks/Delete/5
+        [Authorize]
         public IActionResult Delete(int? id)
         {
             if (id == null)
@@ -159,6 +171,7 @@ namespace MusicSpot.Controllers
         }
 
         // POST: Tracks/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
@@ -174,9 +187,10 @@ namespace MusicSpot.Controllers
             return _context.Tracks.Any(e => e.Id == id);
         }
 
+        [Authorize]
         public IActionResult AllTracks(int id)
         {
-            var albumTracks = _context.Tracks.Where(x=>x.AlbumId == id).AsQueryable();
+            var albumTracks = _context.Tracks.Where(x => x.AlbumId == id).AsQueryable();
             return View(albumTracks);
         }
     }

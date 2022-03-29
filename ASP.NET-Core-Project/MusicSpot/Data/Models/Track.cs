@@ -18,6 +18,7 @@ namespace MusicSpot.Data.Models
 
         [Required]
         [ForeignKey(nameof(Album))]
+        [Display(Name = "Album Name")]
         public int AlbumId { get; set; }
 
         public Album Album { get; set; }

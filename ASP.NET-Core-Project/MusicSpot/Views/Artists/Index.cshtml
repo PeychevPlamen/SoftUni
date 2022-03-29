@@ -25,6 +25,10 @@
         </tr>
     </thead>
     <tbody>
+        @*@if (User.Identity.IsAuthenticated)
+        {
+            
+        }*@
         @foreach (var item in Model)
         {
             <tr>
