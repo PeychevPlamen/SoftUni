@@ -275,7 +275,7 @@ namespace MusicSpot.Data.Migrations
 
                     b.HasIndex("ArtistId");
 
-                    b.ToTable("Albums");
+                    b.ToTable("Albums", (string)null);
                 });
 
             modelBuilder.Entity("MusicSpot.Data.Models.Artist", b =>
@@ -304,7 +304,7 @@ namespace MusicSpot.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Artists");
+                    b.ToTable("Artists", (string)null);
                 });
 
             modelBuilder.Entity("MusicSpot.Data.Models.Track", b =>
@@ -331,7 +331,7 @@ namespace MusicSpot.Data.Migrations
 
                     b.HasIndex("AlbumId");
 
-                    b.ToTable("Tracks");
+                    b.ToTable("Tracks", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

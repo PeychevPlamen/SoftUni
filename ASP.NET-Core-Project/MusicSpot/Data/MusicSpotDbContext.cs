@@ -35,26 +35,13 @@ namespace MusicSpot.Data
                 .HasForeignKey(a => a.AlbumId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //builder
-            //    .Entity<User>()
-            //    .HasMany(a => a.Artists)
-            //    .WithOne()
-            //    .HasForeignKey(a => a.UserId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
+           
             builder
                 .Entity<Artist>()
                 .HasOne(a => a.User)
                 .WithMany(a => a.Artists)
                 .HasForeignKey(a => a.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            //builder
-            //    .Entity<Artist>()
-            //    .HasMany(a => a.Albums)
-            //    .WithOne(a => a.Artist)
-            //    .HasForeignKey()
-            //    .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);
         }

@@ -18,7 +18,7 @@ builder.Services
     .AddDefaultIdentity<User>(options =>
     {
         options.SignIn.RequireConfirmedAccount = true;
-        options.Password.RequireDigit = true;
+        options.Password.RequireDigit = false;
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireLowercase = false;
         options.Password.RequireUppercase = false;
@@ -37,6 +37,7 @@ app.PrepareDatabase();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage(); // new added 30.03
     app.UseMigrationsEndPoint();
 }
 else
@@ -53,6 +54,10 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "Area",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
