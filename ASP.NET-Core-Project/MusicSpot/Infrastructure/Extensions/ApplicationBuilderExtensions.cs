@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MusicSpot.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MusicSpot.Data;
 using MusicSpot.Data.Identity;
 
 using static MusicSpot.Areas.Admin.AdminConstants;
@@ -19,7 +19,7 @@ namespace MusicSpot.Infrastructure.Extensions
             MigrateDatabase(services);
 
             SeedAdministrator(services);
-            
+
             return app;
         }
 
@@ -31,7 +31,7 @@ namespace MusicSpot.Infrastructure.Extensions
         }
 
 
-        private static void SeedAdministrator(IServiceProvider services)
+        public static void SeedAdministrator(IServiceProvider services)
         {
             var userManager = services.GetRequiredService<UserManager<User>>();
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
@@ -48,17 +48,19 @@ namespace MusicSpot.Infrastructure.Extensions
 
                     await roleManager.CreateAsync(role);
 
-                    const string adminEmail = "admin@abv.com";
+                    const string adminEmail = "admin@abv.bg";
                     const string adminPassword = "123456";
 
                     var user = new User
                     {
                         Email = adminEmail,
                         UserName = adminEmail,
-                        FirstName = "Admin",
-                        LastName = "Admin"
+                        LockoutEnabled = false,
+                        PhoneNumberConfirmed = true,
+                        EmailConfirmed = true,
                     };
 
+                    
                     await userManager.CreateAsync(user, adminPassword);
 
                     await userManager.AddToRoleAsync(user, role.Name);

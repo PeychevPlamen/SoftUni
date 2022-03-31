@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MusicSpot.Data;
 using MusicSpot.Data.Identity;
@@ -17,7 +18,7 @@ builder.Services
 builder.Services
     .AddDefaultIdentity<User>(options =>
     {
-        options.SignIn.RequireConfirmedAccount = true;
+        options.SignIn.RequireConfirmedAccount = false;
         options.Password.RequireDigit = false;
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireLowercase = false;
@@ -27,8 +28,15 @@ builder.Services
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<MusicSpotDbContext>();
 
+builder.Services.AddAutoMapper(typeof(Program));
+
+builder.Services.AddMemoryCache();
+
 builder.Services
-    .AddControllersWithViews();
+    .AddControllersWithViews(options =>
+    {
+        options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+    });
 
 var app = builder.Build();
 
@@ -37,7 +45,6 @@ app.PrepareDatabase();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage(); // new added 30.03
     app.UseMigrationsEndPoint();
 }
 else
