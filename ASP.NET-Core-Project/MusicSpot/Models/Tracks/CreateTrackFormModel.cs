@@ -6,6 +6,8 @@ namespace MusicSpot.Models.Tracks
 {
     public class CreateTrackFormModel
     {
+        //public int Id { get; set; }
+
         [Required]
         [MaxLength(TrackMaxNameLength)]
         public string Name { get; set; }
@@ -15,6 +17,7 @@ namespace MusicSpot.Models.Tracks
         public string Duration { get; set; }
 
         [Required]
+        [Display(Name = "Album Name")]
         public int AlbumId { get; set; }
     }
 }

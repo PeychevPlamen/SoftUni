@@ -1,8 +1,12 @@
 ﻿@model IEnumerable<MusicSpot.Data.Models.Track>
 
+
 @{
     ViewData["Title"] = "AllTracks";
+
+
 }
+
 
 <h1>Tracks</h1>
 
@@ -29,6 +33,7 @@
                     @Html.DisplayFor(modelItem => item.Duration)
                 </td>
             </tr>
+
         }
     </tbody>
 </table>

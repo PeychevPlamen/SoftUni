@@ -3,53 +3,45 @@
 @{
     ViewData["Title"] = "Albums";
 }
+<br />
 <form method="get">
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
         <label asp-for="SearchTerm"></label>
         <input asp-for="SearchTerm" class="form-control" placeholder="Album name, Year or Format">
     </div>
 </form>
-
-<h1>User Albums</h1>
+<br />
+<h1>My Albums</h1>
 
 <table class="table">
     <thead>
         <tr>
             <th>
                 Name
-                @*@Html.DisplayNameFor(model => model.Name)*@
             </th>
             <th>
                 ImageUrl
-                @*@Html.DisplayNameFor(model => model.ImageUrl)*@
             </th>
             <th>
                 Year
-                @*@Html.DisplayNameFor(model => model.Year)*@
             </th>
             <th>
                 Format
-                @*@Html.DisplayNameFor(model => model.Format)*@
             </th>
             <th>
                 MediaCondition
-                @*@Html.DisplayNameFor(model => model.MediaCondition)*@
             </th>
             <th>
                 SleeveCondition
-                @*@Html.DisplayNameFor(model => model.SleeveCondition)*@
             </th>
             <th>
                 Notes
-                @*@Html.DisplayNameFor(model => model.Notes)*@
             </th>
             <th>
                 Artist
-                @*@Html.DisplayNameFor(model => model.Artist)*@
             </th>
             <th>
                 Tracks
-                @* @Html.DisplayNameFor(model => model.Tracks)*@
             </th>
             <th></th>
         </tr>
@@ -63,7 +55,6 @@
                 </td>
                 <td>
                     <img src="@Html.Raw(item.ImageUrl)" class="img-thumbnail">
-                    @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Year)
@@ -84,12 +75,15 @@
                     @Html.DisplayFor(modelItem => item.Artist.Name)
                 </td>
                 <td>
-                    <a class="nav-link text-red" asp-area="" asp-controller="Tracks" asp-action="AllTracks" asp-route-id="@item.Id">All Tracks</a>
-                    @*@Html.DisplayFor(modelItem => item.Tracks.First))*@
+                    <a class="nav-link btn text-center" asp-area="" asp-controller="Tracks" asp-action="AllTracks" asp-route-id="@item.Id">All Tracks</a>
                 </td>
+                @* <td>
+                    <a class="nav-link btn text-center" asp-area="" asp-controller="Tracks" asp-action="Create" asp-route-id="@item.Id">Add Tracks</a>
+                    </td>*@
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-controller="Tracks" asp-action="Create" asp-route-id="@item.Id">Add Tracks</a> ||
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> ||
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> ||
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>

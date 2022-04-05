@@ -25,10 +25,29 @@ namespace MusicSpot.Controllers
 
         // GET: Tracks
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm)
         {
-            var musicSpotDbContext = _context.Tracks.Include(t => t.Album);
-            return View(await musicSpotDbContext.ToListAsync());
+            var userId = User.Id();
+            var albumId = _context.Albums.Where(x => x.Artist.UserId == userId).FirstOrDefault().Id;
+
+            var musicSpotDbContext = _context.Tracks.Where(x => x.AlbumId == albumId).AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                musicSpotDbContext = musicSpotDbContext.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                a.Album.Name.ToString().ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return View(new AllTracksViewModel
+            {
+                Tracks = musicSpotDbContext,
+                SearchTerm = searchTerm
+            });
+
+
+
+            //var musicSpotDbContext = _context.Tracks.Include(t => t.Album);
+            //return View(await musicSpotDbContext.ToListAsync());
         }
 
         // GET: Tracks/Details/5
@@ -54,12 +73,15 @@ namespace MusicSpot.Controllers
 
         // GET: Tracks/Create
         [Authorize]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(int? id)
         {
-            var userId = User.Id();
-            var artistId = _context.Artists.Where(x => x.UserId == userId).FirstOrDefault().Id;
+            //var userId = User.Id();
+            //var artistId = _context.Artists.Where(x => x.UserId == userId).FirstOrDefault().Id;
+            //var albumId = _context.Albums.Include(x=>x.Id);
 
-            ViewData["AlbumId"] = new SelectList(_context.Albums.Where(x => x.ArtistId == artistId), "Id", "Name");
+            //var album = _context.Albums.SingleOrDefault(a => a.Id == id);
+
+            ViewData["AlbumId"] = new SelectList(_context.Albums.Where(x => x.Id == id), "Id", "Name");
             return View();
         }
 
@@ -91,7 +113,7 @@ namespace MusicSpot.Controllers
             {
                 _context.Add(currTrack);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Create));
             }
             ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Name", track.AlbumId);
             return View(track);

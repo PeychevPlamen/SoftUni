@@ -27,16 +27,24 @@ namespace MusicSpot.Controllers
 
         // GET: Artists
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm)
         {
             var userId = User.Id();
-            //var userId = _context.Users.Select(u => u.Id).FirstOrDefault();
 
             if (userId != null)
             {
                 var currArtist = await _context.Artists.Where(a => a.UserId == userId).ToListAsync();
 
-                return View(currArtist);
+                if (!string.IsNullOrWhiteSpace(searchTerm))
+                {
+                    currArtist = currArtist.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).ToList();
+                }
+
+                return View(new AllArtistViewModel
+                {
+                    Artists = currArtist,
+                    SearchTerm = searchTerm,
+                });
             }
 
             return View(_context.Artists.AsQueryable());
@@ -76,7 +84,6 @@ namespace MusicSpot.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateArtistFormModel artist)
         {
-            //var userId = await _context.Users.Select(u => u.Id).FirstOrDefaultAsync();
             var userId = User.Id();
 
             var currArtist = new Artist

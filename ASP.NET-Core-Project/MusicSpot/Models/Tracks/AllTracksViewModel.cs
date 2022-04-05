@@ -1,15 +1,16 @@
 ﻿using MusicSpot.Data.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace MusicSpot.Models.Tracks
 {
     public class AllTracksViewModel
     {
-        
-        //public string Name { get; set; }
+        public IEnumerable<string> TrackName { get; set; }
 
-        
-        //public string Duration { get; set; }
+        [Display(Name = "Search")]
+        public string SearchTerm { get; set; }
 
-        //public int AlbumId { get; set; }
+
+        public IEnumerable<Track> Tracks { get; set; }
     }
 }

@@ -17,5 +17,6 @@ namespace MusicSpot.Data.Identity
         public string? LastName { get; set; }
 
         public ICollection<Artist> Artists { get; set; } = new List<Artist>();
+
     }
 }

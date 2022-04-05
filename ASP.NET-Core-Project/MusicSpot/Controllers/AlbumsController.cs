@@ -29,14 +29,10 @@ namespace MusicSpot.Controllers
         [Authorize]
         public async Task<IActionResult> Index(string searchTerm)
         {
-            var musicSpotDbContext = _context.Albums.Include(a => a.Artist).AsQueryable();
-            //return View(musicSpotDbContext.ToList());
+            var userId = User.Id();
 
-            //var artistAlbums = _context.Albums
-            //    .Where(x => x.ArtistId == id)
-            //    .Include(a => a.Artist)
-            //    .AsQueryable();
-
+            var musicSpotDbContext = _context.Albums.Where(x=>x.Artist.UserId == userId).Include(a => a.Artist).AsQueryable();
+            
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 musicSpotDbContext = musicSpotDbContext.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()) ||
