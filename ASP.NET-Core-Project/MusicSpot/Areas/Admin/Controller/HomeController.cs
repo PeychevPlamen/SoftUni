@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MusicSpot.Areas.Admin.Controllers;
 using MusicSpot.Data;
+using MusicSpot.Data.Models;
+using MusicSpot.Infrastructure.Extensions;
+using MusicSpot.Models.Artists;
 
 namespace MusicSpot.Areas.Admin.Controller
 {
@@ -15,12 +20,19 @@ namespace MusicSpot.Areas.Admin.Controller
 
         public async Task<IActionResult> Index()
         {
-            //var artists = _context.Artists.ToList();
-            //var users = _context.Users.ToList();
-            ////return View(_context.Artists.Select(x=>x.Name).AsQueryable());
-            //return View(_context.Users.Select(u => u.UserName).AsQueryable());
-            return View();
-        }
+            
+            if (User.IsAdmin())
+            {
+                var currArtist = await _context.Artists.ToListAsync();
 
+                return View(new AllArtistViewModel
+                {
+                    Artists = currArtist,
+                });
+            }
+
+            return View(_context.Artists.AsQueryable());
+        }
+        
     }
 }

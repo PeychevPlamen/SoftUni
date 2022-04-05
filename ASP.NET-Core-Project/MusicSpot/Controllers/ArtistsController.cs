@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MusicSpot.Areas.Admin.Controllers;
 using MusicSpot.Data;
 using MusicSpot.Data.Models;
 using MusicSpot.Infrastructure.Extensions;
@@ -127,6 +128,8 @@ namespace MusicSpot.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditArtistFormModel artist)
         {
+            var userID = _context.Artists.Select(a => a.UserId).FirstOrDefault(); // new added admin can edit artist
+
             if (id != artist.Id)
             {
                 return NotFound();
@@ -137,6 +140,7 @@ namespace MusicSpot.Controllers
                 Id = artist.Id,
                 Name = artist.Name,
                 Genre = artist.Genre,
+                UserId = userID
             };
 
             if (ModelState.IsValid)
@@ -157,7 +161,15 @@ namespace MusicSpot.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                if (!User.IsAdmin())
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return Ok(); // not working properly
+                }
             }
             return View(artist);
         }
