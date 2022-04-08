@@ -75,19 +75,12 @@ namespace MusicSpot.Controllers
         [Authorize]
         public async Task<IActionResult> Create(int? id)
         {
-            //var userId = User.Id();
-            //var artistId = _context.Artists.Where(x => x.UserId == userId).FirstOrDefault().Id;
-            //var albumId = _context.Albums.Include(x=>x.Id);
-
-            //var album = _context.Albums.SingleOrDefault(a => a.Id == id);
 
             ViewData["AlbumId"] = new SelectList(_context.Albums.Where(x => x.Id == id), "Id", "Name");
             return View();
         }
 
         // POST: Tracks/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -31,8 +31,8 @@ namespace MusicSpot.Controllers
         {
             var userId = User.Id();
 
-            var musicSpotDbContext = _context.Albums.Where(x=>x.Artist.UserId == userId).Include(a => a.Artist).AsQueryable();
-            
+            var musicSpotDbContext = _context.Albums.Where(x => x.Artist.UserId == userId).Include(a => a.Artist).AsQueryable();
+
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 musicSpotDbContext = musicSpotDbContext.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()) ||
@@ -105,19 +105,16 @@ namespace MusicSpot.Controllers
                 MediaCondition = album.MediaCondition,
                 SleeveCondition = album.SleeveCondition,
                 Notes = album.Notes,
-                //Artist = _context.Artists.FirstOrDefault(x=>x.Name == album.Artist),
                 ArtistId = currArtist.Id,
 
             };
 
             await _context.Albums.AddAsync(currAlbum);
 
-            //currArtist.Albums.Add(currAlbum);
-
             if (ModelState.IsValid)
             {
                 await _context.AddAsync(currAlbum);
-               
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
