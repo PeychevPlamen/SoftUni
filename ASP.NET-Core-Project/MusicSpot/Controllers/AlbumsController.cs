@@ -87,14 +87,6 @@ namespace MusicSpot.Controllers
         {
             var currArtist = await _context.Artists.FirstOrDefaultAsync(x => x.Id == album.ArtistId);
 
-
-            //var userId = User.Id();
-
-            //if (currArtist.UserId != userId)
-            //{
-            //    return RedirectToAction(nameof(Create));
-            //}
-
             var currAlbum = new Album
             {
                 Id = album.Id,

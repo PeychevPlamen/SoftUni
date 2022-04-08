@@ -79,7 +79,6 @@ namespace MusicSpot.Controllers
         }
 
         // POST: Artists/Create
-
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -168,7 +167,7 @@ namespace MusicSpot.Controllers
                 }
                 else
                 {
-                    return Ok(); // not working properly
+                    return RedirectToAction("Index", "Admin", new { area = "Home" });
                 }
             }
             return View(artist);

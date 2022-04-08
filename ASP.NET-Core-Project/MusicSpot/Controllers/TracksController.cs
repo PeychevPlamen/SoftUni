@@ -45,9 +45,6 @@ namespace MusicSpot.Controllers
             });
 
 
-
-            //var musicSpotDbContext = _context.Tracks.Include(t => t.Album);
-            //return View(await musicSpotDbContext.ToListAsync());
         }
 
         // GET: Tracks/Details/5
@@ -95,10 +92,7 @@ namespace MusicSpot.Controllers
                 AlbumId = currAlbum.Id
             };
 
-
-            //_context.Tracks.Add(currTrack);
-            //var albumTracks = _context.Albums.Where(x => x.Id == track.AlbumId).Select(x => x.Tracks).ToList();
-
+                       
             currAlbum.Tracks.Add(currTrack);
 
 
