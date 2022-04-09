@@ -8,7 +8,7 @@
 <form method="get">
     <div class="form-group col-md-4 mt-3 mb-3">
         <label asp-for="SearchTerm"></label>
-        <input asp-for="SearchTerm" class="form-control" placeholder="Album name, Year or Format">
+        <input asp-for="SearchTerm" id="textId" class="form-control" placeholder="Search...">
     </div>
 </form>
 
@@ -56,3 +56,4 @@
 <div class="form-group btn btn-primary">
     <a class="text-white text-decoration-none" asp-controller="Albums" asp-action="Index">Back To Albums</a>
 </div>
+<script src="~/js/site.js" asp-append-version="true"></script>

@@ -8,6 +8,7 @@ using MusicSpot.Data;
 using MusicSpot.Data.Identity;
 using MusicSpot.Data.Models;
 using MusicSpot.Data.Repositories;
+using MyTested.AspNetCore.Mvc;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
@@ -41,17 +42,6 @@ namespace MusicSpot.Test
             Assert.Pass();
         }
 
-        [Test]
-        public void Test2()
-        {
-            var currUser = new User
-            {
-                FirstName = "Joro"
-            };
-
-
-
-        }
 
         [TearDown]
         public void TearDown()
