@@ -42,7 +42,7 @@ namespace MusicSpot.Controllers
 
             return View(new AllAlbumsViewModel
             {
-                Albums = musicSpotDbContext,
+                Albums = musicSpotDbContext.OrderBy(a=>a.Artist.Name),
                 SearchTerm = searchTerm
             });
         }
@@ -238,7 +238,7 @@ namespace MusicSpot.Controllers
 
             return View(new AllAlbumsViewModel
             {
-                Albums = artistAlbums,
+                Albums = artistAlbums.OrderByDescending(a=>a.Year),
                 SearchTerm = searchTerm
             });
         }
