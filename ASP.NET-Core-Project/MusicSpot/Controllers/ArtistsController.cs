@@ -12,6 +12,7 @@ using MusicSpot.Areas.Admin.Controllers;
 using MusicSpot.Data;
 using MusicSpot.Data.Models;
 using MusicSpot.Infrastructure.Extensions;
+using MusicSpot.Models;
 using MusicSpot.Models.Albums;
 using MusicSpot.Models.Artists;
 
@@ -43,7 +44,7 @@ namespace MusicSpot.Controllers
 
                 return View(new AllArtistViewModel
                 {
-                    Artists = currArtist,
+                    Artists = currArtist.OrderBy(x => x.Name),
                     SearchTerm = searchTerm,
                 });
             }
@@ -93,6 +94,12 @@ namespace MusicSpot.Controllers
                 UserId = userId,
             };
 
+            if (_context.Artists.Select(a => a.Name).Contains(artist.Name))
+            {
+                ModelState.AddModelError("name", "Artist already exists.");
+
+                return View(currArtist);
+            }
 
             if (ModelState.IsValid)
             {
@@ -100,7 +107,9 @@ namespace MusicSpot.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(artist);
+
         }
 
         // GET: Artists/Edit/5
