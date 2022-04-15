@@ -28,3 +28,11 @@ body {
     max-height: 99%;
     opacity: 0.9;
 }
+
+.row .form-floating {
+    margin-bottom: 10px;
+}
+
+.btn btn-primary {
+    margin-top: 10px;
+}

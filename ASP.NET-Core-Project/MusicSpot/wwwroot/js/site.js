@@ -3,4 +3,9 @@
 
 // Write your JavaScript code.
 
-document.getElementById('textId').value = '';
+function clearSearch() {
+
+    document.getElementById('textId').value = '';
+}
+
+window.onload = clearSearch();
