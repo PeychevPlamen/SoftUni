@@ -36,3 +36,10 @@ body {
 .btn btn-primary {
     margin-top: 10px;
 }
+
+.img-thumbnail {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 5px;
+    width: 150px;
+}

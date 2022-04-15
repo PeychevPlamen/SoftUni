@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Albums";
 }
+
 <form method="get">
     <div class="form-group col-md-4">
         <label asp-for="SearchTerm"></label>
@@ -57,7 +58,7 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    <img src="@Html.Raw(item.ImageUrl)" class="img-thumbnail ">
+                    <img src="@Html.Raw(item.ImageUrl)" class="img-thumbnail">
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Year)
@@ -82,13 +83,15 @@
                     @*@Html.DisplayFor(modelItem => item.Tracks.First))*@
                 </td>
                 <td class="btn-group-vertical text-nowrap">
-                    <a class="btn btn-info m-1 " asp-controller="Tracks" asp-action="Create" asp-route-id="@item.Id">Add Tracks</a>
-                    <a class="btn btn-success m-1" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <a class="btn btn-warning m-1" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                    <a class="btn btn-danger m-1" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="btn btn-info m-1 btn-sm" asp-controller="Tracks" asp-action="Create" asp-route-id="@item.Id">Add Tracks</a>
+                    <a class="btn btn-success m-1 btn-sm" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-warning m-1 btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-danger m-1 btn-sm" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
 <script src="~/js/site.js" asp-append-version="true"></script>
+

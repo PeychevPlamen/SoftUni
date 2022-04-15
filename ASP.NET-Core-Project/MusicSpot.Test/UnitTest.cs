@@ -1,5 +1,6 @@
 
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -37,11 +38,27 @@ namespace MusicSpot.Test
         }
 
         [Test]
-        public void Test1()
+        public void AlbumControllerReturnNull()
         {
-            Assert.Pass();
-        }
+            var albumController = new AlbumsController(null);
 
+            var result = albumController.HttpContext;
+
+            Assert.IsNull(result);
+
+        }
+        //[Test]
+        //public void Test2()
+        //{
+        //    var currUser = new User { Id= "d9c0aba7-452c-4bfb-96a2-9d583726a05a", FirstName = "Pesho", LastName = "Peshov", Email = "pesho@abv.bg" };
+
+        //    var user = dbContext.CreateContext().Users.Add(currUser);
+
+
+
+        //   Assert.AreEqual(user, "d9c0aba7-452c-4bfb-96a2-9d583726a05a");
+
+        //}
 
         [TearDown]
         public void TearDown()
