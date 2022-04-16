@@ -29,7 +29,7 @@ namespace MusicSpot.Controllers
 
         // GET: Artists
         [Authorize]
-        public async Task<IActionResult> Index(string searchTerm)
+        public async Task<IActionResult> Index(string searchTerm, int p = 1, int s = 5)
         {
             var userId = User.Id();
 
@@ -44,8 +44,15 @@ namespace MusicSpot.Controllers
 
                 return View(new AllArtistViewModel
                 {
-                    Artists = currArtist.OrderBy(x => x.Name),
+                    Artists = currArtist
+                                  .OrderBy(x => x.Name)
+                                  .Skip(p * s - s)
+                                  .Take(s)
+                                  .ToList(),
                     SearchTerm = searchTerm,
+                    PageNum = p,
+                    PageSize = s,
+                    TotalArtists = currArtist.Count()
                 });
             }
 

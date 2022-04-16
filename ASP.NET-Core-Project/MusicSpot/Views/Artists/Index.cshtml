@@ -63,4 +63,10 @@
         }
     </tbody>
 </table>
+<paging page-no="@Model.PageNum"
+        page-size="@Model.PageSize"
+        total-records="@Model.TotalArtists"
+        page-size-dropdown-items="5-25-50">
+</paging>
+
 <script src="~/js/site.js" asp-append-version="true"></script>

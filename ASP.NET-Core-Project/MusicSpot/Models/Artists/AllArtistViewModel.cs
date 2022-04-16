@@ -11,5 +11,11 @@ namespace MusicSpot.Models.Artists
 
         public IEnumerable<Data.Models.Artist> Artists { get; set; }
 
+        public int PageNum { get; set; }
+
+        public int TotalArtists { get; set; }
+
+        public int PageSize { get; set; }
+
     }
 }
