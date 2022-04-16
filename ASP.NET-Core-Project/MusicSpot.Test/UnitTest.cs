@@ -38,6 +38,17 @@ namespace MusicSpot.Test
         }
 
         [Test]
+        public void HomeControllerReturnNull()
+        {
+            var homeController = new HomeController(null);
+
+            var result = homeController.HttpContext;
+
+            Assert.IsNull(result);
+
+        }
+
+        [Test]
         public void AlbumControllerReturnNull()
         {
             var albumController = new AlbumsController(null);
@@ -47,18 +58,108 @@ namespace MusicSpot.Test
             Assert.IsNull(result);
 
         }
-        //[Test]
-        //public void Test2()
-        //{
-        //    var currUser = new User { Id= "d9c0aba7-452c-4bfb-96a2-9d583726a05a", FirstName = "Pesho", LastName = "Peshov", Email = "pesho@abv.bg" };
 
-        //    var user = dbContext.CreateContext().Users.Add(currUser);
+        [Test]
+        public void TestUsers()
+        {
+            var currUser = new User { FirstName = "Pesho", LastName = "Peshov", Email = "pesho@abv.bg" };
 
+            var user = dbContext.CreateContext().Users;
 
+            Assert.IsNotNull(user);
+            Assert.AreNotEqual(currUser, user);
+        }
 
-        //   Assert.AreEqual(user, "d9c0aba7-452c-4bfb-96a2-9d583726a05a");
+        [Test]
+        public void TestArtistIsEqual()
+        {
+            var artist = dbContext.CreateContext().Artists;
 
-        //}
+            var currArtist = new Artist
+            {
+                Name = "Abba",
+                Genre = "Pop"
+            };
+
+            Assert.AreNotEqual(currArtist, artist);
+            Assert.IsNotNull(artist);
+        }
+
+        [Test]
+        public void ArtistValidDb()
+        {
+            var artist = new Artist { Name = "Abba" };
+
+            dbContext.CreateContext().Artists.Add(artist);
+
+            Assert.IsNotNull(dbContext);
+            Assert.AreNotEqual(dbContext.Equals(artist), artist);
+
+        }
+
+        [Test]
+        public void ArtistControllerReturnNull()
+        {
+            var artistController = new ArtistsController(null);
+
+            var result = artistController.HttpContext;
+
+            Assert.IsNull(result);
+
+        }
+
+        [Test]
+        public void TracksControllerReturnNull()
+        {
+            var tracksController = new TracksController(null);
+
+            var result = tracksController.HttpContext;
+
+            Assert.IsNull(result);
+
+        }
+
+        [Test]
+        public void TracksReturnResult()
+        {
+            var track = new Track { Name = "track1" };
+
+            var tracksController = dbContext.CreateContext().Tracks.Add(track);
+
+            var result = tracksController.Context;
+
+            Assert.IsNotNull(result);
+            Assert.AreNotEqual(dbContext.Equals(track), track);
+
+        }
+
+        [Test]
+        public void AlbumsDbReturnResult()
+        {
+            var album = new Album { Name = "album" };
+
+            var albumController = dbContext.CreateContext().Albums.Add(album);
+            var albumId = dbContext.CreateContext().Albums.CountAsync();
+
+            var result = albumController.Context;
+
+            Assert.IsNotNull(result);
+            Assert.AreNotEqual(dbContext.Equals(album), album);
+            Assert.AreEqual(albumId.Id, 1);
+
+        }
+
+        [Test]
+        public void UserReturnResult()
+        {
+            var user = new User { UserName = "Pesho" };
+
+            dbContext.CreateContext().Users.Add(user);
+
+            Assert.IsNotNull(dbContext);
+            Assert.AreNotEqual(dbContext.Equals(user), user);
+
+        }
 
         [TearDown]
         public void TearDown()
