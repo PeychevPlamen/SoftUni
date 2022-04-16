@@ -12,5 +12,12 @@ namespace MusicSpot.Models.Albums
 
         public IEnumerable<Data.Models.Album> Albums { get; set; }
 
+
+        public int PageNum { get; set; }
+
+        public int TotalRec { get; set; }
+
+        public int PageSize { get; set; }
+
     }
 }

@@ -7,7 +7,7 @@
 <form method="get">
     <div class="form-group col-md-3">
         <label asp-for="SearchTerm"></label>
-        <input asp-for="SearchTerm" id="textId" class="form-control" placeholder="Album name, Year or Format">
+        <input asp-for="SearchTerm" id="textId" class="form-control" placeholder="Album Name, Year or Format">
     </div>
 </form>
 <br />
@@ -90,5 +90,9 @@
         }
     </tbody>
 </table>
-
+<paging page-no="@Model.PageNum"
+        page-size="@Model.PageSize"
+        total-records="@Model.TotalRec"
+        page-size-dropdown-items="5-25-50">
+</paging>
 <script src="~/js/site.js" asp-append-version="true"></script>

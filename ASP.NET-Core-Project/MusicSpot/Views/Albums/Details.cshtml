@@ -20,7 +20,7 @@
             @Html.DisplayNameFor(model => model.ImageUrl)
         </dt>
         <dd class="col-sm-10">
-            <img src="@Html.Raw(Model.ImageUrl)">
+            <img src="@Html.Raw(Model.ImageUrl)" class="img-thumbnail">
             @*@Html.DisplayFor(model => model.ImageUrl)*@
         </dd>
         <dt class="col-sm-2">
@@ -68,6 +68,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary mt-2" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+    <a class="btn btn-primary mt-2" asp-action="Index">Back to List</a>
 </div>

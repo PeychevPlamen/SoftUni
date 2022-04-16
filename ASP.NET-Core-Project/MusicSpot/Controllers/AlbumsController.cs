@@ -27,22 +27,29 @@ namespace MusicSpot.Controllers
 
         // GET: Albums
         [Authorize]
-        public async Task<IActionResult> Index(string searchTerm)
+        public async Task<IActionResult> Index(string searchTerm, int p = 1, int s = 5)
         {
             var userId = User.Id();
 
-            var musicSpotDbContext = _context.Albums.Where(x => x.Artist.UserId == userId).Include(a => a.Artist).AsQueryable();
+            var currAlbums = _context.Albums.Where(x => x.Artist.UserId == userId).Include(a => a.Artist).AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                musicSpotDbContext = musicSpotDbContext.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                currAlbums = currAlbums.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()) ||
                 a.Year.ToString().ToLower().Contains(searchTerm.ToLower()) ||
                 a.Format.ToLower().Contains(searchTerm.ToLower()));
             }
 
             return View(new AllAlbumsViewModel
             {
-                Albums = musicSpotDbContext.OrderBy(a=>a.Artist.Name),
+                Albums = currAlbums
+                                  .OrderBy(x => x.Artist.Name)
+                                  .Skip(p * s - s)
+                                  .Take(s)
+                                  .ToList(),
+                PageNum = p,
+                PageSize = s,
+                TotalRec = currAlbums.Count(),
                 SearchTerm = searchTerm
             });
         }
@@ -238,7 +245,7 @@ namespace MusicSpot.Controllers
 
             return View(new AllAlbumsViewModel
             {
-                Albums = artistAlbums.OrderByDescending(a=>a.Year),
+                Albums = artistAlbums.OrderByDescending(a => a.Year),
                 SearchTerm = searchTerm
             });
         }

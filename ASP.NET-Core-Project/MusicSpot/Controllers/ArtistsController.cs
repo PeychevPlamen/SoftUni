@@ -52,7 +52,7 @@ namespace MusicSpot.Controllers
                     SearchTerm = searchTerm,
                     PageNum = p,
                     PageSize = s,
-                    TotalArtists = currArtist.Count()
+                    TotalRec = currArtist.Count()
                 });
             }
 

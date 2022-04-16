@@ -13,7 +13,7 @@ namespace MusicSpot.Models.Artists
 
         public int PageNum { get; set; }
 
-        public int TotalArtists { get; set; }
+        public int TotalRec { get; set; }
 
         public int PageSize { get; set; }
 
