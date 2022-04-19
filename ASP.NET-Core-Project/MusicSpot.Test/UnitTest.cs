@@ -100,7 +100,7 @@ namespace MusicSpot.Test
         [Test]
         public void ArtistControllerReturnNull()
         {
-            var artistController = new ArtistsController(null);
+            var artistController = new ArtistsController(null, null);
 
             var result = artistController.HttpContext;
 

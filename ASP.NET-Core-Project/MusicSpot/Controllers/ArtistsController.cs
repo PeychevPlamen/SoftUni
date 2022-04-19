@@ -15,48 +15,55 @@ using MusicSpot.Infrastructure.Extensions;
 using MusicSpot.Models;
 using MusicSpot.Models.Albums;
 using MusicSpot.Models.Artists;
+using MusicSpot.Services.Artists;
 
 namespace MusicSpot.Controllers
 {
     public class ArtistsController : Controller
     {
         private readonly MusicSpotDbContext _context;
+        private readonly IArtistService _service;
 
-        public ArtistsController(MusicSpotDbContext context)
+        public ArtistsController(MusicSpotDbContext context, IArtistService service)
         {
             _context = context;
+            _service = service;
         }
 
         // GET: Artists
         [Authorize]
-        public async Task<IActionResult> Index(string searchTerm, int p = 1, int s = 5)
+        public async Task<IActionResult> Index(string userId, string searchTerm, int p = 1, int s = 5)
         {
-            var userId = User.Id();
+            //var userId = User.Id();
 
-            if (userId != null)
-            {
-                var currArtist = await _context.Artists.Where(a => a.UserId == userId).ToListAsync();
+            //if (userId != null)
+            //{
+            //    var currArtist = await _context.Artists.Where(a => a.UserId == userId).ToListAsync();
 
-                if (!string.IsNullOrWhiteSpace(searchTerm))
-                {
-                    currArtist = currArtist.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).ToList();
-                }
+            //    if (!string.IsNullOrWhiteSpace(searchTerm))
+            //    {
+            //        currArtist = currArtist.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).ToList();
+            //    }
 
-                return View(new AllArtistViewModel
-                {
-                    Artists = currArtist
-                                  .OrderBy(x => x.Name)
-                                  .Skip(p * s - s)
-                                  .Take(s)
-                                  .ToList(),
-                    SearchTerm = searchTerm,
-                    PageNum = p,
-                    PageSize = s,
-                    TotalRec = currArtist.Count()
-                });
-            }
+            //    return View(new AllArtistViewModel
+            //    {
+            //        Artists = currArtist
+            //                      .OrderBy(x => x.Name)
+            //                      .Skip(p * s - s)
+            //                      .Take(s)
+            //                      .ToList(),
+            //        SearchTerm = searchTerm,
+            //        PageNum = p,
+            //        PageSize = s,
+            //        TotalRec = currArtist.Count()
+            //    });
+            //}
 
-            return View(_context.Artists.AsQueryable());
+            //return View(_context.Artists.AsQueryable());
+
+            var model = await _service.AllArtists(userId, searchTerm, p, s);
+
+            return View(model);
         }
 
         // GET: Artists/Details
@@ -68,15 +75,17 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var artist = await _context.Artists
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var model = await _service.ArtistDetails(id);
 
-            if (artist == null)
+            //var artist = await _context.Artists
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (model == null)
             {
                 return NotFound();
             }
 
-            return View(artist);
+            return View(model);
         }
 
         // GET: Artists/Create

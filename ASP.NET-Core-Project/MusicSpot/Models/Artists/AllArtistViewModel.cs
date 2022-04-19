@@ -17,5 +17,6 @@ namespace MusicSpot.Models.Artists
 
         public int PageSize { get; set; }
 
+        public string? UserId { get; set; }
     }
 }
