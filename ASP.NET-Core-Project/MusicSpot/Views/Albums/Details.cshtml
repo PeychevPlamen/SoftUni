@@ -1,4 +1,5 @@
-﻿@model MusicSpot.Data.Models.Album
+﻿@*@model MusicSpot.Data.Models.Album*@
+@model DetailsAlbumFormModel
 
 @{
     ViewData["Title"] = "Details";
@@ -67,6 +68,7 @@
         </dd>
     </dl>
 </div>
+
 <div>
     <a class="btn btn-primary mt-2" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
     <a class="btn btn-primary mt-2" asp-action="Index">Back to List</a>

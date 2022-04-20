@@ -51,7 +51,7 @@ namespace MusicSpot.Test
         [Test]
         public void AlbumControllerReturnNull()
         {
-            var albumController = new AlbumsController(null);
+            var albumController = new AlbumsController(null, null, null);
 
             var result = albumController.HttpContext;
 

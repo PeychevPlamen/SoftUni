@@ -13,45 +13,33 @@ using MusicSpot.Data.Models;
 using MusicSpot.Infrastructure.Extensions;
 using MusicSpot.Models.Albums;
 using MusicSpot.Models.Tracks;
+using MusicSpot.Services.Albums;
+using MusicSpot.Services.Artists;
 
 namespace MusicSpot.Controllers
 {
     public class AlbumsController : Controller
     {
         private readonly MusicSpotDbContext _context;
+        private readonly IAlbumService _service;
+        private readonly IArtistService _artists;
 
-        public AlbumsController(MusicSpotDbContext context)
+        public AlbumsController(IArtistService artists,IAlbumService service, MusicSpotDbContext context)
         {
             _context = context;
+            _service = service;
+            _artists = artists;
         }
 
         // GET: Albums
         [Authorize]
-        public async Task<IActionResult> Index(string searchTerm, int p = 1, int s = 5)
+        public async Task<IActionResult> Index(int artistId, string searchTerm, int p = 1, int s = 5)
         {
             var userId = User.Id();
 
-            var currAlbums = _context.Albums.Where(x => x.Artist.UserId == userId).Include(a => a.Artist).AsQueryable();
+            var currAlbums = await _service.Index(userId, artistId, searchTerm, p, s);
 
-            if (!string.IsNullOrWhiteSpace(searchTerm))
-            {
-                currAlbums = currAlbums.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()) ||
-                a.Year.ToString().ToLower().Contains(searchTerm.ToLower()) ||
-                a.Format.ToLower().Contains(searchTerm.ToLower()));
-            }
-
-            return View(new AllAlbumsViewModel
-            {
-                Albums = currAlbums
-                                  .OrderBy(x => x.Artist.Name)
-                                  .Skip(p * s - s)
-                                  .Take(s)
-                                  .ToList(),
-                PageNum = p,
-                PageSize = s,
-                TotalRec = currAlbums.Count(),
-                SearchTerm = searchTerm
-            });
+            return View(currAlbums);
         }
 
         // GET: Albums/Details/5
@@ -63,9 +51,7 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var album = await _context.Albums
-                .Include(a => a.Artist)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var album = await _service.AlbumDetails(id);
 
             if (album == null)
             {
@@ -80,6 +66,8 @@ namespace MusicSpot.Controllers
         public async Task<IActionResult> Create()
         {
             var userId = User.Id();
+
+            
 
             ViewData["ArtistId"] = new SelectList(_context.Artists.Where(x => x.UserId == userId), "Id", "Name");
             return View();
@@ -199,9 +187,7 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var album = await _context.Albums
-                .Include(a => a.Artist)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var album = await _service.AlbumDetails(id);
 
             if (album == null)
             {
@@ -217,37 +203,24 @@ namespace MusicSpot.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var album = await _context.Albums.FindAsync(id);
-            _context.Albums.Remove(album);
-            _context.SaveChangesAsync();
+            var album = _service.Delete(id);
+            
             return RedirectToAction(nameof(Index));
         }
 
         private bool AlbumExists(int id)
         {
-            return _context.Albums.Any(e => e.Id == id);
+            return _service.AlbumExist(id);
         }
 
 
-        public IActionResult AllAlbums(int id, string searchTerm)
+        public async Task<IActionResult> AllAlbums(int id, string searchTerm, int p = 1, int s = 5)
         {
-            var artistAlbums = _context.Albums
-                .Where(x => x.ArtistId == id)
-                .Include(a => a.Artist)
-                .AsQueryable();
+           
+            var userId = User.Id();
+            var albums = await _service.AllAlbums(userId, id, searchTerm, p, s);
 
-            if (!string.IsNullOrWhiteSpace(searchTerm))
-            {
-                artistAlbums = artistAlbums.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()) ||
-                a.Year.ToString().ToLower().Contains(searchTerm.ToLower()) ||
-                a.Format.ToLower().Contains(searchTerm.ToLower()));
-            }
-
-            return View(new AllAlbumsViewModel
-            {
-                Albums = artistAlbums.OrderByDescending(a => a.Year),
-                SearchTerm = searchTerm
-            });
+            return View(albums);
         }
     }
 }

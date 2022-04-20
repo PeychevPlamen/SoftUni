@@ -48,7 +48,7 @@ namespace MusicSpot.Services.Artists
         public async Task<DetailsArtistFormModel> ArtistDetails(int? id)
         {
             var artist = await _context.Artists
-                         .FirstOrDefaultAsync(m => m.Id == id);
+                         .FirstOrDefaultAsync(m => m.Id == id); // or findAsync(id)
 
             var result = new DetailsArtistFormModel
             {

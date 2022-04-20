@@ -35,12 +35,7 @@ namespace MusicSpot.Models.Albums
 
         public string Notes { get; set; }
 
-        //public bool IsPublic { get; set; }
-
-        //public ICollection<CreateTrackFormModel> Tracks { get; set; }
-
-        // public string Artist { get; set; } // ??
-
+        
         [Display(Name = "Artist")]
         public int ArtistId { get; set; }
     }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MusicSpot.Data;
 using MusicSpot.Data.Identity;
 using MusicSpot.Infrastructure.Extensions;
+using MusicSpot.Services.Albums;
 using MusicSpot.Services.Artists;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,7 +34,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddMemoryCache();
 
-builder.Services.AddTransient<IArtistService, ArtistService>(); // add services
+builder.Services.AddTransient<IArtistService, ArtistService>();
+builder.Services.AddTransient<IAlbumService, AlbumService>();// add services
 
 builder.Services
     .AddControllersWithViews(options =>
