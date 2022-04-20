@@ -17,5 +17,7 @@ namespace MusicSpot.Models.Artists
         [MaxLength(GenreMaxLength)]
         public string Genre { get; set; }
 
+        public string? UserId { get; set; } // new added for service
+
     }
 }

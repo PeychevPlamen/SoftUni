@@ -21,12 +21,10 @@ namespace MusicSpot.Controllers
 {
     public class ArtistsController : Controller
     {
-        private readonly MusicSpotDbContext _context;
         private readonly IArtistService _service;
 
-        public ArtistsController(MusicSpotDbContext context, IArtistService service)
+        public ArtistsController(IArtistService service)
         {
-            _context = context;
             _service = service;
         }
 
@@ -34,34 +32,9 @@ namespace MusicSpot.Controllers
         [Authorize]
         public async Task<IActionResult> Index(string userId, string searchTerm, int p = 1, int s = 5)
         {
-            //var userId = User.Id();
+            var userID = User.Id();
 
-            //if (userId != null)
-            //{
-            //    var currArtist = await _context.Artists.Where(a => a.UserId == userId).ToListAsync();
-
-            //    if (!string.IsNullOrWhiteSpace(searchTerm))
-            //    {
-            //        currArtist = currArtist.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower())).ToList();
-            //    }
-
-            //    return View(new AllArtistViewModel
-            //    {
-            //        Artists = currArtist
-            //                      .OrderBy(x => x.Name)
-            //                      .Skip(p * s - s)
-            //                      .Take(s)
-            //                      .ToList(),
-            //        SearchTerm = searchTerm,
-            //        PageNum = p,
-            //        PageSize = s,
-            //        TotalRec = currArtist.Count()
-            //    });
-            //}
-
-            //return View(_context.Artists.AsQueryable());
-
-            var model = await _service.AllArtists(userId, searchTerm, p, s);
+            var model = await _service.AllArtists(userID, searchTerm, p, s);
 
             return View(model);
         }
@@ -76,9 +49,6 @@ namespace MusicSpot.Controllers
             }
 
             var model = await _service.ArtistDetails(id);
-
-            //var artist = await _context.Artists
-            //    .FirstOrDefaultAsync(m => m.Id == id);
 
             if (model == null)
             {
@@ -102,25 +72,12 @@ namespace MusicSpot.Controllers
         public async Task<IActionResult> Create(CreateArtistFormModel artist)
         {
             var userId = User.Id();
-
-            var currArtist = new Artist
-            {
-                Name = artist.Name,
-                Genre = artist.Genre,
-                UserId = userId,
-            };
-
-            if (_context.Artists.Select(a => a.Name).Contains(artist.Name))
-            {
-                ModelState.AddModelError("name", "Artist already exists.");
-
-                return View(currArtist);
-            }
+            artist.UserId = userId;
 
             if (ModelState.IsValid)
             {
-                await _context.AddAsync(currArtist);
-                await _context.SaveChangesAsync();
+                var artistId = _service.Create(artist.Name, artist.Genre, userId);
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -137,13 +94,16 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var artist = await _context.Artists.FindAsync(id);
+            var artist = await _service.ArtistDetails(id);
 
             if (artist == null)
             {
                 return NotFound();
             }
-            return View(artist);
+
+            var currArtist = new Artist { Name = artist.Name, Genre = artist.Genre };
+
+            return View(currArtist);
         }
 
         // POST: Artists/Edit/5
@@ -152,27 +112,24 @@ namespace MusicSpot.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditArtistFormModel artist)
         {
-            var userID = _context.Artists.Select(a => a.UserId).FirstOrDefault(); // new added admin can edit artist
 
             if (id != artist.Id)
             {
                 return NotFound();
             }
 
-            var currArtist = new Artist
+            var editedArtist = _service.Edit(id, artist.Name, artist.Genre);
+
+            if (!editedArtist)
             {
-                Id = artist.Id,
-                Name = artist.Name,
-                Genre = artist.Genre,
-                UserId = userID
-            };
+                return BadRequest();
+            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(currArtist);
-                    await _context.SaveChangesAsync();
+                    _service.Edit(artist.Id, artist.Name, artist.Genre);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -207,8 +164,7 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var artist = await _context.Artists
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var artist = await _service.ArtistDetails(id);
 
             if (artist == null)
             {
@@ -224,15 +180,14 @@ namespace MusicSpot.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var artist = _context.Artists.Find(id);
-            _context.Artists.Remove(artist);
-            await _context.SaveChangesAsync();
+            var artist = _service.Delete(id);
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool ArtistExists(int id)
         {
-            return _context.Artists.Any(e => e.Id == id);
+            return _service.ArtistExist(id);
         }
     }
 }

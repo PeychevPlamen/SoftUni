@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MusicSpot.Data;
 using MusicSpot.Data.Identity;
+using MusicSpot.Data.Models;
 using MusicSpot.Data.Repositories;
 using MusicSpot.Infrastructure.Extensions;
 using MusicSpot.Models.Artists;
@@ -19,9 +20,7 @@ namespace MusicSpot.Services.Artists
 
         public async Task<AllArtistViewModel> AllArtists(string UserId, string searchTerm, int p, int s)
         {
-            var userId = _context.Users.FirstOrDefault().Id;
-
-            var currArtist = await _context.Artists.Where(a => a.UserId == userId).ToListAsync();
+            var currArtist = await _context.Artists.Where(a => a.UserId == UserId).ToListAsync();
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -39,7 +38,7 @@ namespace MusicSpot.Services.Artists
                 PageNum = p,
                 PageSize = s,
                 TotalRec = currArtist.Count(),
-                UserId = userId
+                UserId = UserId
             };
 
             return result;
@@ -48,13 +47,8 @@ namespace MusicSpot.Services.Artists
 
         public async Task<DetailsArtistFormModel> ArtistDetails(int? id)
         {
-            //if (artistId == null)
-            //{
-            //    return NotFound();
-            //}
-
             var artist = await _context.Artists
-                .FirstOrDefaultAsync(m => m.Id == id);
+                         .FirstOrDefaultAsync(m => m.Id == id);
 
             var result = new DetailsArtistFormModel
             {
@@ -63,13 +57,79 @@ namespace MusicSpot.Services.Artists
                 Genre = artist.Genre
             };
 
-            //if (artist == null)
-            //{
-            //    return NotFound();
-            //}
-
             return result;
 
+        }
+
+        public bool ArtistExist(int artistId)
+        {
+            var artist = _context.Artists.Find(artistId);
+
+            if (artist == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public int Create(string name, string genre, string userId)
+        {
+            var newArtist = new Artist
+            {
+                Name = name,
+                Genre = genre,
+                UserId = userId
+            };
+
+            // Ако има вече съществуващ артист !!!!!!!
+
+            //if (_context.Artists.Select(a => a.Name).Contains(newArtist.Name))
+            //{
+
+            //    ModelState.AddModelError("name", "Artist already exists.");
+
+            //    throw new ArgumentException("Artist already exists.");
+            //}
+
+
+            _context.Artists.AddAsync(newArtist);
+            _context.SaveChangesAsync();
+
+            return newArtist.Id;
+
+        }
+
+        public bool Delete(int artistId)
+        {
+            var artist = _context.Artists.Find(artistId);
+
+            if (artist == null)
+            {
+                return false;
+            }
+
+            _context.Remove(artist);
+            _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public bool Edit(int artistId, string name, string genre)
+        {
+            var artistData = _context.Artists.Find(artistId);
+
+            if (artistData == null)
+            {
+                return false;
+            }
+
+            artistData.Name = name;
+            artistData.Genre = genre;
+
+            _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }
