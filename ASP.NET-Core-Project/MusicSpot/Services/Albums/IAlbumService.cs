@@ -6,13 +6,11 @@ namespace MusicSpot.Services.Albums
 {
     public interface IAlbumService
     {
-        Task<AllAlbumsViewModel> Index(string userId,int artistId, string searchTerm, int p, int s);
+        Task<AllAlbumsViewModel> Index(string userId, int artistId, string searchTerm, int p, int s);
 
         Task<AllAlbumsViewModel> AllAlbums(string userId, int artistId, string searchTerm, int p, int s);
 
         Task<DetailsAlbumFormModel> AlbumDetails(int? artistId);
-
-        //Task<AllArtistViewModel> Artists(string userId);
 
         int Create(
            string name,

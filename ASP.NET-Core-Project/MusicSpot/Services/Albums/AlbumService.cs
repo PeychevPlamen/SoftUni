@@ -145,11 +145,6 @@ namespace MusicSpot.Services.Albums
             return result;
         }
 
-        //public async Task<AllArtistViewModel> Artists(string userId)
-        //{
-        //    var artists = _context.Artists.Where(a => a.UserId == userId).AsQueryable();
-
-        //    return artists.ToList();
-        //}
+        
     }
 }
