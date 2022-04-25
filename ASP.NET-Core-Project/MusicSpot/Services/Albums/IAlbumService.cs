@@ -10,6 +10,9 @@ namespace MusicSpot.Services.Albums
 
         Task<AllAlbumsViewModel> AllAlbums(string userId, int artistId, string searchTerm, int p, int s);
 
+        Task<AllAlbumsViewModel> AlbumsList(string userId, int artistId);
+
+
         Task<DetailsAlbumFormModel> AlbumDetails(int? artistId);
 
         int Create(
@@ -31,10 +34,12 @@ namespace MusicSpot.Services.Albums
            string format,
            string mediaCondition,
            string sleeveCondition,
-           string notes);
+           string notes,
+           int artistId);
 
         bool Delete(int albumId);
 
         bool AlbumExist(int albumId);
+
     }
 }

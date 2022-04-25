@@ -31,6 +31,7 @@ namespace MusicSpot.Services.Albums
                 SleeveCondition = album.SleeveCondition,
                 Year = album.Year,
                 Artist = new Artist { Name = artist.Name },
+                ArtistId = artistId
             };
 
             return result;
@@ -100,9 +101,30 @@ namespace MusicSpot.Services.Albums
             return true;
         }
 
-        public bool Edit(int albumId, string name, string imageUrl, int year, string format, string mediaCondition, string sleeveCondition, string notes)
+        public bool Edit(int albumId, string name, string imageUrl, int year, string format, string mediaCondition, string sleeveCondition, string notes, int artistId)
         {
-            throw new NotImplementedException();
+            var albumData = _context.Albums.Find(albumId);
+
+            if (albumData == null)
+            {
+                return false;
+            }
+
+
+            albumData.Name = name;
+            albumData.ImageUrl = imageUrl;
+            albumData.Year = year;
+            albumData.Format = format;
+            albumData.MediaCondition = mediaCondition;
+            albumData.SleeveCondition = sleeveCondition;
+            albumData.Notes = notes;
+            albumData.ArtistId = artistId;
+
+            _context.Update(albumData);
+            _context.SaveChangesAsync();
+
+
+            return true;
         }
 
         public bool AlbumExist(int albumId)
@@ -145,6 +167,16 @@ namespace MusicSpot.Services.Albums
             return result;
         }
 
-        
+        public async Task<AllAlbumsViewModel> AlbumsList(string userId, int artistId)
+        {
+            var albums = await _context.Albums.Where(x => x.ArtistId == artistId).Include(x => x.Equals(userId)).ToListAsync();
+
+            var currAlbums = new AllAlbumsViewModel
+            {
+                Albums = albums
+            };
+            return currAlbums;
+        }
+
     }
 }

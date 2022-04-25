@@ -73,6 +73,13 @@ namespace MusicSpot.Services.Artists
             return true;
         }
 
+        //public async Task<ArtistsListFormModel> ArtistsList(string userId)
+        //{
+        //    var artists = await _context.Artists.Where(x => x.UserId == userId).ToListAsync();
+
+        //    return new ArtistsListFormModel { Artists = artists };
+        //}
+
         public int Create(string name, string genre, string userId)
         {
             var newArtist = new Artist
@@ -130,6 +137,13 @@ namespace MusicSpot.Services.Artists
             _context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<List<Artist>> ArtistsList(string userId)
+        {
+            var artists = await _context.Artists.Where(x => x.UserId == userId).ToListAsync();
+
+            return artists;
         }
     }
 }

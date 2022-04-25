@@ -20,13 +20,11 @@ namespace MusicSpot.Controllers
 {
     public class AlbumsController : Controller
     {
-        private readonly MusicSpotDbContext _context;
         private readonly IAlbumService _service;
         private readonly IArtistService _artists;
 
-        public AlbumsController(IArtistService artists,IAlbumService service, MusicSpotDbContext context)
+        public AlbumsController(IArtistService artists, IAlbumService service)
         {
-            _context = context;
             _service = service;
             _artists = artists;
         }
@@ -67,9 +65,10 @@ namespace MusicSpot.Controllers
         {
             var userId = User.Id();
 
-            
+            var artistList = _artists.ArtistsList(userId);
 
-            ViewData["ArtistId"] = new SelectList(_context.Artists.Where(x => x.UserId == userId), "Id", "Name");
+
+            ViewData["ArtistId"] = new SelectList(artistList.Result, "Id", "Name");
             return View();
         }
 
@@ -80,33 +79,28 @@ namespace MusicSpot.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateAlbumFormModel album)
         {
-            var currArtist = await _context.Artists.FirstOrDefaultAsync(x => x.Id == album.ArtistId);
+            var userId = User.Id();
 
-            var currAlbum = new Album
-            {
-                Id = album.Id,
-                Name = album.Name,
-                ImageUrl = album.ImageUrl,
-                Year = album.Year,
-                Format = album.Format,
-                MediaCondition = album.MediaCondition,
-                SleeveCondition = album.SleeveCondition,
-                Notes = album.Notes,
-                ArtistId = currArtist.Id,
-
-            };
-
-            await _context.Albums.AddAsync(currAlbum);
+            var artistList = _artists.ArtistsList(userId);
 
             if (ModelState.IsValid)
             {
-                await _context.AddAsync(currAlbum);
+                
+                var albumID = _service.Create(
+                    album.Name,
+                    album.ImageUrl,
+                    album.Year,
+                    album.Format,
+                    album.MediaCondition,
+                    album.SleeveCondition,
+                    album.Notes,
+                    album.ArtistId);
 
-                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Name", album.ArtistId);
+            ViewData["ArtistId"] = new SelectList(artistList.Result, "Id", "Name", album.ArtistId);
+
             return View(album);
         }
 
@@ -119,14 +113,20 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var album = await _context.Albums.FindAsync(id);
+            var album = await _service.AlbumDetails(id);
+
+            var userId = User.Id();
+
+            var artistList = _artists.ArtistsList(userId);
+
+
 
             if (album == null)
             {
                 return NotFound();
             }
 
-            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Name", album.ArtistId);
+            ViewData["ArtistId"] = new SelectList(artistList.Result, "Id", "Name", album.ArtistId);
             return View(album);
         }
 
@@ -154,12 +154,22 @@ namespace MusicSpot.Controllers
                 ArtistId = album.ArtistId,
             };
 
+            
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(currAlbum);
-                    _context.SaveChanges();
+                    
+                    _service.Edit(
+                            id,
+                            album.Name,
+                            album.ImageUrl,
+                            album.Year,
+                            album.Format,
+                            album.MediaCondition,
+                            album.SleeveCondition,
+                            album.Notes,
+                            album.ArtistId);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -174,7 +184,12 @@ namespace MusicSpot.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Name", album.ArtistId);
+
+            var userId = User.Id();
+
+            var artistList = _artists.ArtistsList(userId);
+
+            ViewData["ArtistId"] = new SelectList(artistList.Result, "Id", "Name", album.ArtistId);
             return View(album);
         }
 
@@ -204,7 +219,7 @@ namespace MusicSpot.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var album = _service.Delete(id);
-            
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -216,7 +231,7 @@ namespace MusicSpot.Controllers
 
         public async Task<IActionResult> AllAlbums(int id, string searchTerm, int p = 1, int s = 5)
         {
-           
+
             var userId = User.Id();
             var albums = await _service.AllAlbums(userId, id, searchTerm, p, s);
 

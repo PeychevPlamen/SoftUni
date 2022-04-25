@@ -21,5 +21,7 @@ namespace MusicSpot.Models.Albums
         public string? Notes { get; set; }
 
         public Artist? Artist { get; set; }
+
+        public int? ArtistId { get; set; }  // added for edit album
     }
 }
