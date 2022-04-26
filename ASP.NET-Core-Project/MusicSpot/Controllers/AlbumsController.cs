@@ -65,10 +65,10 @@ namespace MusicSpot.Controllers
         {
             var userId = User.Id();
 
-            var artistList = _artists.ArtistsList(userId);
+            var artistList = await _artists.ArtistsList(userId);
 
 
-            ViewData["ArtistId"] = new SelectList(artistList.Result, "Id", "Name");
+            ViewData["ArtistId"] = new SelectList(artistList, "Id", "Name");
             return View();
         }
 
@@ -81,7 +81,7 @@ namespace MusicSpot.Controllers
         {
             var userId = User.Id();
 
-            var artistList = _artists.ArtistsList(userId);
+            var artistList = await _artists.ArtistsList(userId);
 
             if (ModelState.IsValid)
             {
@@ -99,7 +99,7 @@ namespace MusicSpot.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["ArtistId"] = new SelectList(artistList.Result, "Id", "Name", album.ArtistId);
+            ViewData["ArtistId"] = new SelectList(artistList, "Id", "Name", album.ArtistId);
 
             return View(album);
         }
@@ -117,7 +117,7 @@ namespace MusicSpot.Controllers
 
             var userId = User.Id();
 
-            var artistList = _artists.ArtistsList(userId);
+            var artistList = await _artists.ArtistsList(userId);
 
 
 
@@ -126,7 +126,7 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            ViewData["ArtistId"] = new SelectList(artistList.Result, "Id", "Name", album.ArtistId);
+            ViewData["ArtistId"] = new SelectList(artistList, "Id", "Name", album.ArtistId);
             return View(album);
         }
 
@@ -187,9 +187,9 @@ namespace MusicSpot.Controllers
 
             var userId = User.Id();
 
-            var artistList = _artists.ArtistsList(userId);
+            var artistList = await _artists.ArtistsList(userId);
 
-            ViewData["ArtistId"] = new SelectList(artistList.Result, "Id", "Name", album.ArtistId);
+            ViewData["ArtistId"] = new SelectList(artistList, "Id", "Name", album.ArtistId);
             return View(album);
         }
 

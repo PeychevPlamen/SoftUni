@@ -24,23 +24,18 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="home" asp-action="index">home</a>
-                        </li>*@
-                        @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>*@
+
                         @if (SignInManager.IsSignedIn(User) && !User.IsAdmin())
                         {
                             <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Artists" asp-action="Index">My Artist</a>
-                        </li>
-                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Albums" asp-action="Index">My Albums</a>
-                        </li>
-                        @* <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Tracks" asp-action="Create">Create Track</a>
-                        </li>*@
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Artists" asp-action="Index">My Artist</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Albums" asp-action="Index">My Albums</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Tracks" asp-action="Index">My Tracks</a>
+                            </li>
                         }
                     </ul>
                     <partial name="_LoginPartial" />
@@ -56,8 +51,8 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.UtcNow.Year - MusicSpot - 
-            @*<a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>*@
+            &copy; @DateTime.UtcNow.Year - MusicSpot -
+
             <a href="https://github.com/PeychevPlamen" class="text-decoration-none">My GitHub</a>
         </div>
     </footer>

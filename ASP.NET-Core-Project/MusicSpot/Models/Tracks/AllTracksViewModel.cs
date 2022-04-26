@@ -12,5 +12,15 @@ namespace MusicSpot.Models.Tracks
 
 
         public IEnumerable<Track> Tracks { get; set; }
+
+        public int AlbumId { get; set; } // new added track service
+
+        public int PageNum { get; set; }
+
+        public int TotalRec { get; set; }
+
+        public int PageSize { get; set; }
+
+        public string? UserId { get; set; }
     }
 }

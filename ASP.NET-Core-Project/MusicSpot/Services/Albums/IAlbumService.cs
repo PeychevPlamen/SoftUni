@@ -1,4 +1,5 @@
-﻿using MusicSpot.Data.Repositories;
+﻿using MusicSpot.Data.Models;
+using MusicSpot.Data.Repositories;
 using MusicSpot.Models.Albums;
 using MusicSpot.Models.Artists;
 
@@ -14,6 +15,8 @@ namespace MusicSpot.Services.Albums
 
 
         Task<DetailsAlbumFormModel> AlbumDetails(int? artistId);
+
+        Task<List<Album>> Albums(int id);
 
         int Create(
            string name,

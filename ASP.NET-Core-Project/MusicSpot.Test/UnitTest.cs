@@ -111,7 +111,7 @@ namespace MusicSpot.Test
         [Test]
         public void TracksControllerReturnNull()
         {
-            var tracksController = new TracksController(null);
+            var tracksController = new TracksController(null, null);
 
             var result = tracksController.HttpContext;
 

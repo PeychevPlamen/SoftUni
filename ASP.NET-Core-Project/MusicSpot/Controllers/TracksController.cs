@@ -11,39 +11,31 @@ using MusicSpot.Data;
 using MusicSpot.Data.Models;
 using MusicSpot.Infrastructure.Extensions;
 using MusicSpot.Models.Tracks;
+using MusicSpot.Services.Albums;
+using MusicSpot.Services.Tracks;
 
 namespace MusicSpot.Controllers
 {
     public class TracksController : Controller
     {
-        private readonly MusicSpotDbContext _context;
+        private readonly ITrackService _service;
+        private readonly IAlbumService _albums;
 
-        public TracksController(MusicSpotDbContext context)
+        public TracksController(IAlbumService albums, ITrackService service)
         {
-            _context = context;
+            _albums = albums;
+            _service = service;
         }
 
         // GET: Tracks
         [Authorize]
-        public async Task<IActionResult> Index(string searchTerm)
+        public async Task<IActionResult> Index(string searchTerm, int p = 1, int s = 5)
         {
             var userId = User.Id();
-            var albumId = _context.Albums.Where(x => x.Artist.UserId == userId).FirstOrDefault().Id;
 
-            var musicSpotDbContext = _context.Tracks.Where(x => x.AlbumId == albumId).AsQueryable();
+            var currTracks = await _service.Index(userId, searchTerm, p, s);
 
-            if (!string.IsNullOrWhiteSpace(searchTerm))
-            {
-                musicSpotDbContext = musicSpotDbContext.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()) ||
-                a.Album.Name.ToString().ToLower().Contains(searchTerm.ToLower()));
-            }
-
-            return View(new AllTracksViewModel
-            {
-                Tracks = musicSpotDbContext,
-                SearchTerm = searchTerm
-            });
-
+            return View(currTracks);
 
         }
 
@@ -56,9 +48,7 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var track = await _context.Tracks
-                .Include(t => t.Album)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var track = await _service.TrackDetails(id);
 
             if (track == null)
             {
@@ -70,10 +60,13 @@ namespace MusicSpot.Controllers
 
         // GET: Tracks/Create
         [Authorize]
-        public async Task<IActionResult> Create(int? id)
+        public async Task<IActionResult> Create(int id)
         {
+            var userId = User?.Id();
+            var album = await _albums.Albums(id);
 
-            ViewData["AlbumId"] = new SelectList(_context.Albums.Where(x => x.Id == id), "Id", "Name");
+
+            ViewData["AlbumId"] = new SelectList(album, "Id", "Name");
             return View();
         }
 
@@ -83,26 +76,19 @@ namespace MusicSpot.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateTrackFormModel track)
         {
-            var currAlbum = await _context.Albums.FirstOrDefaultAsync(x => x.Id == track.AlbumId);
-
-            var currTrack = new Track
-            {
-                Name = track.Name,
-                Duration = track.Duration,
-                AlbumId = currAlbum.Id
-            };
-
-                       
-            currAlbum.Tracks.Add(currTrack);
-
+            var currAlbum = await _albums.Albums(track.AlbumId);
 
             if (ModelState.IsValid)
             {
-                _context.Add(currTrack);
-                await _context.SaveChangesAsync();
+                var trackId = _service.Create(
+                    track.Name,
+                    track.Duration,
+                    track.AlbumId);
+
                 return RedirectToAction(nameof(Create));
             }
-            ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Name", track.AlbumId);
+
+            ViewData["AlbumId"] = new SelectList(currAlbum, "Id", "Name", track.AlbumId);
             return View(track);
         }
 
@@ -115,13 +101,16 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var track = await _context.Tracks.FindAsync(id);
+            var track = await _service.TrackEdit(id);
+
+            var currAlbum = await _albums.Albums(track.AlbumId);
+
             if (track == null)
             {
                 return NotFound();
             }
 
-            ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Name", track.AlbumId);
+            ViewData["AlbumId"] = new SelectList(currAlbum, "Id", "Name", track.AlbumId);
             return View(track);
         }
 
@@ -130,19 +119,31 @@ namespace MusicSpot.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Duration,AlbumId")] Track track)
+        public async Task<IActionResult> Edit(int id, EditTrackFormModel track)
         {
             if (id != track.Id)
             {
                 return NotFound();
             }
 
+            var currTrack = new Track
+            {
+                Id = track.Id,
+                Name = track.Name,
+                Duration = track.Duration,
+                AlbumId = track.AlbumId
+            };
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(track);
-                    await _context.SaveChangesAsync();
+                    _service.Edit(
+                        id,
+                        track.Name,
+                        track.Duration,
+                        track.AlbumId
+                        );
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -158,7 +159,9 @@ namespace MusicSpot.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Name", track.AlbumId);
+            var currAlbum = await _albums.Albums(track.AlbumId);
+
+            ViewData["AlbumId"] = new SelectList(currAlbum, "Id", "Name", track.AlbumId);
             return View(track);
         }
 
@@ -171,9 +174,7 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var track = await _context.Tracks
-                .Include(t => t.Album)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var track = await _service.TrackDetails(id);
 
             if (track == null)
             {
@@ -189,24 +190,23 @@ namespace MusicSpot.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var track = await _context.Tracks.FindAsync(id);
-
-            _context.Tracks.Remove(track);
-            await _context.SaveChangesAsync();
+            var track = _service.Delete(id);
 
             return RedirectToAction(nameof(Index));
         }
 
         private bool TrackExists(int id)
         {
-            return _context.Tracks.Any(e => e.Id == id);
+            return _service.TrackExist(id);
         }
 
         [Authorize]
-        public IActionResult AllTracks(int id)
+        public async Task<IActionResult> AllTracks(int id)
         {
-            var albumTracks = _context.Tracks.Where(x => x.AlbumId == id).AsQueryable();
-            return View(albumTracks);
+
+            var tracks = await _service.AllTracks(id);
+
+            return View(tracks);
         }
     }
 }

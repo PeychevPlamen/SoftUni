@@ -178,5 +178,11 @@ namespace MusicSpot.Services.Albums
             return currAlbums;
         }
 
+        public async Task<List<Album>> Albums(int id)
+        {
+            var album = _context.Albums.Where(x=>x.Id == id).ToListAsync();
+
+            return album.Result;
+        }
     }
 }

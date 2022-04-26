@@ -73,13 +73,7 @@ namespace MusicSpot.Services.Artists
             return true;
         }
 
-        //public async Task<ArtistsListFormModel> ArtistsList(string userId)
-        //{
-        //    var artists = await _context.Artists.Where(x => x.UserId == userId).ToListAsync();
-
-        //    return new ArtistsListFormModel { Artists = artists };
-        //}
-
+        
         public int Create(string name, string genre, string userId)
         {
             var newArtist = new Artist
@@ -89,17 +83,7 @@ namespace MusicSpot.Services.Artists
                 UserId = userId
             };
 
-            // Ако има вече съществуващ артист !!!!!!!
-
-            //if (_context.Artists.Select(a => a.Name).Contains(newArtist.Name))
-            //{
-
-            //    ModelState.AddModelError("name", "Artist already exists.");
-
-            //    throw new ArgumentException("Artist already exists.");
-            //}
-
-
+           
             _context.Artists.AddAsync(newArtist);
             _context.SaveChangesAsync();
 
