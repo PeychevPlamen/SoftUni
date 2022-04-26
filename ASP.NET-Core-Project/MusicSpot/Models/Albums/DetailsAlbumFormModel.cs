@@ -1,4 +1,5 @@
 ﻿using MusicSpot.Data.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace MusicSpot.Models.Albums
 {
@@ -8,6 +9,7 @@ namespace MusicSpot.Models.Albums
 
         public string? Name { get; set; }
 
+        [Display(Name = "Image")]
         public string? ImageUrl { get; set; }
 
         public int Year { get; set; }

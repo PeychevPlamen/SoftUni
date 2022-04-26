@@ -18,6 +18,8 @@ namespace MusicSpot.Data
 
         public DbSet<Track> Tracks { get; init; }
 
+        public DbSet<Book> Books { get; init; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
@@ -40,6 +42,13 @@ namespace MusicSpot.Data
                 .Entity<Artist>()
                 .HasOne(a => a.User)
                 .WithMany(a => a.Artists)
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Book>()
+                .HasOne(a => a.User)
+                .WithMany(a => a.Books)
                 .HasForeignKey(a => a.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 

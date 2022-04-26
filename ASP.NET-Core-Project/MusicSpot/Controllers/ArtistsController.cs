@@ -1,19 +1,9 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MusicSpot.Areas.Admin.Controllers;
-using MusicSpot.Data;
 using MusicSpot.Data.Models;
 using MusicSpot.Infrastructure.Extensions;
-using MusicSpot.Models;
-using MusicSpot.Models.Albums;
 using MusicSpot.Models.Artists;
 using MusicSpot.Services.Artists;
 

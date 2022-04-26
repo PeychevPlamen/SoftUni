@@ -14,7 +14,7 @@ namespace MusicSpot.Models.Albums
 
         [Required]
         [Url]
-        [Display(Name = "Image URL")]
+        [Display(Name = "Image")]
         public string ImageUrl { get; set; }
 
         [Range(MinYearValue, MaxYearValue)]
