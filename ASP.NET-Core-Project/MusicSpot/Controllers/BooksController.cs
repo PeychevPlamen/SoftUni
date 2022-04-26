@@ -16,12 +16,10 @@ namespace MusicSpot.Controllers
 {
     public class BooksController : Controller
     {
-        private readonly MusicSpotDbContext _context;
         private readonly IBookService _service;
 
-        public BooksController(MusicSpotDbContext context, IBookService service)
+        public BooksController(IBookService service)
         {
-            _context = context;
             _service = service;
         }
 
@@ -118,7 +116,7 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            
+
             if (ModelState.IsValid)
             {
                 try
@@ -144,7 +142,7 @@ namespace MusicSpot.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-           
+
             return View(book);
         }
 
@@ -172,7 +170,7 @@ namespace MusicSpot.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var book = _service.Delete(id);
-            
+
             return RedirectToAction(nameof(Index));
         }
 
