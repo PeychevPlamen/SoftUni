@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using MusicSpot.Data;
 using MusicSpot.Data.Models;
 using MusicSpot.Infrastructure.Extensions;
+using MusicSpot.Models.Books;
 using MusicSpot.Services.Books;
 
 namespace MusicSpot.Controllers
@@ -53,26 +54,31 @@ namespace MusicSpot.Controllers
         }
 
         // GET: Books/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
         // POST: Books/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Genre,ImageUrl,Description,UserId")] Book book)
+        public async Task<IActionResult> Create(CreateBookFormModel book)
         {
+            var userId = User.Id();
+            book.UserId = userId;
+
             if (ModelState.IsValid)
             {
-                _context.Add(book);
-                await _context.SaveChangesAsync();
+                var currBook = _service.Create(
+                    book.Title,
+                    book.Genre,
+                    book.ImageUrl,
+                    book.Description,
+                    userId);
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", book.UserId);
+
             return View(book);
         }
 
@@ -84,33 +90,46 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books.FindAsync(id);
+            var book = await _service.BooksDetails(id);
+
             if (book == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", book.UserId);
-            return View(book);
+
+            var result = new Book
+            {
+                Title = book.Title,
+                Genre = book.Genre,
+                ImageUrl = book.ImageUrl,
+                Description = book.Description
+            };
+
+            return View(result);
         }
 
         // POST: Books/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Genre,ImageUrl,Description,UserId")] Book book)
+        public async Task<IActionResult> Edit(int id, EditBookFormModel book)
         {
             if (id != book.Id)
             {
                 return NotFound();
             }
 
+            
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(book);
-                    await _context.SaveChangesAsync();
+                    _service.Edit(
+                        book.Id,
+                        book.Title,
+                        book.Genre,
+                        book.ImageUrl,
+                        book.Description
+                        );
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -125,7 +144,7 @@ namespace MusicSpot.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", book.UserId);
+           
             return View(book);
         }
 
@@ -137,9 +156,8 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books
-                .Include(b => b.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var book = await _service.BooksDetails(id);
+
             if (book == null)
             {
                 return NotFound();
@@ -153,15 +171,14 @@ namespace MusicSpot.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var book = await _context.Books.FindAsync(id);
-            _context.Books.Remove(book);
-            await _context.SaveChangesAsync();
+            var book = _service.Delete(id);
+            
             return RedirectToAction(nameof(Index));
         }
 
         private bool BookExists(int id)
         {
-            return _context.Books.Any(e => e.Id == id);
+            return _service.BookExist(id);
         }
     }
 }

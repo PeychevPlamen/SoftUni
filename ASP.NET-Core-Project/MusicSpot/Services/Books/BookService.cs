@@ -42,7 +42,14 @@ namespace MusicSpot.Services.Books
 
         public bool BookExist(int bookId)
         {
-            throw new NotImplementedException();
+            var book = _context.Books.Find(bookId);
+
+            if (book == null)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public async Task<DetailsBooksFormModel> BooksDetails(int? bookId)
@@ -63,24 +70,65 @@ namespace MusicSpot.Services.Books
 
         }
 
-        public Task<List<Book>> BooksList(string userId)
+        public async Task<List<Book>> BooksList(string userId)
         {
-            throw new NotImplementedException();
+            var books = await _context.Books.Where(x => x.UserId == userId).ToListAsync();
+
+            return books;
         }
 
-        public int Create(string title, string genre, string imageUrl, string description, string userId)
+        public int Create(string title, string genre, string imageUrl, string description, string? userId)
         {
-            throw new NotImplementedException();
+            var newBook = new Book
+            {
+               Title = title,
+               Genre = genre,
+               ImageUrl = imageUrl,
+               Description = description,
+               UserId = userId
+            };
+
+            _context.Books.AddAsync(newBook);
+            _context.SaveChangesAsync();
+
+            return newBook.Id;
         }
 
         public bool Delete(int bookId)
         {
-            throw new NotImplementedException();
+            var book = _context.Books.Find(bookId);
+
+            if (book == null)
+            {
+                return false;
+            }
+
+            _context.Remove(book);
+            _context.SaveChangesAsync();
+
+            return true;
         }
 
         public bool Edit(int bookId, string title, string genre, string imageUrl, string description)
         {
-            throw new NotImplementedException();
+            var bookData = _context.Books.Find(bookId);
+
+            if (bookData == null)
+            {
+                return false;
+            }
+
+
+            bookData.Title = title;
+            bookData.Genre = genre;
+            bookData.ImageUrl = imageUrl;
+            bookData.Description = description;
+
+
+            _context.Update(bookData);
+            _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

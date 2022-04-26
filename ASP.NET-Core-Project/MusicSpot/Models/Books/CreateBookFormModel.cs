@@ -1,13 +1,10 @@
-﻿using MusicSpot.Data.Identity;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 using static MusicSpot.Data.DataConstants;
 
-namespace MusicSpot.Data.Models
+namespace MusicSpot.Models.Books
 {
-    public class Book
+    public class CreateBookFormModel
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -18,16 +15,14 @@ namespace MusicSpot.Data.Models
         [MaxLength(BookGenreMaxLength)]
         public string? Genre { get; set; }
 
-        [Display(Name = "Image Url")]
+        [Required]
+        [Display(Name = "Image URL")]
         public string? ImageUrl { get; set; }
 
+        [Required]
         [MaxLength(BookDescriptionMaxLength)]
         public string? Description { get; set; }
 
-        [Required]
-        [ForeignKey(nameof(User))]
         public string? UserId { get; set; }
-
-        public User? User { get; set; }
     }
 }
