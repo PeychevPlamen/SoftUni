@@ -30,5 +30,13 @@
         public const int BookGenreMaxLength = 50;
 
         public const int BookDescriptionMaxLength = 250;
+
+        public const int GameTitleMinLenght = 1;
+        public const int GameTitleMaxLength = 100;
+
+        public const int GameGenreMinLength = 2;
+        public const int GameGenreMaxLength = 50;
+
+        public const int GameDescriptionMaxLength = 250;
     }
 }
