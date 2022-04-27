@@ -8,23 +8,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MusicSpot.Data;
 using MusicSpot.Data.Models;
+using MusicSpot.Infrastructure.Extensions;
+using MusicSpot.Models.Movies;
+using MusicSpot.Services.Movies;
 
 namespace MusicSpot.Controllers
 {
     public class MoviesController : Controller
     {
         private readonly MusicSpotDbContext _context;
+        private readonly IMovieService _service;
 
-        public MoviesController(MusicSpotDbContext context)
+        public MoviesController(MusicSpotDbContext context, IMovieService service)
         {
             _context = context;
+            _service = service;
         }
 
         // GET: Movies
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm, int p = 1, int s = 5)
         {
-            var musicSpotDbContext = _context.Movies.Include(m => m.User);
-            return View(await musicSpotDbContext.ToListAsync());
+            var userID = User.Id();
+
+            var model = await _service.AllMovies(userID, searchTerm, p, s);
+            return View(model);
         }
 
         // GET: Movies/Details/5
@@ -35,9 +42,8 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movies
-                .Include(m => m.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var movie = await _service.MovieDetails(id);
+
             if (movie == null)
             {
                 return NotFound();
@@ -49,24 +55,30 @@ namespace MusicSpot.Controllers
         // GET: Movies/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
         // POST: Movies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Genre,ImageUrl,Year,Description,UserId")] Movie movie)
+        public async Task<IActionResult> Create(CreateMovieFormModel movie)
         {
+            var userId = User.Id();
+            movie.UserId = userId;
+
             if (ModelState.IsValid)
             {
-                _context.Add(movie);
-                await _context.SaveChangesAsync();
+                var currGame = _service.Create(
+                    movie.Title,
+                    movie.Genre,
+                    movie.ImageUrl,
+                    movie.Year,
+                    movie.Description,
+                    userId);
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", movie.UserId);
+
             return View(movie);
         }
 
@@ -78,21 +90,20 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movies.FindAsync(id);
+            var movie = await _service.MovieDetails(id);
+
             if (movie == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", movie.UserId);
+            
             return View(movie);
         }
 
         // POST: Movies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Genre,ImageUrl,Year,Description,UserId")] Movie movie)
+        public async Task<IActionResult> Edit(int id, EditMovieFormModel movie)
         {
             if (id != movie.Id)
             {
@@ -103,8 +114,13 @@ namespace MusicSpot.Controllers
             {
                 try
                 {
-                    _context.Update(movie);
-                    await _context.SaveChangesAsync();
+                    _service.Edit(
+                        movie.Id,
+                        movie.Title,
+                        movie.Genre,
+                        movie.ImageUrl,
+                        movie.Year,
+                        movie.Description);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -119,7 +135,7 @@ namespace MusicSpot.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", movie.UserId);
+            
             return View(movie);
         }
 
@@ -131,9 +147,8 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movies
-                .Include(m => m.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var movie = await _service.MovieDetails(id);
+
             if (movie == null)
             {
                 return NotFound();
@@ -147,15 +162,14 @@ namespace MusicSpot.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movie = await _context.Movies.FindAsync(id);
-            _context.Movies.Remove(movie);
-            await _context.SaveChangesAsync();
+            var movie = _service.Delete(id);
+            
             return RedirectToAction(nameof(Index));
         }
 
         private bool MovieExists(int id)
         {
-            return _context.Movies.Any(e => e.Id == id);
+            return _service.MovieExist(id);
         }
     }
 }
