@@ -1,11 +1,11 @@
-﻿using MusicSpot.Data.Identity;
+﻿using static MusicSpot.Data.DataConstants;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static MusicSpot.Data.DataConstants;
+using MusicSpot.Data.Identity;
 
 namespace MusicSpot.Data.Models
 {
-    public class Book
+    public class Movie
     {
         [Key]
         public int Id { get; set; }
@@ -21,6 +21,10 @@ namespace MusicSpot.Data.Models
         [Display(Name = "Image Url")]
         public string? ImageUrl { get; set; }
 
+        [Required]
+        [Range(MinYearValue, MaxYearValue)]
+        public int Year { get; set; }
+
         [MaxLength(DescriptionMaxLength)]
         public string? Description { get; set; }
 
@@ -29,5 +33,6 @@ namespace MusicSpot.Data.Models
         public string? UserId { get; set; }
 
         public User? User { get; set; }
+
     }
 }

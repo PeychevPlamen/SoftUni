@@ -8,11 +8,11 @@ namespace MusicSpot.Models.Games
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(GameTitleMaxLength)]
+        [MaxLength(TitleMaxLength)]
         public string? Title { get; set; }
 
         [Required]
-        [MaxLength(GameGenreMaxLength)]
+        [MaxLength(GenreMaxLength)]
         public string? Genre { get; set; }
 
         [Required]
@@ -20,7 +20,7 @@ namespace MusicSpot.Models.Games
         public string? ImageUrl { get; set; }
 
         [Required]
-        [MaxLength(GameDescriptionMaxLength)]
+        [MaxLength(DescriptionMaxLength)]
         public string? Description { get; set; }
 
         public string? UserId { get; set; }

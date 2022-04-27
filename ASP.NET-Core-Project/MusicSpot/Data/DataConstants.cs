@@ -23,20 +23,12 @@
 
         public const string UserEmailRegularExpression = @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
 
-        public const int BookTitleMinLenght = 1;
-        public const int BookTitleMaxLength = 100;
+        public const int TitleMinLenght = 1;
+        public const int TitleMaxLength = 100;
 
-        public const int BookGenreMinLength = 2;
-        public const int BookGenreMaxLength = 50;
+        public const int GenreMinLength = 2;
+        
+        public const int DescriptionMaxLength = 250;
 
-        public const int BookDescriptionMaxLength = 250;
-
-        public const int GameTitleMinLenght = 1;
-        public const int GameTitleMaxLength = 100;
-
-        public const int GameGenreMinLength = 2;
-        public const int GameGenreMaxLength = 50;
-
-        public const int GameDescriptionMaxLength = 250;
     }
 }

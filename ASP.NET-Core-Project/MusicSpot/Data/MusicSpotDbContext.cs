@@ -22,6 +22,8 @@ namespace MusicSpot.Data
 
         public DbSet<Game> Games { get; init; }
 
+        public DbSet<Movie> Movies { get; init; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
@@ -58,6 +60,13 @@ namespace MusicSpot.Data
                .Entity<Game>()
                .HasOne(a => a.User)
                .WithMany(a => a.Games)
+               .HasForeignKey(a => a.UserId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+               .Entity<Movie>()
+               .HasOne(a => a.User)
+               .WithMany(a => a.Movies)
                .HasForeignKey(a => a.UserId)
                .OnDelete(DeleteBehavior.Restrict);
 

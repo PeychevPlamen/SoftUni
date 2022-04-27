@@ -9,11 +9,11 @@ namespace MusicSpot.Models.Books
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(BookTitleMaxLength)]
+        [MaxLength(TitleMaxLength)]
         public string? Title { get; set; }
 
         [Required]
-        [MaxLength(BookGenreMaxLength)]
+        [MaxLength(GenreMaxLength)]
         public string? Genre { get; set; }
 
         [Required]
@@ -21,7 +21,7 @@ namespace MusicSpot.Models.Books
         public string? ImageUrl { get; set; }
 
         [Required]
-        [MaxLength(BookDescriptionMaxLength)]
+        [MaxLength(DescriptionMaxLength)]
         public string? Description { get; set; }
 
         public string? UserId { get; set; }

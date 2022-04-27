@@ -11,17 +11,17 @@ namespace MusicSpot.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(GameTitleMaxLength)]
+        [MaxLength(TitleMaxLength)]
         public string? Title { get; set; }
 
         [Required]
-        [MaxLength(GameGenreMaxLength)]
+        [MaxLength(GenreMaxLength)]
         public string? Genre { get; set; }
 
         [Display(Name = "Image Url")]
         public string? ImageUrl { get; set; }
 
-        [MaxLength(GameDescriptionMaxLength)]
+        [MaxLength(DescriptionMaxLength)]
         public string? Description { get; set; }
 
         [Required]
