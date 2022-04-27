@@ -7,6 +7,7 @@ using MusicSpot.Infrastructure.Extensions;
 using MusicSpot.Services.Albums;
 using MusicSpot.Services.Artists;
 using MusicSpot.Services.Books;
+using MusicSpot.Services.Games;
 using MusicSpot.Services.Tracks;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,6 +41,7 @@ builder.Services.AddTransient<ITrackService, TrackService>();
 builder.Services.AddTransient<IArtistService, ArtistService>();
 builder.Services.AddTransient<IAlbumService, AlbumService>();
 builder.Services.AddTransient<IBookService, BookService>();
+builder.Services.AddTransient<IGameService, GameService>();
 
 builder.Services
     .AddControllersWithViews(options =>

@@ -8,23 +8,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MusicSpot.Data;
 using MusicSpot.Data.Models;
+using MusicSpot.Infrastructure.Extensions;
+using MusicSpot.Models.Games;
+using MusicSpot.Services.Games;
 
 namespace MusicSpot.Controllers
 {
     public class GamesController : Controller
     {
-        private readonly MusicSpotDbContext _context;
+        private readonly IGameService _service;
 
-        public GamesController(MusicSpotDbContext context)
+        public GamesController(IGameService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: Games
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm, int p = 1, int s = 5)
         {
-            var musicSpotDbContext = _context.Games.Include(g => g.User);
-            return View(await musicSpotDbContext.ToListAsync());
+            var userID = User.Id();
+
+            var model = await _service.AllGames(userID, searchTerm, p, s);
+            return View(model);
         }
 
         // GET: Games/Details/5
@@ -35,9 +40,8 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var game = await _context.Games
-                .Include(g => g.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var game = await _service.GameDetails(id);
+
             if (game == null)
             {
                 return NotFound();
@@ -49,24 +53,29 @@ namespace MusicSpot.Controllers
         // GET: Games/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
         // POST: Games/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Genre,ImageUrl,Description,UserId")] Game game)
+        public async Task<IActionResult> Create(CreateGameFormModel game)
         {
+            var userId = User.Id();
+            game.UserId = userId;
+
             if (ModelState.IsValid)
             {
-                _context.Add(game);
-                await _context.SaveChangesAsync();
+                var currGame = _service.Create(
+                    game.Title,
+                    game.Genre,
+                    game.ImageUrl,
+                    game.Description,
+                    userId);
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", game.UserId);
+
             return View(game);
         }
 
@@ -78,21 +87,20 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var game = await _context.Games.FindAsync(id);
+            var game = await _service.GameDetails(id);
+
             if (game == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", game.UserId);
+
             return View(game);
         }
 
         // POST: Games/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Genre,ImageUrl,Description,UserId")] Game game)
+        public async Task<IActionResult> Edit(int id, EditGameFormModel game)
         {
             if (id != game.Id)
             {
@@ -103,8 +111,13 @@ namespace MusicSpot.Controllers
             {
                 try
                 {
-                    _context.Update(game);
-                    await _context.SaveChangesAsync();
+                    _service.Edit(
+                         game.Id,
+                         game.Title,
+                         game.Genre,
+                         game.ImageUrl,
+                         game.Description
+                         );
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -119,7 +132,7 @@ namespace MusicSpot.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", game.UserId);
+
             return View(game);
         }
 
@@ -131,9 +144,8 @@ namespace MusicSpot.Controllers
                 return NotFound();
             }
 
-            var game = await _context.Games
-                .Include(g => g.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var game = await _service.GameDetails(id);
+
             if (game == null)
             {
                 return NotFound();
@@ -147,15 +159,14 @@ namespace MusicSpot.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var game = await _context.Games.FindAsync(id);
-            _context.Games.Remove(game);
-            await _context.SaveChangesAsync();
+            var game = _service.Delete(id);
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool GameExists(int id)
         {
-            return _context.Games.Any(e => e.Id == id);
+            return _service.GameExist(id);
         }
     }
 }
