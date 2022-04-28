@@ -121,11 +121,7 @@ namespace MusicSpot.Services.Tracks
             return result;
         }
 
-        public Task<List<Track>> TracksList(int albumId)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public async Task<AllTracksViewModel> Index(string userId, string searchTerm, int p, int s)
         {
             var allTracks = _context.Albums.Where(x => x.Artist.UserId == userId).SelectMany(x => x.Tracks);

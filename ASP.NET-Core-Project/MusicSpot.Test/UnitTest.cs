@@ -145,8 +145,7 @@ namespace MusicSpot.Test
 
             Assert.IsNotNull(result);
             Assert.AreNotEqual(dbContext.Equals(album), album);
-            Assert.AreEqual(albumId.Id, 1);
-
+          
         }
 
         [Test]

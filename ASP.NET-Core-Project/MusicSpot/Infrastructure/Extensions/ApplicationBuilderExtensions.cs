@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MusicSpot.Data.Identity;
 
 using static MusicSpot.Areas.Admin.AdminConstants;
+using MusicSpot.Data.Models;
 
 namespace MusicSpot.Infrastructure.Extensions
 {
@@ -19,7 +20,7 @@ namespace MusicSpot.Infrastructure.Extensions
             MigrateDatabase(services);
 
             SeedAdministrator(services);
-
+            
             return app;
         }
 

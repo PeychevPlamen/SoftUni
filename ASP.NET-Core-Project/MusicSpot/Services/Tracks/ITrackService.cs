@@ -9,8 +9,6 @@ namespace MusicSpot.Services.Tracks
 
         Task<AllTracksViewModel> Index(string userId, string searchTerm, int p, int s);
 
-        Task<List<Track>> TracksList(int albumId);
-
         Task<DetailsTrackFormModel> TrackDetails(int? trackId);
 
         Task<EditTrackFormModel> TrackEdit(int? trackId);
