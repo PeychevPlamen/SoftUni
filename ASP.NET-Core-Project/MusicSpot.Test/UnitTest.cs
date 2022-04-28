@@ -60,6 +60,39 @@ namespace MusicSpot.Test
         }
 
         [Test]
+        public void MoviesControllerReturnNull()
+        {
+            var moviesController = new MoviesController(null, null);
+
+            var result = moviesController.HttpContext;
+
+            Assert.IsNull(result);
+
+        }
+
+        [Test]
+        public void BooksControllerReturnNull()
+        {
+            var booksController = new BooksController( null);
+
+            var result = booksController.HttpContext;
+
+            Assert.IsNull(result);
+
+        }
+
+        [Test]
+        public void GamesControllerReturnNull()
+        {
+            var gamesController = new GamesController(null);
+
+            var result = gamesController.HttpContext;
+
+            Assert.IsNull(result);
+
+        }
+
+        [Test]
         public void TestUsers()
         {
             var currUser = new User { FirstName = "Pesho", LastName = "Peshov", Email = "pesho@abv.bg" };
