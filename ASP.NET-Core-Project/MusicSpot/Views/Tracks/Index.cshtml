@@ -22,9 +22,7 @@
             <th>
                 Duration
             </th>
-            <th>
-                Album
-            </th>
+            
             <th></th>
         </tr>
     </thead>
@@ -38,9 +36,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Duration)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Album.Name)
-                </td>
+                
                 <td>
                     <a class="btn btn-success m-1 btn-sm" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                     <a class="btn btn-warning m-1 btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a>

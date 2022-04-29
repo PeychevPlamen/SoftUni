@@ -23,16 +23,16 @@
                 <span asp-validation-for="Genre" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary mt-2" />
+                <a class="btn btn-primary mt-2" asp-action="Index">Show All Artist</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Show All Artist</a>
-</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }

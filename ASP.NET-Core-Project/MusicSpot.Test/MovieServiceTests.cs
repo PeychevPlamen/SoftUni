@@ -223,5 +223,38 @@ namespace MusicSpot.Test
             Assert.AreNotEqual(8, result.Result.Id);
             
         }
+
+        [Test]
+        public void TestMovieNotExit()
+        {
+            var options = new DbContextOptionsBuilder<MusicSpotDbContext>().UseInMemoryDatabase("movieNotExist").Options;
+            var dbContext = new MusicSpotDbContext(options);
+            var service = new MovieService(dbContext);
+
+            var movie = new Movie
+            {
+                Id = 1,
+                Title = "Speed",
+                Genre = "Action",
+                ImageUrl = "aaa",
+                Year = 1998,
+                Description = "some description",
+                UserId = "aaa"
+            };
+
+            dbContext.Movies.Add(movie);
+            dbContext.SaveChanges();
+
+            var result = service.MovieDetails(1);
+
+            Assert.That(movie.Id, Is.Not.Null);
+            Assert.That(result, Is.Not.Null);
+            Assert.AreEqual(result.Result.Genre, movie.Genre);
+            Assert.AreEqual(result.Result.Title, movie.Title);
+            Assert.AreEqual(result.Result.Id, movie.Id);
+            Assert.AreEqual(result.Result.ImageUrl, movie.ImageUrl);
+            Assert.AreNotEqual(result.Result.Year, 2000);
+           
+        }
     }
 }

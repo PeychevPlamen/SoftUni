@@ -197,5 +197,32 @@ namespace MusicSpot.Test
             Assert.That(artist.Id, Is.Not.Null);
         }
 
+        [Test]
+        public void TestArtistNotExit()
+        {
+            var options = new DbContextOptionsBuilder<MusicSpotDbContext>().UseInMemoryDatabase("artistNotExist").Options;
+            var dbContext = new MusicSpotDbContext(options);
+            var service = new ArtistService(dbContext);
+
+            var artist = new Artist
+            {
+                Id = 1,
+                Name = "Joni",
+                Genre = "Horror",
+                UserId = "aaa"
+            };
+
+            dbContext.Artists.Add(artist);
+            dbContext.SaveChanges();
+
+            var result = service.ArtistDetails(artist.Id);
+
+            Assert.That(artist.Id, Is.Not.Null);
+            Assert.That(result, Is.Not.Null);
+            Assert.AreEqual(result.Result.Genre, artist.Genre);
+            Assert.AreEqual(result.Result.Name, artist.Name);
+            Assert.AreEqual(result.Result.Id, artist.Id);
+
+        }
     }
 }

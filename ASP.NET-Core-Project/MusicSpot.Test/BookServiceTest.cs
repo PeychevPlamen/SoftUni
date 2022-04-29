@@ -228,5 +228,36 @@ namespace MusicSpot.Test
             Assert.AreNotEqual(8, book.Id);
         }
 
+        [Test]
+        public void TestBookNotExit()
+        {
+            var options = new DbContextOptionsBuilder<MusicSpotDbContext>().UseInMemoryDatabase("bookNotExist").Options;
+            var dbContext = new MusicSpotDbContext(options);
+            var service = new BookService(dbContext);
+
+            var book = new Book
+            {
+                Id = 1,
+                Title = "It",
+                Genre = "Horror",
+                ImageUrl = "aaa",
+                Description = "some description",
+                UserId = "aaa"
+            };
+
+            dbContext.Books.Add(book);
+            dbContext.SaveChanges();
+
+            var result = service.BooksDetails(book.Id);
+
+            Assert.That(book.Id, Is.Not.Null);
+            Assert.That(result, Is.Not.Null);
+            Assert.AreEqual(result.Result.Genre, book.Genre);
+            Assert.AreEqual(result.Result.Title, book.Title);
+            Assert.AreEqual(result.Result.Id, book.Id);
+            Assert.AreEqual(result.Result.ImageUrl, book.ImageUrl);
+            Assert.AreNotEqual(result.Result.Description, 2000);
+
+        }
     }
 }

@@ -205,5 +205,36 @@ namespace MusicSpot.Test
             Assert.AreNotEqual(8, game.Id);
         }
 
+        [Test]
+        public void TestGameNotExit()
+        {
+            var options = new DbContextOptionsBuilder<MusicSpotDbContext>().UseInMemoryDatabase("gameNotExist").Options;
+            var dbContext = new MusicSpotDbContext(options);
+            var service = new GameService(dbContext);
+
+            var game = new Game
+            {
+                Id = 1,
+                Title = "FIFA",
+                Genre = "Action",
+                ImageUrl = "aaa",
+                Description = "some description",
+                UserId = "aaa"
+            };
+
+            dbContext.Games.Add(game);
+            dbContext.SaveChanges();
+
+            var result = service.GameDetails(game.Id);
+
+            Assert.That(game.Id, Is.Not.Null);
+            Assert.That(result, Is.Not.Null);
+            Assert.AreEqual(result.Result.Genre, game.Genre);
+            Assert.AreEqual(result.Result.Title, game.Title);
+            Assert.AreEqual(result.Result.Id, game.Id);
+            Assert.AreEqual(result.Result.ImageUrl, game.ImageUrl);
+            Assert.AreNotEqual(result.Result.Description, 2000);
+
+        }
     }
 }

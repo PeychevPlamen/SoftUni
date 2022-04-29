@@ -120,6 +120,37 @@ namespace MusicSpot.Test
         }
 
         [Test]
+        public void TestTrackCount()
+        {
+            var options = new DbContextOptionsBuilder<MusicSpotDbContext>().UseInMemoryDatabase("trackCount").Options;
+            var dbContext = new MusicSpotDbContext(options);
+            var service = new TrackService(dbContext);
+
+            var track = new Track
+            {
+                Id = 1,
+                Name = "Joni",
+                Duration = "4:44",
+                AlbumId = 4
+
+            };
+
+            for (int i = 0; i < 3; i++)
+            {
+                dbContext.Tracks.Add(track);
+               
+            }
+                dbContext.SaveChanges();
+
+            var result = dbContext.Tracks.CountAsync().Result;
+
+            Assert.AreNotEqual(result, true);
+            Assert.AreEqual(result, 1);
+            Assert.That(result, Is.Not.Null);
+            
+        }
+
+        [Test]
         public void TestTrackDelete()
         {
             var options = new DbContextOptionsBuilder<MusicSpotDbContext>().UseInMemoryDatabase("trackDelete").Options;
@@ -145,7 +176,7 @@ namespace MusicSpot.Test
             Assert.AreEqual(service.TrackExist(track.Id), false);
             Assert.AreEqual(result, false);
             Assert.That(track.Id, Is.Not.Null);
-            
+
         }
 
         [Test]
@@ -232,7 +263,7 @@ namespace MusicSpot.Test
             Assert.That(track.Id, Is.Not.Null);
             Assert.AreEqual("aaa", result.Result.UserId);
             Assert.AreNotEqual("bbbaaa", result.Result.UserId);
-           
+
             Assert.AreNotEqual("aaaa", result.Result.AlbumId);
             Assert.AreNotEqual("aaa", result.Result.SearchTerm);
             Assert.AreEqual("Joni", result.Result.SearchTerm);

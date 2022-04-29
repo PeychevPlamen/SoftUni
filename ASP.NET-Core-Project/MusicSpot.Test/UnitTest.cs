@@ -9,6 +9,7 @@ using MusicSpot.Data;
 using MusicSpot.Data.Identity;
 using MusicSpot.Data.Models;
 using MusicSpot.Data.Repositories;
+using MusicSpot.Services.Movies;
 using MyTested.AspNetCore.Mvc;
 using NUnit.Framework;
 using System;
@@ -118,6 +119,7 @@ namespace MusicSpot.Test
             Assert.IsNotNull(artist);
         }
 
+        
         [Test]
         public void ArtistValidDb()
         {
@@ -163,6 +165,7 @@ namespace MusicSpot.Test
 
             Assert.IsNotNull(result);
             Assert.AreNotEqual(dbContext.Equals(track), track);
+         
 
         }
 
@@ -190,8 +193,9 @@ namespace MusicSpot.Test
 
             Assert.IsNotNull(dbContext);
             Assert.AreNotEqual(dbContext.Equals(user), user);
-
+            Assert.AreNotSame(dbContext.Equals(user), user);
         }
+                
 
         [TearDown]
         public void TearDown()
