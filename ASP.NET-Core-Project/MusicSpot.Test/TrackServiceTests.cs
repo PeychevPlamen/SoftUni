@@ -29,6 +29,7 @@ namespace MusicSpot.Test
             Assert.AreEqual("Joni", track.Name);
             Assert.That(track.Id, Is.Not.Null);
             Assert.AreEqual(1, result);
+            
         }
 
         [Test]
@@ -117,6 +118,7 @@ namespace MusicSpot.Test
             Assert.AreNotEqual(result, true);
             Assert.AreEqual(result, false);
             Assert.That(track.Id, Is.Not.Null);
+            
         }
 
         [Test]

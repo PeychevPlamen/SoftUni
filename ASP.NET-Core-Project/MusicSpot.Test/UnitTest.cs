@@ -9,6 +9,7 @@ using MusicSpot.Data;
 using MusicSpot.Data.Identity;
 using MusicSpot.Data.Models;
 using MusicSpot.Data.Repositories;
+using MusicSpot.Services.Albums;
 using MusicSpot.Services.Movies;
 using MyTested.AspNetCore.Mvc;
 using NUnit.Framework;
@@ -50,6 +51,28 @@ namespace MusicSpot.Test
         }
 
         [Test]
+        public void HomeControllerIndex()
+        {
+            var homeController = new HomeController(null);
+
+            var result = homeController.Index();
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void HomeControllerPrivacy()
+        {
+            var homeController = new HomeController(null);
+
+            var result = homeController.Privacy();
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
         public void AlbumControllerReturnNull()
         {
             var albumController = new AlbumsController(null, null);
@@ -57,6 +80,102 @@ namespace MusicSpot.Test
             var result = albumController.HttpContext;
 
             Assert.IsNull(result);
+
+        }
+
+        [Test]
+        public void AlbumControllerCreateNotNull()
+        {
+
+            var albumController = new AlbumsController(null, null);
+
+            var result = albumController.Create();
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void AlbumControllerIndexNotNull()
+        {
+
+            var albumController = new AlbumsController(null, null);
+
+            var result = albumController.Index(1, "aaa", 1, 5);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void AlbumControllerDetails()
+        {
+
+            var albumController = new AlbumsController(null, null);
+
+            var result = albumController.Details(1);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void AlbumControllerDelete()
+        {
+
+            var albumController = new AlbumsController(null, null);
+
+            var result = albumController.Delete(1);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void AlbumControllerEdit()
+        {
+
+            var albumController = new AlbumsController(null, null);
+
+            var result = albumController.Edit(1);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void AlbumControllerDeleteConfirmed()
+        {
+
+            var albumController = new AlbumsController(null, null);
+
+            var result = albumController.DeleteConfirmed(1);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void AlbumControllerAlbumsExist()
+        {
+
+            var albumController = new AlbumsController(null, null);
+
+            var result = albumController.AllAlbums(1, "aaa");
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void AlbumControllerAlbumsAll()
+        {
+
+            var albumController = new AlbumsController(null, null);
+
+            var result = albumController.AllAlbums(1, "aaa");
+
+            Assert.IsNotNull(result);
 
         }
 
@@ -72,13 +191,145 @@ namespace MusicSpot.Test
         }
 
         [Test]
+        public void MoviesControllerIndex()
+        {
+            var moviesController = new MoviesController(null, null);
+
+            var result = moviesController.Index("aaa");
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void MoviesControllerDetails()
+        {
+            var moviesController = new MoviesController(null, null);
+
+            var result = moviesController.Details(1);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void MoviesControllerCreate()
+        {
+            var moviesController = new MoviesController(null, null);
+
+            var result = moviesController.Create();
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void MoviesControllerEdit()
+        {
+            var moviesController = new MoviesController(null, null);
+
+            var result = moviesController.Edit(null);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void MoviesControllerDelete()
+        {
+            var moviesController = new MoviesController(null, null);
+
+            var result = moviesController.Delete(null);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void MoviesControllerDeleteConfirmed()
+        {
+            var moviesController = new MoviesController(null, null);
+
+            var result = moviesController.DeleteConfirmed(1);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
         public void BooksControllerReturnNull()
         {
-            var booksController = new BooksController( null);
+            var booksController = new BooksController(null);
 
             var result = booksController.HttpContext;
 
             Assert.IsNull(result);
+
+        }
+
+        [Test]
+        public void BooksControllerIndex()
+        {
+            var booksController = new BooksController(null);
+
+            var result = booksController.Index("aaa");
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void BooksControllerCreate()
+        {
+            var booksController = new BooksController(null);
+
+            var result = booksController.Create();
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void BooksControllerDetails()
+        {
+            var booksController = new BooksController(null);
+
+            var result = booksController.Details(null);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void BooksControllerEdit()
+        {
+            var booksController = new BooksController(null);
+
+            var result = booksController.Edit(null);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void BooksControllerDelete()
+        {
+            var booksController = new BooksController(null);
+
+            var result = booksController.Delete(null);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void BooksControllerDeleteConfirmed()
+        {
+            var booksController = new BooksController(null);
+
+            var result = booksController.DeleteConfirmed(1);
+
+            Assert.IsNotNull(result);
 
         }
 
@@ -90,6 +341,72 @@ namespace MusicSpot.Test
             var result = gamesController.HttpContext;
 
             Assert.IsNull(result);
+
+        }
+
+        [Test]
+        public void GamesControllerIndex()
+        {
+            var gamesController = new GamesController(null);
+
+            var result = gamesController.Index("aaa");
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void GamesControllerCreate()
+        {
+            var gamesController = new GamesController(null);
+
+            var result = gamesController.Create();
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void GamesControllerDetails()
+        {
+            var gamesController = new GamesController(null);
+
+            var result = gamesController.Details(null);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void GamesControllerEdit()
+        {
+            var gamesController = new GamesController(null);
+
+            var result = gamesController.Edit(null);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void GamesControllerDelete()
+        {
+            var gamesController = new GamesController(null);
+
+            var result = gamesController.Delete(null);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void GamesControllerDeleteConfirmed()
+        {
+            var gamesController = new GamesController(null);
+
+            var result = gamesController.DeleteConfirmed(1);
+
+            Assert.IsNotNull(result);
 
         }
 
@@ -119,7 +436,7 @@ namespace MusicSpot.Test
             Assert.IsNotNull(artist);
         }
 
-        
+
         [Test]
         public void ArtistValidDb()
         {
@@ -144,6 +461,72 @@ namespace MusicSpot.Test
         }
 
         [Test]
+        public void ArtistControllerIndex()
+        {
+            var artistController = new ArtistsController(null);
+
+            var result = artistController.Index("111", "aaa");
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void ArtistControllerCreate()
+        {
+            var artistController = new ArtistsController(null);
+
+            var result = artistController.Create();
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void ArtistControllerDetails()
+        {
+            var artistController = new ArtistsController(null);
+
+            var result = artistController.Details(null);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void ArtistControllerEdit()
+        {
+            var artistController = new ArtistsController(null);
+
+            var result = artistController.Edit(null);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void ArtistControllerDelete()
+        {
+            var artistController = new ArtistsController(null);
+
+            var result = artistController.Delete(null);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void ArtistControllerDeleteConfirmed()
+        {
+            var artistController = new ArtistsController(null);
+
+            var result = artistController.DeleteConfirmed(1);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
         public void TracksControllerReturnNull()
         {
             var tracksController = new TracksController(null, null);
@@ -151,6 +534,72 @@ namespace MusicSpot.Test
             var result = tracksController.HttpContext;
 
             Assert.IsNull(result);
+
+        }
+
+        [Test]
+        public void TracksControllerIndex()
+        {
+            var tracksController = new TracksController(null, null);
+
+            var result = tracksController.Index("aaa");
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void TracksControllerDetails()
+        {
+            var tracksController = new TracksController(null, null);
+
+            var result = tracksController.Details(null);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void TracksControllerCreate()
+        {
+            var tracksController = new TracksController(null, null);
+
+            var result = tracksController.Create(null);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void TracksControllerEdit()
+        {
+            var tracksController = new TracksController(null, null);
+
+            var result = tracksController.Edit(null);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void TracksControllerDelete()
+        {
+            var tracksController = new TracksController(null, null);
+
+            var result = tracksController.Delete(null);
+
+            Assert.IsNotNull(result);
+
+        }
+
+        [Test]
+        public void TracksControllerDeleteConfirmed()
+        {
+            var tracksController = new TracksController(null, null);
+
+            var result = tracksController.DeleteConfirmed(1);
+
+            Assert.IsNotNull(result);
 
         }
 
@@ -165,7 +614,7 @@ namespace MusicSpot.Test
 
             Assert.IsNotNull(result);
             Assert.AreNotEqual(dbContext.Equals(track), track);
-         
+
 
         }
 
@@ -181,7 +630,7 @@ namespace MusicSpot.Test
 
             Assert.IsNotNull(result);
             Assert.AreNotEqual(dbContext.Equals(album), album);
-          
+
         }
 
         [Test]
@@ -195,7 +644,7 @@ namespace MusicSpot.Test
             Assert.AreNotEqual(dbContext.Equals(user), user);
             Assert.AreNotSame(dbContext.Equals(user), user);
         }
-                
+
 
         [TearDown]
         public void TearDown()
