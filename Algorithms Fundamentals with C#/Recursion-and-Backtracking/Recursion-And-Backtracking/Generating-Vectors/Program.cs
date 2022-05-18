@@ -9,34 +9,26 @@ namespace Generating_Vectors
         {
             var num = int.Parse(Console.ReadLine());
 
-            var vector = new int[num];
+            var arr = new int[num];
 
-            Generate(vector, 0);
+            Generate(arr, 0);
         }
 
-        private static void Generate(int[] vector, int n)
+        private static void Generate(int[] arr, int index)
         {
-            if (n == vector.Length)
+            if (index >= arr.Length)
             {
-                var sb = new StringBuilder();
-
-                for (int i = 0; i < vector.Length; i++)
-                {
-                    sb.Append(vector[i]);
-                }
-
-                Console.WriteLine(sb.ToString());
+                Console.WriteLine(string.Join(string.Empty, arr));
 
                 return;
             }
-            else
+
+            for (int i = 0; i <= 1; i++)
             {
-                for (int i = 0; i <= 1; i++)
-                {
-                    vector[n] = i;
-                    Generate(vector, n + 1);
-                }
+                arr[index] = i;
+                Generate(arr, index + 1);
             }
+
         }
     }
 }
