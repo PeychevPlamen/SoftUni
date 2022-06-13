@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Find_All_Paths_in_a_Labyrinth
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {

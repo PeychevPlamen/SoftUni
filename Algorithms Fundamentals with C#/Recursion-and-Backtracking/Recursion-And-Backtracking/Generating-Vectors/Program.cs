@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Generating_Vectors
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {

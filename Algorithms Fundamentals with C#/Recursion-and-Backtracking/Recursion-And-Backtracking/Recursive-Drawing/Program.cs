@@ -2,7 +2,7 @@
 
 namespace Recursive_Drawing
 {
-    internal class Program
+    public class Program
     {
         static void Main()
         {

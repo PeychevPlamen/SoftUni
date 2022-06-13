@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Recursive_Array_Sum
 {
-    internal class Program
+    public class Program
     {
         public static void Main(string[] args)
         {

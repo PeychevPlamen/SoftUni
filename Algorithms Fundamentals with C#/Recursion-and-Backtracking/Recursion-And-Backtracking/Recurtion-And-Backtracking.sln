@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recursive-Drawing", "Recurs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recursive-Factorial", "Recursive-Factorial\Recursive-Factorial.csproj", "{F760D671-3F22-4216-A5A4-C866B3885D79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Find-All-Paths-in-a-Labyrinth", "Find-All-Paths-in-a-Labyrinth\Find-All-Paths-in-a-Labyrinth.csproj", "{0FA7E458-D8F0-4079-A209-F8A3E0CA5F32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Find-All-Paths-in-a-Labyrinth", "Find-All-Paths-in-a-Labyrinth\Find-All-Paths-in-a-Labyrinth.csproj", "{0FA7E458-D8F0-4079-A209-F8A3E0CA5F32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Queens-Puzzle", "Queens-Puzzle\Queens-Puzzle.csproj", "{9AC2B4BA-8D3B-4C88-B994-8A78A28DF13B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{0FA7E458-D8F0-4079-A209-F8A3E0CA5F32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FA7E458-D8F0-4079-A209-F8A3E0CA5F32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FA7E458-D8F0-4079-A209-F8A3E0CA5F32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AC2B4BA-8D3B-4C88-B994-8A78A28DF13B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AC2B4BA-8D3B-4C88-B994-8A78A28DF13B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AC2B4BA-8D3B-4C88-B994-8A78A28DF13B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AC2B4BA-8D3B-4C88-B994-8A78A28DF13B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
