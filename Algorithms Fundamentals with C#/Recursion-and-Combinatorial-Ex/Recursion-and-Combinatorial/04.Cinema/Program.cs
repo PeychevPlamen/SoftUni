@@ -20,7 +20,7 @@ namespace _04.Cinema
             while (true)
             {
                 var line = Console.ReadLine();
-                
+
                 if (line == "generate")
                 {
                     break;
@@ -34,7 +34,6 @@ namespace _04.Cinema
                 locked[position] = true;
 
                 nonStatickNames.Remove(name);
-
             }
 
             Permute(0);
@@ -67,7 +66,7 @@ namespace _04.Cinema
             {
                 if (locked[i])
                 {
-                   sb.Append($"{people[i]} ");
+                    sb.Append($"{people[i]} ");
                 }
                 else
                 {
