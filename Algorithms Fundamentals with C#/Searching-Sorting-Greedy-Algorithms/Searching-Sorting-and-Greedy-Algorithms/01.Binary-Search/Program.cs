@@ -15,13 +15,13 @@ namespace _01.Binary_Search
 
             var key = int.Parse(Console.ReadLine());
 
-            Console.WriteLine(Binary_Search(input, key));
+            Console.WriteLine(BinarySearch(input, key));
         }
 
-        private static int Binary_Search(int[] input, int key)
+        private static int BinarySearch(int[] input, int key)
         {
             var left = 0;
-            var right = input.Length - key;
+            var right = input.Length - 1;
 
             while (left <= right)
             {
