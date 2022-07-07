@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "01.Connected-Components", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02.Topological-Sorting", "02.Topological-Sorting\02.Topological-Sorting.csproj", "{E0D30FD4-6EEE-4066-ABF9-47DD3C647E8D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "03.Shortest-Path", "03.Shortest-Path\03.Shortest-Path.csproj", "{531709E3-3337-4686-A52D-B293275BC28C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E0D30FD4-6EEE-4066-ABF9-47DD3C647E8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0D30FD4-6EEE-4066-ABF9-47DD3C647E8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0D30FD4-6EEE-4066-ABF9-47DD3C647E8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{531709E3-3337-4686-A52D-B293275BC28C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{531709E3-3337-4686-A52D-B293275BC28C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{531709E3-3337-4686-A52D-B293275BC28C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{531709E3-3337-4686-A52D-B293275BC28C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

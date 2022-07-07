@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>_02.Topological_Sorting</RootNamespace>
+    <RootNamespace>_03.Shortest_Path</RootNamespace>
   </PropertyGroup>
 
 </Project>
