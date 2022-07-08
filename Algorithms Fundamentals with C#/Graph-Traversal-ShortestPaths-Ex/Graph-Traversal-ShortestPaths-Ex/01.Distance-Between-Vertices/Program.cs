@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace _01.Distance_Between_Vertices
 {
-    internal class Program
+    public class Program
     {
         private static Dictionary<int, List<int>> graph;
 
