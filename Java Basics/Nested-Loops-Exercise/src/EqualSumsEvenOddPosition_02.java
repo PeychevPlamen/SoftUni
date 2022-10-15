@@ -10,7 +10,7 @@ public class EqualSumsEvenOddPosition_02 {
 
         for (int i = n1; i <= n2; i++) {
 
-            String num = String.valueOf(i);
+            String num = String.valueOf(i);  // String num = "" + i;
 
             int evenSum = 0;
             int oddSum = 0;
