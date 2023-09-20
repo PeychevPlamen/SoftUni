@@ -13,22 +13,30 @@ public class IntersectionOfTwoMatrices_03 {
         fillMatrix(matrixA, scanner);
         fillMatrix(matrixB, scanner);
 
+        for (int row = 0; row < matrixA.length; row++) {
+            for (int col = 0; col < matrixA[row].length; col++) {
+                char outputSymbol = '*';
+                if (matrixA[row][col] == matrixB[row][col]) {
+                    outputSymbol = matrixA[row][col];
+                }
+                System.out.print(outputSymbol);
+            }
+            System.out.println();
+        }
 
-
-//        printMatrix(matrixA);
-//        printMatrix(matrixB);
     }
+
     private static void fillMatrix(char[][] matrix, Scanner scanner) {
         for (int row = 0; row < matrix.length; row++) {
             String line = scanner.nextLine();
             matrix[row] = line.toCharArray();
         }
     }
+
 //    private static void printMatrix(char[][] matrix) {
 //        for (int row = 0; row < matrix.length; row++) {
 //            for (int col = 0; col < matrix[row].length; col++) {
-//                System.out.print(matrix[row][col] + " ");
-//
+//                System.out.print(matrix[row][col]);
 //            }
 //            System.out.println();
 //        }

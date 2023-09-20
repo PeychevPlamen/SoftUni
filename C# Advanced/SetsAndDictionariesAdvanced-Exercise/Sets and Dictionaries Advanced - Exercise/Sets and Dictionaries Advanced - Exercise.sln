@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "01. UniqueUsernames", "01. UniqueUsernames\01. UniqueUsernames.csproj", "{E7C4EA7C-A701-4934-989D-730BD22575C5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "02. SetsOfElements", "02. SetsOfElements\02. SetsOfElements.csproj", "{6A7C7D22-20F7-49C4-B532-2DFA38E6AB46}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "03. PeriodicTable", "03. PeriodicTable\03. PeriodicTable.csproj", "{633A9C6E-F262-4142-A3AB-E84F62F8505D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "04. EvenTimes", "04. EvenTimes\04. EvenTimes.csproj", "{B4497579-335B-4519-9222-1B34B8B12B13}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "05. CountSymbols", "05. CountSymbols\05. CountSymbols.csproj", "{412BFB42-9218-4311-BA73-506954A0A1EC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "06. Wardrobe", "06. Wardrobe\06. Wardrobe.csproj", "{9EBF07F3-DC02-4229-A70C-1E3504091609}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "08. Ranking", "07. The V-Logger\08. Ranking.csproj", "{5F5B8223-7803-4486-88E6-09C1020E9C26}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E7C4EA7C-A701-4934-989D-730BD22575C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7C4EA7C-A701-4934-989D-730BD22575C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7C4EA7C-A701-4934-989D-730BD22575C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7C4EA7C-A701-4934-989D-730BD22575C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A7C7D22-20F7-49C4-B532-2DFA38E6AB46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A7C7D22-20F7-49C4-B532-2DFA38E6AB46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A7C7D22-20F7-49C4-B532-2DFA38E6AB46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A7C7D22-20F7-49C4-B532-2DFA38E6AB46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{633A9C6E-F262-4142-A3AB-E84F62F8505D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{633A9C6E-F262-4142-A3AB-E84F62F8505D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{633A9C6E-F262-4142-A3AB-E84F62F8505D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{633A9C6E-F262-4142-A3AB-E84F62F8505D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4497579-335B-4519-9222-1B34B8B12B13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4497579-335B-4519-9222-1B34B8B12B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4497579-335B-4519-9222-1B34B8B12B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4497579-335B-4519-9222-1B34B8B12B13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{412BFB42-9218-4311-BA73-506954A0A1EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{412BFB42-9218-4311-BA73-506954A0A1EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{412BFB42-9218-4311-BA73-506954A0A1EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{412BFB42-9218-4311-BA73-506954A0A1EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EBF07F3-DC02-4229-A70C-1E3504091609}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EBF07F3-DC02-4229-A70C-1E3504091609}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EBF07F3-DC02-4229-A70C-1E3504091609}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EBF07F3-DC02-4229-A70C-1E3504091609}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F5B8223-7803-4486-88E6-09C1020E9C26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F5B8223-7803-4486-88E6-09C1020E9C26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F5B8223-7803-4486-88E6-09C1020E9C26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F5B8223-7803-4486-88E6-09C1020E9C26}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A51CFC1-2F4F-404D-BCBA-F296C1EA8A30}
+	EndGlobalSection
+EndGlobal
