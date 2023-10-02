@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,8 +24,12 @@ public class AcademyGraduation_08 {
         }
 
         for (String name : graduationList.keySet()) {
-// TO DO
-            System.out.println(name);
+
+            Double averageGrade = Arrays.stream(graduationList.get(name))
+                    .mapToDouble(Double::valueOf)
+                    .summaryStatistics().getAverage();
+
+            System.out.println(name + " is graduated with " + averageGrade);
         }
     }
 }
