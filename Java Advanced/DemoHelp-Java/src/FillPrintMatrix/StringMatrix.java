@@ -31,6 +31,13 @@ public class StringMatrix {
             }
         }
     }
+
+    private static void fillStringMatrix(String[][] matrix, Scanner scanner) {
+        for (int row = 0; row < matrix.length; row++) {
+           String[] input = scanner.nextLine().split("\\s+");
+           matrix[row] = input;
+        }
+    }
     private static void printMatrix(String[][] matrix) {
         for (int row = 0; row < matrix.length; row++) {
             for (int col = 0; col < matrix[row].length; col++) {
