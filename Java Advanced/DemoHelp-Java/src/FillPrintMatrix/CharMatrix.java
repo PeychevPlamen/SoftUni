@@ -24,13 +24,17 @@ public class CharMatrix {
             System.out.println();
         }
     }
-    private static void fillMatrix(int[][] matrix, Scanner scanner) {
+    private static void fillMatrix(char[][] matrix, Scanner scanner) {
         for (int row = 0; row < matrix.length; row++) {
-            int[] line = Arrays.stream(scanner.nextLine().split("\\s+"))
-                    .mapToInt(Integer::parseInt)
-                    .toArray();
+            String line = scanner.nextLine();
+            matrix[row] = line.toCharArray();
 
-            matrix[row] = line;
+//            int index = line.indexOf('M');
+
+//            if (index != -1) {
+//                rowMouse = row;
+//                colMouse = index;
+//            }
         }
     }
     private static void fill(char[][] matrix, List<String> words) {
