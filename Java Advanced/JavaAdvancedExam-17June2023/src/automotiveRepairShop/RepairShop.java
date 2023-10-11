@@ -48,6 +48,6 @@ public class RepairShop {
         for (Vehicle vehicle : vehicles) {
             sb.append(vehicle).append(System.lineSeparator());
         }
-        return sb.toString();
+        return sb.toString().trim();
     }
 }
