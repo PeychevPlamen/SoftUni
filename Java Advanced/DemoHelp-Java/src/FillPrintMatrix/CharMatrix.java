@@ -49,4 +49,23 @@ public class CharMatrix {
             }
         }
     }
+    private static void fillMatrix(char[][] matrix, Scanner scanner) {
+        for (int row = 0; row < matrix.length; row++) {
+            String line = scanner.nextLine().split("\\s+").toString();
+            matrix[row] = line.toCharArray();
+
+            int indexWhite = line.indexOf('w');
+
+            if (indexWhite != -1) {
+                whiteRow = row;
+                whiteCol = indexWhite;
+            }
+            int indexBlack = line.indexOf('b');
+
+            if (indexBlack != -1) {
+                blackRow = row;
+                blackCol = indexBlack;
+            }
+        }
+    }
 }
