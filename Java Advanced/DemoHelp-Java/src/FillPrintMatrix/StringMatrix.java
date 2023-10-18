@@ -38,6 +38,23 @@ public class StringMatrix {
            matrix[row] = input;
         }
     }
+    private static void fillMatrix(String[][] matrix, Scanner scanner) {
+        for (int row = 0; row < matrix.length; row++) {
+            String[] line = scanner.nextLine().split("\\s+");
+            matrix[row] = line;
+        }
+        findStartIndexes(matrix);
+    }
+    private static void findStartIndexes(String[][] matrix){
+        for (int r = 0; r < matrix.length; r++) {
+            for (int c = 0; c < matrix[r].length; c++) {
+                if (matrix[r][c].equals("D")){
+                    rowDillinger = r;
+                    colDillinger = c;
+                }
+            }
+        }
+    }
     private static void printMatrix(String[][] matrix) {
         for (int row = 0; row < matrix.length; row++) {
             for (int col = 0; col < matrix[row].length; col++) {
