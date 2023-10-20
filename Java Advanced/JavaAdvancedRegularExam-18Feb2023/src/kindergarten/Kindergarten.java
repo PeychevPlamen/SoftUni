@@ -50,13 +50,19 @@ public class Kindergarten {
     public String registryReport() {
         StringBuilder sb = new StringBuilder();
         sb.append("Registered children in ").append(getName()).append(":");
+        // sorting by 3 elements in ascending order !!!!
         Comparator<Child> childSort = Comparator
                 .comparing(Child::getAge)
                 .thenComparing(Child::getFirstName)
                 .thenComparing(Child::getLastName);
+        // ascending order
         List<Child> sortedChild = registry.stream()
                 .sorted(childSort)
                 .collect(Collectors.toList());
+        // descending order
+//        List<Child> sortedChildDescending = registry.stream()
+//                .sorted(childSort.reversed())
+//                .collect(Collectors.toList());
 
         sortedChild.forEach(child -> {
             sb.append(System.lineSeparator());
