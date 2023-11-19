@@ -8,4 +8,5 @@ public class ConstantMessages {
     public static final String SUCCESSFULLY_ADDED_GAMEPLAY_TYPE = "Successfully added %s.";
     public static final String SUCCESSFULLY_ADDED_EQUIPMENT_TYPE = "Successfully added %s.";
     public static final String ADVANTAGE_GAMEPLAY = "The advantage of gameplay %s is %d.";
+
 }

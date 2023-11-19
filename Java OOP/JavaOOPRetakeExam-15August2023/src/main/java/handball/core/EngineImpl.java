@@ -12,7 +12,7 @@ public class EngineImpl implements Engine {
     private BufferedReader reader;
 
     public EngineImpl() {
-       // this.controller = new ControllerImpl(); //TODO implement first
+        this.controller = new ControllerImpl();
         this.reader = new BufferedReader(new InputStreamReader(System.in));
     }
 
@@ -72,34 +72,30 @@ public class EngineImpl implements Engine {
     }
 
     private String addGameplay(String[] data) {
-        // TODO
-        return null;
-    }
+        return this.controller.addGameplay(data[0], data[1]);
+           }
 
     private String addEquipment(String[] data) {
-        // TODO
-        return null;
+
+        return this.controller.addEquipment(data[0]);
     }
 
     private String equipmentRequirement(String[] data) {
-        // TODO
-        return null;
+
+        return this.controller.equipmentRequirement(data[0], data[1]);
     }
 
     private String addTeam(String[] data) {
-        // TODO
-        return null;
+        return this.controller.addTeam(data[0], data[1], data[2], data[3], Integer.parseInt(data[4]));
     }
 
     private String playInGameplay(String[] data) {
 
-        // TODO
-        return null;
+        return this.controller.playInGameplay(data[0]);
     }
 
     private String percentAdvantage(String[] data) {
-        // TODO
-        return null;
+        return this.controller.percentAdvantage(data[0]);
     }
 
     private String getStatistics() {
