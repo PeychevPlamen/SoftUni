@@ -39,7 +39,7 @@ public abstract class BaseClient implements Client {
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
     @Override

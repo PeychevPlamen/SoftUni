@@ -75,7 +75,7 @@ public class ControllerImpl implements Controller {
                 .findFirst()
                 .ifPresent(gameplay -> gameplay.addEquipment(equipment));
 
-        gameplays.remove(equipment);
+        equipments.remove(equipment);
         return String.format(SUCCESSFULLY_ADDED_EQUIPMENT_IN_GAMEPLAY, equipmentType, gameplayName);
     }
 
