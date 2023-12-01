@@ -71,6 +71,16 @@ public abstract class BaseBooth implements Booth {
     }
 
     @Override
+    public void orderDelicacy(Delicacy delicacy) {
+        delicacyOrders.add(delicacy);
+    }
+
+    @Override
+    public void orderCocktail(Cocktail cocktail) {
+        this.cocktailOrders.add(cocktail);
+    }
+
+    @Override
     public double getBill() {
         double bill = 0;
         bill += delicacyOrders.stream().mapToDouble(Delicacy::getPrice).sum();
@@ -81,10 +91,11 @@ public abstract class BaseBooth implements Booth {
 
     @Override
     public void clear() {
+        isReserved = false;
+        numberOfPeople = 0;
         cocktailOrders.clear();
         delicacyOrders.clear();
-        setNumberOfPeople(0);
         price = 0;
-        isReserved = false;
+
     }
 }

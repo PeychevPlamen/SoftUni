@@ -17,4 +17,7 @@ public interface Booth {
     double getBill();
 
     void clear();
+    void orderDelicacy(Delicacy food);
+
+    void orderCocktail(Cocktail cocktail);
 }

@@ -9,6 +9,10 @@ public interface Controller {
 
    String reserveBooth(int numberOfPeople);
 
+   String orderDelicacy(int tableNumber, String foodName);
+
+   String orderCocktail(int tableNumber, String drinkName, String drinkBrand);
+
    String leaveBooth(int tableNumber);
 
    String getIncome();
