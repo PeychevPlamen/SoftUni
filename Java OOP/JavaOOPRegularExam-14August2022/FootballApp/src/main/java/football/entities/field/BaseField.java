@@ -5,6 +5,7 @@ import football.entities.supplement.Supplement;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import static football.common.ConstantMessages.NOT_ENOUGH_CAPACITY;
 import static football.common.ExceptionMessages.FIELD_NAME_NULL_OR_EMPTY;
@@ -81,12 +82,12 @@ public abstract class BaseField implements Field {
 
     @Override
     public Collection<Player> getPlayers() {
-        return players;
+        return Collections.unmodifiableCollection(players);
     }
 
     @Override
     public Collection<Supplement> getSupplements() {
-        return supplements;
+        return Collections.unmodifiableCollection(supplements);
     }
 
     @Override
