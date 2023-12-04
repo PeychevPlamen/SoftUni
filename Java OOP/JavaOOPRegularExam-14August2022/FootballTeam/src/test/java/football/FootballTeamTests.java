@@ -7,8 +7,6 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.Collection;
 
-
-import junit.framework.TestCase;
 public class FootballTeamTests {
 
     @Test
