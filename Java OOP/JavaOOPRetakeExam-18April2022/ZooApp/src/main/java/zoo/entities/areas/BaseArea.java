@@ -75,12 +75,8 @@ public abstract class BaseArea implements Area {
 
     @Override
     public String getInfo() {
-//        "{areaName} ({areaType}):
-//        Animals: {animalName1} {animalName2} {animalName3} (…) / Animals: none
-//        Foods: {foodsCount}
-//        Calories: {sumCalories}"
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%s (%s)", getName(), getClass().getSimpleName()));
+        sb.append(String.format("%s (%s):", getName(), getClass().getSimpleName()));
         sb.append(System.lineSeparator());
         sb.append("Animals:");
         if (animals.isEmpty()){
