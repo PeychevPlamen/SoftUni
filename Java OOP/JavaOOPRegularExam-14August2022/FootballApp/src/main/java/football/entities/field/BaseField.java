@@ -62,7 +62,7 @@ public abstract class BaseField implements Field {
     @Override
     public String getInfo() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%s (%s)", name, getClass().getSimpleName()));
+        sb.append(String.format("%s (%s):", name, getClass().getSimpleName()));
         sb.append(System.lineSeparator());
         sb.append("Player:");
         if (players.isEmpty()){
